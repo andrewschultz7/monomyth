@@ -62,24 +62,36 @@
     ```
 
 
-<!-- ### Register
+### CREATE Character (Register)
 ###
-* Endpoint path: /register
+* Endpoint path: /participant
 * Endpoint method: POST
 
 * Request shape (form):
-  * character: string
+    ```json
+    {
+        "campaign": {
+            "character": {
+                "username": string | "character",
+            }
+        }
+    }
 
 * Response: Account information and a token
 * Response shape (JSON):
-    ```json
-    {
-      "account": {
-        "username": str,
-        "password": str,
-      }
-    }
-    ``` -->
+   True
+
+
+### DELETE Character (Register)
+###
+* Endpoint path: /participant/{username}
+* Endpoint method: DEL
+
+* Request shape (form):
+
+* Response shape (JSON):
+   True
+
 
 
 ### GET LIST Campaigns
@@ -115,13 +127,13 @@ username
 
 *Request
     ```json
-    {
-      "campaign":
         {
-          "id": int,
+        "campaign":
+            {
+            "id": int,
+            }
         }
-    }
-    ```
+        ```
 
 * Response shape (JSON):
     ```json
@@ -133,11 +145,13 @@ username
           "description": string,
           "rulebook": string,
           "contact": string,
-          "cleanup_duties": string,
-          "npc_shifts": string,
-          "roles": string,
-          "characters": string,
-          "events": string
+          "cleanup_duties": {},
+          "npc_shifts": {},
+          "roles": {},
+          "characters": {
+            "username": string
+          },
+          "events": {}
         }
     }
     ```
