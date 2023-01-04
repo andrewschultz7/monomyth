@@ -33,6 +33,55 @@
     true
     ```
 
+
+### Sign up
+###
+* Endpoint path: /signup
+* Endpoint method: POST
+
+* Request shape (form):
+    ```json
+        {
+        "account": [
+            {
+            "username": str,
+            "password": str,
+            }
+        ]
+        }
+        ```
+* Response: Account information and a token
+* Response shape (JSON):
+    ```json
+    {
+      "account": {
+        "username": str,
+        "password": str,
+      }
+    }
+    ```
+
+
+<!-- ### Register
+###
+* Endpoint path: /register
+* Endpoint method: POST
+
+* Request shape (form):
+  * character: string
+
+* Response: Account information and a token
+* Response shape (JSON):
+    ```json
+    {
+      "account": {
+        "username": str,
+        "password": str,
+      }
+    }
+    ``` -->
+
+
 ### GET LIST Campaigns
 ###
 * Endpoint path: /campaigns
@@ -70,6 +119,51 @@ username
       "campaign":
         {
           "id": int,
+        }
+    }
+    ```
+
+* Response shape (JSON):
+    ```json
+    {
+      "campaign":
+        { "id": int,
+          "title": string,
+          "genre": string,
+          "description": string,
+          "rulebook": string,
+          "contact": string,
+          "cleanup_duties": string,
+          "npc_shifts": string,
+          "roles": string,
+          "characters": string,
+          "events": string
+        }
+    }
+    ```
+
+### CREATE Campaign
+* Endpoint path: /campaigns/
+* Endpoint method: POST
+* Table: users, campaigns
+
+* Headers:
+  * Authorization: Bearer token
+
+*Request
+    ```json
+    {
+      "campaign":
+        { "title": string,
+          "genre": string,
+          "description": string,
+          "rulebook": string,
+          "contact": string,
+          "cleanup_duties": string,
+          "npc_shifts": string,
+          "roles": string,
+          "characters": string,
+          "events": string
         }
     }
     ```
@@ -210,6 +304,44 @@ username
     }
     ```
 
+### CREATE Event
+* Endpoint path: /events/
+* Endpoint method: POST
+* Table: users, events
+
+* Headers:
+  * Authorization: Bearer token
+
+*Request
+    ```json
+    {
+      "event":
+        { "campaign": string,
+          "eventname": string,
+          "venuename": string,
+          "address": string,
+          "date": string,
+          "participants": [],
+        }
+    }
+    ```
+
+* Response shape (JSON):
+    ```json
+    {
+      "event":
+        { "id": int,
+          "campaign": string,
+          "eventname": string,
+          "venuename": string,
+          "address": string,
+          "date": string,
+          "participants": [],
+        }
+    }
+    ```
+
+
 ### UPDATE Event
 * Endpoint path: /events/{event_id}
 * Endpoint method: PUT
@@ -261,4 +393,4 @@ username
 * Response shape (JSON):
     True
 
-### 
+###
