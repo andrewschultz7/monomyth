@@ -27,7 +27,7 @@ EVENT | This represents a block of time when the Campaign is played. Campaigns a
 - event_id | int | unique, generated on POST | Primary key.
 - eventname | str | unique | Business key.
 - campaign | The title of the Campaign the Event is associated with.
-- venuename | str | A short string.
+- venuename | str | A string.
 - address | str | A string.
-- date | str | A date. (Use reminder text in form)
+- date | datetime.time | A year, date, and time.
 - participants | list | A list of Participant characters for the Event.
