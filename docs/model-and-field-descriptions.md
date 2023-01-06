@@ -4,20 +4,19 @@ USER | This represents the user of the application.
 - user_id | int | unique, generated on POST | Primary key.
 - username | str | unique | Business key.
 - password | str | This is used to sign up and sign in.
-- campaigns | dict | default is empty | This is used to track which Campaigns (keys) and roles (values) the User is associated with.
+- campaigns | dict | default is empty | This is used to track which Campaign titles (keys) and characters (values) the User is associated with. If the user is a gamemaster of a Campaign, the value will be "gamemaster", instead of a character.
 
 
-## Monomyth microservice
+## Campaign microservice
 
 CAMPAIGN | This represents a whole storyline. Campaigns are composed of their Events - similar to how a tv show (Campaign) is composed of its episodes (Events).
 - campaign_id | int | unique, generated on POST | Primary key.
 - title | str | unique | Business key.
 - genre | str | A short string.
 - description | str | A long string.
-- rulebook | str | URL link. (Use reminder text in form)
-- campaign_email | str | An email. (Use reminder text in form)
-- characters | dict | default is empty | This is used to track which Users (keys) and characters (values) the Campaign is associated with.
-- roles | dict | default contains only gamemaster | This is used to track which Users (keys) and roles (values) the Campaign is associated with.
+- rulebook | str | URL link. (Use reminder in form)
+- campaign_email | str | An email. (Use reminder in form)
+- users | dict | default contains only gamemaster | This is used to track which Users (keys) and characters (values) the Campaign is associated with. The first entry's value is "gamemaster", instead of a character.
 
 
 EVENT | This represents a block of time when the Campaign is played. Campaigns are composed of their Events - similar to how a tv show (Campaign) is composed of its episodes (Events).
