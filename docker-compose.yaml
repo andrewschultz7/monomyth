@@ -1,27 +1,56 @@
 volumes:
   postgres-data:
     external: true
+  pg-admin:
+    external: true
 
 services:
-  fastapi:
-    build:
-      context: sample_service
-      dockerfile: Dockerfile.dev
-    ports:
-      - 8000:8000
-    volumes:
-      - ./sample_service:/app
   postgres:
-        build:
-            context: ./relational-data
-            dockerfile: ./Dockerfile.dev
-        volumes:
-            - postgres-data:/var/lib/postgresql/data
-        environment:
-            - POSTGRES_MULTIPLE_DATABASES=users,monomyth
-            - POSTGRES_PASSWORD=test-databases
-        ports:
-            - 15432:5432
+    build:
+      context: ./relational-data
+      dockerfile: ./Dockerfile.dev
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - 15432:5432
+    environment:
+      - POSTGRES_MULTIPLE_DATABASES=users,campaigns
+      - POSTGRES_PASSWORD=test-databases
+
+  pg-admin:
+    image: dpage/pgadmin4
+    volumes:
+      - pg-admin:/var/lib/pgadmin
+    ports:
+      - 8082:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: monomyth@monomyth.com
+      PGADMIN_DEFAULT_PASSWORD: monomyth
+      PGADMIN_DISABLE_POSTFIX: 1
+
+  campaigns:
+    build:
+      context: ./campaigns
+      dockerfile: ./Dockerfile.dev
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./campaigns:/app
+    environment:
+      DATABASE_URL: postgresql://campaigns:password@postgres/campaigns
+      WAIT_HOSTS: postgres:5432
+
+  users:
+    build:
+      context: ./users
+      dockerfile: ./Dockerfile.dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./users:/app
+    environment:
+      DATABASE_URL: postgresql://users:password@postgres/users
+      WAIT_HOSTS: postgres:5432
 
   ghi:
     image: node:lts-bullseye
@@ -36,4 +65,5 @@ services:
       NODE_ENV: development
       HOST: "0.0.0.0"
       PUBLIC_URL: http://localhost:3000
-      REACT_APP_SAMPLE_SERVICE_API_HOST: http://localhost:8000
+      REACT_APP_USERS_API_HOST: http://localhost:8000
+      REACT_APP_CAMPAIGNS_API_HOST: http://localhost:8001
