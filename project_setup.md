@@ -116,23 +116,9 @@ then your GitLab pages URL will be
 
 https://GROUP_NAME.gitlab.io/PROJECT_NAME
 
-### Create render.com account and application
+### Create FlyIO account and application
 
-* create account on render.com
-* one person create a group and invite all other members
-* create a new "Web Service"
-  * authenticate with GitLab and choose your project
-  * Enter fields:
-    * Name: name of your service
-    * Root Directory: the directory of your service in your git repo.
-      For this example use "sample_service".
-    * Environment: Docker
-    * Plan Type: Free
-  * click the "Create Web Service" button to create it
-  * the build will succeed and it will look like the server is running,
-    most likely, in 6-10 minutes, it will fail.
-  * click "Manual Deploy" -> "Deploy latest commit" and the service
-    should deploy successfully.
+* 
 
 ### Update GitLab CI/CD variables
 
