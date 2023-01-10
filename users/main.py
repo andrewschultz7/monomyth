@@ -5,8 +5,8 @@ from routers import users
 import os
 
 app = FastAPI()
-app.include_router(users.router)
 app.include_router(authenticator.router)
+app.include_router(users.router)
 
 app.add_middleware(
     CORSMiddleware,

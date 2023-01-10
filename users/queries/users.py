@@ -7,6 +7,8 @@ from queries.pool import pool
 class Error(BaseModel):
     message: str
 
+class DuplicateUserError(ValueError):
+    pass
 
 class UserIn(BaseModel):
     email: str
@@ -16,14 +18,14 @@ class UserIn(BaseModel):
 class UserOut(BaseModel):
     user_id: int
     email: str
-    password: str
     campaigns: str
 
-
+class UserOutWithPassword(UserOut):
+    hashed_password: str
 
 
 class UserRepository:
-    def get_all(self) -> Union[Error, List[UserOut]]:
+    def get_all(self) -> Union[Error, List[UserOutWithPassword]]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -31,7 +33,7 @@ class UserRepository:
                         """
                         SELECT user_id,email,password,campaigns
                         FROM users
-                        ORDER BY user_id;
+                        WHERE email = %s;
                         """
                     )
                     # result = []
@@ -58,7 +60,33 @@ class UserRepository:
         except Exception:
             return {"message": "Could not get all users"}
 
-    def create(self, user: UserIn) -> UserOut:
+    def get(self, email:str) -> Union[Error, UserOutWithPassword]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT user_id,email,password,campaigns
+                        FROM users
+                        WHERE email = %s;
+                        """,
+                        [email]
+                    )
+                    record = result.fetchone()
+                    if record is None:
+                        return None
+                    return UserOut(
+                            user_id= record[0],
+                            email=record[1],
+                            password=record[2],
+                            campaigns=record[3],
+                        )
+
+        except Exception:
+            return {"message": "Could not get all users"}
+
+
+    def create(self, user: UserIn, hashed_password:str) -> UserOutWithPassword:
         with pool.connection() as conn:
             with conn.cursor() as db:
                 result = db.execute(
@@ -71,10 +99,10 @@ class UserRepository:
                     """,
                     [
                         user.email,
-                        user.password,
+                        hashed_password,
                         user.campaigns,
                     ]
                 )
                 user_id = result.fetchone()[0]
                 old_data = user.dict()
-                return UserOut (user_id=user_id, **old_data)
+                return UserOutWithPassword (user_id=user_id, hashed_password=hashed_password, **old_data)
