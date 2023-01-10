@@ -36,18 +36,6 @@ class UserRepository:
                         WHERE email = %s;
                         """
                     )
-                    # result = []
-                    # for record in db:
-                    #     vacation = VacationOut(
-                    #         id= record[0],
-                    #         name=record[1],
-                    #         from_date=record[2],
-                    #         to_date=record[3],
-                    #         thoughts=record[4],
-                    #     )
-                    #     result.append(vacation)
-                    # return result
-                    # ***  BELOW IS A LIST COMP WAY  OF WHATS ABOVE ***
                     return [
                         UserOut(
                             user_id= record[0],
