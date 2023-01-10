@@ -75,10 +75,10 @@ class UserRepository:
                     record = result.fetchone()
                     if record is None:
                         return None
-                    return UserOut(
+                    return UserOutWithPassword(
                             user_id= record[0],
                             email=record[1],
-                            password=record[2],
+                            hashed_password=record[2],
                             campaigns=record[3],
                         )
 
