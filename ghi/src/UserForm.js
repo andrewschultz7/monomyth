@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function BootstrapInput(props) {
     const { id, placeholder, labelText, value, onChange, type } = props;
@@ -15,7 +15,20 @@ function BootstrapInput(props) {
 function UserForm(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [campaign, setCampaign] = useState('');
+    const [campaigns, setCampaigns] = useState('');
+
+    useEffect(() => {
+        async function getCampaigns() {
+            const url = '${process.env.REACT_APP_API}/monomyth/campaigns'
+            const response = fetch(url);
+            if (response.ok) {
+                const data = await (await response).json();
+                setCampaigns(data);
+            }
+        }
+        getCampaigns();
+    }, [setCampaigns])
+
 
     return (
         <form>
@@ -35,15 +48,20 @@ function UserForm(props) {
                 onChange={e => setPassword(e.target.value)}
                 type="password" />
 
-            <BootstrapInput
-                id="campaign"
-                placeholder="Campaign"
-                labelText="Campaign"
-                value={campaign}
-                onChange={e => setCampaign(e.target.value)}
-                type="text" />
+            <div classname="mb-4">
+                <label htmlFor="Campaign" className="form-label">Choose Your Campaign</label>
+                <select className="form-select" id="campaign"aria-label="Choose Your Campaign">
+                    <option>Open this select menu</option>
+                    {campaigns.map(campaign => (
+                        <option key={campaign} value={campaign}>
+                            {campaign}
+                        </option>
+                    ))}
+                </select>
+            </div>
 
             <button type="submit" className="btn btn-primary">Submit</button>
+            {/* <button disabled={campaigns.length === 0} type="submit" className="btn btn-primary">Submit</button> */}
 
         </form>
     );
