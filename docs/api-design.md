@@ -172,12 +172,8 @@ username
           "genre": string,
           "description": string,
           "rulebook": string,
-          "contact": string,
-          "cleanup_duties": string,
-          "npc_shifts": string,
-          "roles": string,
-          "characters": string,
-          "events": string
+          "campaign_email": string,
+          "users": string,
         }
     }
     ```
@@ -186,17 +182,13 @@ username
     ```json
     {
       "campaign":
-        { "id": int,
+        { "campaign_id": int,
           "title": string,
           "genre": string,
           "description": string,
           "rulebook": string,
-          "contact": string,
-          "cleanup_duties": string,
-          "npc_shifts": string,
-          "roles": string,
-          "characters": string,
-          "events": string
+          "campaign_email": string,
+          "users": string,
         }
     }
     ```
