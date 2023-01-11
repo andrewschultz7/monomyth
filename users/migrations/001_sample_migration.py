@@ -6,7 +6,7 @@ steps = [
             user_id SERIAL PRIMARY KEY NOT NULL,
             email VARCHAR(1000) NOT NULL,
             password VARCHAR(1000) NOT NULL,
-            campaigns TEXT
+            role VARCHAR(1000) NOT NULL
         );
         """,
         # "Down" SQL statement

@@ -13,12 +13,12 @@ class DuplicateUserError(ValueError):
 class UserIn(BaseModel):
     email: str
     password: str
-    campaigns: Optional[str]
+    role: Optional[str]
 
 class UserOut(BaseModel):
     user_id: int
     email: str
-    campaigns: str
+    role: str
 
 class UserOutWithPassword(UserOut):
     hashed_password: str
@@ -31,29 +31,17 @@ class UserRepository:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                        SELECT user_id,email,password,campaigns
+                        SELECT user_id,email,password,role
                         FROM users
                         WHERE email = %s;
                         """
                     )
-                    # result = []
-                    # for record in db:
-                    #     vacation = VacationOut(
-                    #         id= record[0],
-                    #         name=record[1],
-                    #         from_date=record[2],
-                    #         to_date=record[3],
-                    #         thoughts=record[4],
-                    #     )
-                    #     result.append(vacation)
-                    # return result
-                    # ***  BELOW IS A LIST COMP WAY  OF WHATS ABOVE ***
                     return [
                         UserOut(
                             user_id= record[0],
                             email=record[1],
                             password=record[2],
-                            campaigns=record[3],
+                            role=record[3],
                         )
                         for record in db
                     ]
@@ -66,7 +54,7 @@ class UserRepository:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                        SELECT user_id,email,password,campaigns
+                        SELECT user_id,email,password,role
                         FROM users
                         WHERE email = %s;
                         """,
@@ -79,7 +67,7 @@ class UserRepository:
                             user_id= record[0],
                             email=record[1],
                             hashed_password=record[2],
-                            campaigns=record[3],
+                            role=record[3],
                         )
 
         except Exception:
@@ -92,15 +80,15 @@ class UserRepository:
                 result = db.execute(
                     """
                     INSERT INTO users
-                        (email, password, campaigns)
+                        (email, password, role)
                     VALUES
-                        (%s, %s, %s)
+                        (%s, %s, 'player')
                     RETURNING user_id;
                     """,
                     [
                         user.email,
                         hashed_password,
-                        user.campaigns,
+                        user.role,
                     ]
                 )
                 user_id = result.fetchone()[0]

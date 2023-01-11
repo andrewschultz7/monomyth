@@ -8,6 +8,7 @@ from fastapi import (
 )
 from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
+from token_auth import get_current_user
 
 from pydantic import BaseModel
 
@@ -15,7 +16,7 @@ from queries.campaigns import (
     CampaignIn,
     CampaignOut,
     CampaignRepository,
-    DuplicateUserError,
+    DuplicateCampaignError,
 )
 
 
@@ -40,16 +41,16 @@ async def create_campaign(
     info: CampaignIn,
     request: Request,
     response: Response,
-    repo: CampaignRepository = Depends(),
+    repo: CampaignRepository = Depends(get_current_user),
 ):
-    hashed_password = authenticator.hash_password(info.password)
     try:
-        account = repo.create(info, hashed_password)
-    except DuplicateUserError:
+        info = repo.create(info)
+    except DuplicateCampaignError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Cannot create a campaign with those credentials",
         )
-    form = CampaignForm(username=info.email, password=info.password)
-    token = await authenticator.login(response, request, form, repo)
-    return AccountToken(account=account, **token.dict())
+    return info
+    # form = CampaignForm(username=info.email, password=info.password)
+    # token = await authenticator.login(response, request, form, repo)
+    # return AccountToken(account=account, **token.dict())
