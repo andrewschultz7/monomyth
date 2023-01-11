@@ -1,5 +1,5 @@
 # Monomyth
-
+[TOC]
 The app for larping. For game masters, Monomyth streamlines the creation and management of campaigns and events. For game players, it allows for fast and easy character creation and event registration. The project has two backend microservices: **Users** and **Campaigns**.<br />
 
 ## BOOKMARK (add Table of Contents)

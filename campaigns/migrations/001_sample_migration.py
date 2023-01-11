@@ -9,7 +9,7 @@ steps = [
             description TEXT NOT NULL,
             rulebook VARCHAR(1000) NOT NULL,
             campaign_email VARCHAR(1000) NOT NULL,
-            users TEXT NOT NULL,
+            users TEXT NOT NULL
         );
         """,
         # "Down" SQL statement
