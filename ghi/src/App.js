@@ -12,14 +12,8 @@ function App() {
       <div className="container-fluid">
         <Routes>
           <Route path="/" element={<MainPage />} />
-          {/* <Route path="/automobiles/new" element={<AutomobileForm />} />
-          <Route path="/automobiles" element={<AutomobileList />} /> */}
+          <Route path="./UserForm" element={<UserForm />} />
         </Routes>
-        {/* <div className="container"> */}
-        {/* <Routes> */}
-        {/* <Route path="/" element={<MainPage />} /> */}
-
-        {/* </Routes> */}
       </div>
     </BrowserRouter>
   );

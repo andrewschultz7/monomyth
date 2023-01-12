@@ -25,6 +25,9 @@ function Nav() {
                 </button>
                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <li>
+                    <NavLink className="nav-link dropdown-item" to="/UserForm" id="dropdown">Create User</NavLink>
+                  </li>
+                  <li>
                     <Link className="nav-link dropdown-item" to="/Campaigns/new" id="dropdown">Create Campaign</Link>
                   </li>
                   <li>
