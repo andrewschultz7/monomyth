@@ -16,7 +16,7 @@ tasks for this week.
 
 * [ ] Wire-frame diagrams
 * [ ] API documentation
-* [ ] Project is deployed to Render.com/GitLab-pages
+* [ ] Project is deployed to FlyIO
 * [ ] GitLab issue board is setup and in use
 * [ ] Journals
 
