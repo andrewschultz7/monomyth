@@ -1,5 +1,5 @@
 # CarCar
-[toc]
+[TOC]
 Carcar is an application for running a car dealership / auto service business. The project has three backend microservices: **Inventory**, **Service**, and **Sales**.<br />
 
 -The Inventory models are Manufacturer, Vehicle Model, and Automobile.<br />
