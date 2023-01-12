@@ -36,7 +36,7 @@ async def protected_endpoint(
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     return True
-
+    
 
 @router.get("/token", response_model=AccountToken | None)
 async def get_token(
