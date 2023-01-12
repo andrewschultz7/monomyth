@@ -7,7 +7,7 @@ from fastapi import (
     Request,
 )
 from jwtdown_fastapi.authentication import Token
-from authenticator import authenticator
+# from authenticator import authenticator
 from token_auth import get_current_user
 
 from pydantic import BaseModel

@@ -25,6 +25,30 @@ class UserOutWithPassword(UserOut):
 
 
 class UserRepository:
+    def create(self, user: UserIn, hashed_password:str) -> UserOutWithPassword:
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                result = db.execute(
+                    """
+                    INSERT INTO users
+                        (email, password, role)
+                    VALUES
+                        (%s, %s, %s)
+                    RETURNING user_id;
+                    """,
+                    [
+                        user.email,
+                        hashed_password,
+                        user.role,
+                    ]
+                )
+                user_id = result.fetchone()[0]
+                old_data = user.dict()
+                print("\n")
+                print(old_data)
+                print("\n")
+                return UserOutWithPassword (user_id=user_id, hashed_password=hashed_password, **old_data)
+
     def get_all(self) -> Union[Error, List[UserOutWithPassword]]:
         try:
             with pool.connection() as conn:
@@ -72,25 +96,3 @@ class UserRepository:
 
         except Exception:
             return {"message": "Could not get all users"}
-
-
-    def create(self, user: UserIn, hashed_password:str) -> UserOutWithPassword:
-        with pool.connection() as conn:
-            with conn.cursor() as db:
-                result = db.execute(
-                    """
-                    INSERT INTO users
-                        (email, password, role)
-                    VALUES
-                        (%s, %s, 'player')
-                    RETURNING user_id;
-                    """,
-                    [
-                        user.email,
-                        hashed_password,
-                        user.role,
-                    ]
-                )
-                user_id = result.fetchone()[0]
-                old_data = user.dict()
-                return UserOutWithPassword (user_id=user_id, hashed_password=hashed_password, **old_data)
