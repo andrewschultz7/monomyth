@@ -13,7 +13,7 @@ class DuplicateUserError(ValueError):
 class UserIn(BaseModel):
     email: str
     password: str
-    role: Optional[str]
+    # role: Optional[str]
 
 class UserOut(BaseModel):
     user_id: int
@@ -33,20 +33,17 @@ class UserRepository:
                     INSERT INTO users
                         (email, password, role)
                     VALUES
-                        (%s, %s, %s)
+                        (%s, %s, 'player')
                     RETURNING user_id;
                     """,
                     [
                         user.email,
                         hashed_password,
-                        user.role,
                     ]
                 )
                 user_id = result.fetchone()[0]
                 old_data = user.dict()
-                print("\n")
-                print(old_data)
-                print("\n")
+                old_data["role"] = 'player'
                 return UserOutWithPassword (user_id=user_id, hashed_password=hashed_password, **old_data)
 
     def get_all(self) -> Union[Error, List[UserOutWithPassword]]:
