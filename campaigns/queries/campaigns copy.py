@@ -7,8 +7,6 @@ from queries.pool import pool
 class Error(BaseModel):
     message: str
 
-class DuplicateCampaignError(ValueError):
-    pass
 
 class CampaignIn(BaseModel):
     title: str
