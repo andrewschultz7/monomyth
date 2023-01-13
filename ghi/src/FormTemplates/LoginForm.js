@@ -17,7 +17,12 @@ function BootstrapInput(props) {
 function LoginForm(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    // eslint-disable-next-line
     const [token, login] = useToken();
+
+    function submitLogin() {
+        login(email, password)
+    }
 
     return (
         <form>
@@ -26,6 +31,7 @@ function LoginForm(props) {
                 placeholder="you@example.com"
                 labelText="Your email here"
                 value={email}
+                onSubmit={submitLogin}
                 onChange={e => setEmail(e.target.value)}
                 type="email" />
 
@@ -36,7 +42,7 @@ function LoginForm(props) {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 type="password" />
-            <button type="submit" className="btn btn-primary">Submit</button>
+            <button  type="submit" className="btn btn-primary">Submit</button>
         </form>
     );
 }
