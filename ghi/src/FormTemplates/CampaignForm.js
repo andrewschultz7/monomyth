@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import {useToken} from '../AppAuth';
 
 function BootstrapInput(props) {
     const { id, placeholder, labelText, value, onChange, type } = props;
@@ -17,6 +18,29 @@ function CampaignForm(props) {
     const [rulebook, setRulebook] = useState('');
     const [email, setEmail] = useState('');
     const [detail, setDetail] = useState('');
+    const [token] = useToken();
+    const [user, setUser] = useState({})
+
+    
+
+    useEffect(() => {
+        async function getUser() {
+            const userUrl = "https://localhost:8000/current";
+            let fetchOptions = {
+                "credentials": include
+            }
+            const response = await fetch(userUrl, fetchOptions);
+            if (response.ok) {
+                const user = await response.json();
+                setUser(user)
+            }
+        }
+        if (token) {
+            getUser();
+        } else {
+            console.log("bad or no token")
+        }
+    }, [token])
 
     return (
         <form>

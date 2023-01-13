@@ -24,7 +24,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="./UserForm" element={<UserForm />} />
-          <Route path="./LoginForm" element={<LoginForm />} />
+          <Route path="/LoginForm" element={<LoginForm />} />
         </Routes>
       </div>
     </AuthProvider>
