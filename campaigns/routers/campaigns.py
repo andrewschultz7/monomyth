@@ -9,7 +9,7 @@ from fastapi import (
 from jwtdown_fastapi.authentication import Token
 # from authenticator import authenticator
 from token_auth import get_current_user
-from typing import Union
+from typing import Union, Optional, List
 from pydantic import BaseModel
 
 from queries.campaigns import (
@@ -52,6 +52,7 @@ async def create_campaign(
         )
     return info
 
+
 @router.put("/campaigns{campaign_id}", response_model=Union[CampaignOut, HttpError])
 async def update_campaign(
     campaign_id: int,
@@ -59,6 +60,34 @@ async def update_campaign(
     repo: CampaignRepository = Depends(),) -> Union[HttpError, CampaignOut]:
 
     return repo.update(campaign_id, campaign)
+
+
+@router.delete("/campaigns{campaign_id}", response_model=bool)
+def delete_campaign(
+    campaign_id: int,
+    repo: CampaignRepository = Depends(),
+) -> bool:
+    return repo.delete(campaign_id)
+
+
+@router.get("/campaigns/{campaign_id}", response_model=Optional[CampaignOut])
+def get_one_campaign(
+    campaign_id: int,
+    response: Response,
+    repo: CampaignRepository = Depends(),
+) -> CampaignOut:
+    campaign = repo.get_one(campaign_id)
+    if campaign is None:
+        response.status_code = 404
+    return campaign
+
+
+@router.get("/campaigns", response_model=Union[HttpError, List[CampaignOut]])
+def get_all_campaigns(
+    repo: CampaignRepository = Depends(),
+):
+    return repo.get_all_campaigns()
+
 
     # form = CampaignForm(username=info.email, password=info.password)
     # token = await authenticator.login(response, request, form, repo)
