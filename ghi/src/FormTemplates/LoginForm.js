@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useToken, useAuthContext } from '../AppAuth';
+
 
 function BootstrapInput(props) {
     const { id, placeholder, labelText, value, onChange, type } = props;
@@ -15,6 +17,7 @@ function BootstrapInput(props) {
 function LoginForm(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [token, login] = useToken();
 
     return (
         <form>

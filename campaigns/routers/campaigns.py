@@ -35,14 +35,23 @@ class HttpError(BaseModel):
 
 router = APIRouter()
 
+not_authorized = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Invalid authentication credentials",
+    headers={"WWW-Authenticate": "Bearer"},
+)
 
 @router.post("/campaigns", response_model=CampaignOut | HttpError)
 async def create_campaign(
     info: CampaignIn,
     request: Request,
     response: Response,
-    repo: CampaignRepository = Depends(get_current_user),
+    repo: CampaignRepository = Depends(),
+    account: dict = Depends(get_current_user),
 ):
+    print('\n')
+    # print(account)
+    print('\n')
     try:
         info = repo.create(info)
     except DuplicateCampaignError:

@@ -4,9 +4,19 @@ import MainPage from './MainPage'
 import UserForm from './UserForm';
 // import ErrorNotification from './ErrorNotification';
 import './App.css';
+import { AuthProvider, useToken } from './AppAuth';
+
+
+function GetToken() {
+    // Get token from JWT cookie (if already logged in)
+    useToken();
+    return null
+}
 
 function App() {
   return (
+    <AuthProvider>
+      <GetToken />
     <BrowserRouter>
       <Nav />
       <div className="container-fluid">
@@ -16,6 +26,7 @@ function App() {
         </Routes>
       </div>
     </BrowserRouter>
+    </AuthProvider>
   );
 }
 

@@ -72,9 +72,9 @@ class CampaignRepository:
                 result = db.execute(
                     """
                     INSERT INTO campaigns
-                        (campaign_id,title,genre,description,rulebook,campaign_email,users)
+                        (title,genre,description,rulebook,campaign_email,users)
                     VALUES
-                        (%s, %s, %s, %s, %s, %s, %s)
+                        (%s, %s, %s, %s, %s, %s)
                     RETURNING campaign_id;
                     """,
                     [
@@ -82,7 +82,8 @@ class CampaignRepository:
                         campaign.genre,
                         campaign.description,
                         campaign.rulebook,
-                        campaign.campaign_email
+                        campaign.campaign_email,
+                        campaign.users
                     ]
                 )
                 campaign_id = result.fetchone()[0]
