@@ -2,19 +2,32 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Nav from './Nav';
 import MainPage from './MainPage'
 import UserForm from './UserForm';
+import LoginForm from './FormTemplates/LoginForm';
 // import ErrorNotification from './ErrorNotification';
 import './App.css';
+import { AuthProvider, useToken } from './AppAuth';
+
+
+function GetToken() {
+    // Get token from JWT cookie (if already logged in)
+    useToken();
+    return null
+}
 
 function App() {
   return (
     <BrowserRouter>
+    <AuthProvider>
+      <GetToken />
       <Nav />
       <div className="container-fluid">
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="./UserForm" element={<UserForm />} />
+          <Route path="/LoginForm" element={<LoginForm />} />
         </Routes>
       </div>
+    </AuthProvider>
     </BrowserRouter>
   );
 }
