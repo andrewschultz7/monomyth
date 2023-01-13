@@ -9,7 +9,7 @@ from fastapi import (
 from jwtdown_fastapi.authentication import Token
 # from authenticator import authenticator
 from token_auth import get_current_user
-
+from typing import Union
 from pydantic import BaseModel
 
 from queries.campaigns import (
@@ -51,6 +51,15 @@ async def create_campaign(
             detail="Cannot create a campaign with those credentials",
         )
     return info
+
+@router.put("/campaigns{campaign_id}", response_model=Union[CampaignOut, HttpError])
+async def update_campaign(
+    campaign_id: int,
+    campaign: CampaignIn,
+    repo: CampaignRepository = Depends(),) -> Union[HttpError, CampaignOut]:
+
+    return repo.update(campaign_id, campaign)
+
     # form = CampaignForm(username=info.email, password=info.password)
     # token = await authenticator.login(response, request, form, repo)
     # return AccountToken(account=account, **token.dict())

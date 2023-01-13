@@ -29,6 +29,38 @@ class CampaignOut(BaseModel):
 
 
 class CampaignRepository:
+    def update(self, campaign_id: int, campaign: CampaignIn) -> Union[CampaignOut, Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        UPDATE campaign
+                        SET title = %s
+                        , genre = %s
+                        , description = %s
+                        , rulebook = %s
+                        , campaign_email = %s
+                        , users = %s
+                        WHERE campaign_id = %s
+                        """,
+                        [
+                            campaign.title,
+                            campaign.genre,
+                            campaign.description,
+                            campaign.rulebook,
+                            campaign.campaign_email,
+                            campaign.users,
+                            campaign_id
+                        ]
+                    )
+                # old_data = campaign.dict()
+                # return CampaignOut(campaign_id=campaign_id, **old_data)
+                return campaign_in_to_out(campaign_id, campaign)
+        except Exception:
+            return {"message": "Could not updateCampaigns"}
+
+
     def get_all(self) -> Union[Error, List[CampaignOut]]:
         try:
             with pool.connection() as conn:
@@ -86,7 +118,13 @@ class CampaignRepository:
                     ]
                 )
                 campaign_id = result.fetchone()[0]
-                old_data = campaign.dict()
-                return CampaignOut (campaign_id=campaign_id, **old_data)
+                # old_data = campaign.dict()
+                # return CampaignOut (campaign_id=campaign_id, **old_data)
+                return campaign_in_to_out(campaign_id, campaign)
 
 # this is where we did hashed_password in Users
+
+#Refactor of In/Out Campaign
+def campaign_in_to_out(self, campaign_id: int, campaign: CampaignIn):
+    old_data = campaign.dict()
+    return CampaignOut(campaign_id=campaign_id, **old_data)
