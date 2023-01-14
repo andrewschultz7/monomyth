@@ -7,8 +7,11 @@ from fastapi import (
     Request,
 )
 from jwtdown_fastapi.authentication import Token
-# from authenticator import authenticator
-from token_auth import get_current_user
+
+from authenticator import authenticator
+
+
+# from token_auth import get_current_user
 from typing import Union, Optional, List
 from pydantic import BaseModel
 
@@ -41,7 +44,8 @@ async def create_campaign(
     info: CampaignIn,
     request: Request,
     response: Response,
-    repo: CampaignRepository = Depends(get_current_user),
+    repo: CampaignRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
         info = repo.create(info)
@@ -85,7 +89,9 @@ def get_one_campaign(
 @router.get("/campaigns", response_model=Union[HttpError, List[CampaignOut]])
 def get_all_campaigns(
     repo: CampaignRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
 ):
+
     return repo.get_all_campaigns()
 
 

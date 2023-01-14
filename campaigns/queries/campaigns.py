@@ -28,6 +28,8 @@ class CampaignOut(BaseModel):
     users: Optional[str]
 
 
+
+
 class CampaignRepository:
     def get_one(self, campaign_id: int) -> Optional[CampaignOut]:
         try:
@@ -103,7 +105,7 @@ class CampaignRepository:
             return {"message": "Could not updateCampaigns"}
 
 
-    def get_all(self) -> Union[Error, List[CampaignOut]]:
+    def get_all_campaigns(self) -> Union[Error, List[CampaignOut]]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -127,7 +129,9 @@ class CampaignRepository:
                             title=record[1],
                             genre=record[2],
                             description=record[3],
-                            thoughts=record[4],
+                            rulebook=record[4],
+                            campaign_email=record[5],
+                            users=record[6],
                         )
                         result.append(campaign)
                     return result
@@ -145,14 +149,14 @@ class CampaignRepository:
                 result = db.execute(
                     """
                     INSERT INTO campaigns
-                        (campaign_id
-                        , title,genre
+                        (title
+                        , genre
                         , description
                         , rulebook
                         , campaign_email
                         , users)
                     VALUES
-                        (%s, %s, %s, %s, %s, %s, %s)
+                        (%s, %s, %s, %s, %s, %s)
                     RETURNING campaign_id;
                     """,
                     [
@@ -160,7 +164,8 @@ class CampaignRepository:
                         campaign.genre,
                         campaign.description,
                         campaign.rulebook,
-                        campaign.campaign_email
+                        campaign.campaign_email,
+                        campaign.users
                     ]
                 )
                 campaign_id = result.fetchone()[0]
