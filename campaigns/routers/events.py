@@ -55,7 +55,7 @@ async def create_event(
     return info
 
 
-@router.put("/events{event_id}", response_model=Union[EventOut, HttpError])
+@router.put("/events/{event_id}", response_model=Union[EventOut, HttpError])
 async def update_event(
     event_id: int,
     event: EventIn,
@@ -66,7 +66,7 @@ async def update_event(
     return repo.update(event_id, event)
 
 
-@router.delete("/events{event_id}", response_model=bool)
+@router.delete("/events/{event_id}", response_model=bool)
 def delete_event(
     event_id: int,
     repo: EventRepository = Depends(),
@@ -74,12 +74,11 @@ def delete_event(
     return repo.delete(event_id)
 
 
-@router.get("/events{event_id}", response_model=Optional[EventOut])
+@router.get("/events/{event_id}", response_model=Optional[EventOut])
 def get_one_event(
     event_id: int,
     response: Response,
     repo: EventRepository = Depends(),
-    user: dict = Depends(authenticator.get_current_account_data),
 ) -> EventOut:
     event = repo.get_one(event_id)
     if event is None:

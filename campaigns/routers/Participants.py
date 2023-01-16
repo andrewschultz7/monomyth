@@ -53,7 +53,7 @@ async def create_participant(
     return info
 
 
-@router.put("/events/participants{participant_id}", response_model=Union[ParticipantOut, HttpError])
+@router.put("/events/participants/{participant_id}", response_model=Union[ParticipantOut, HttpError])
 async def update_participant(
     participant_id: int,
     event: ParticipantIn,
@@ -65,7 +65,7 @@ async def update_participant(
     return repo.update(participant_id, event)
 
 
-@router.delete("/events/participants{participant_id}", response_model=bool)
+@router.delete("/events/participants/{participant_id}", response_model=bool)
 def delete_participant(
     participant_id: int,
     repo: ParticipantRepository = Depends(),
@@ -73,7 +73,7 @@ def delete_participant(
     return repo.delete(participant_id)
 
 
-@router.get("/events/participants{participant_id}", response_model=Optional[ParticipantOut])
+@router.get("/events/participants/{participant_id}", response_model=Optional[ParticipantOut])
 def get_one_participant(
     participant_id: int,
     response: Response,

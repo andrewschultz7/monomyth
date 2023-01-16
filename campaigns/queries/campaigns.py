@@ -148,7 +148,7 @@ class CampaignRepository:
             with conn.cursor() as db:
                 result = db.execute(
                     """
-                    INSERT INTO campaigns
+                    INSERT INTO campaign
                         (title
                         , genre
                         , description
