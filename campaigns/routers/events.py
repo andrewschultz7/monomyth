@@ -8,7 +8,6 @@ from fastapi import (
 )
 from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
-# from token_auth import get_current_user
 from typing import Union, Optional, List
 from pydantic import BaseModel
 
@@ -45,6 +44,7 @@ async def create_event(
     repo: EventRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ):
+
     try:
         info = repo.create(info)
     except DuplicateEventError:
