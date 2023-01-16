@@ -7,8 +7,7 @@ from fastapi import (
     Request,
 )
 from jwtdown_fastapi.authentication import Token
-# from authenticator import authenticator
-from token_auth import get_current_user
+from authenticator import authenticator
 from typing import Optional, Union, List
 
 from pydantic import BaseModel
@@ -40,7 +39,9 @@ async def create_participant(
     info: ParticipantIn,
     request: Request,
     response: Response,
-    repo: ParticipantRepository = Depends(get_current_user),
+    repo: ParticipantRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data)
+
 ):
     try:
         info = repo.create(info)

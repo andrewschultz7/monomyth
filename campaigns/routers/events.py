@@ -7,8 +7,7 @@ from fastapi import (
     Request,
 )
 from jwtdown_fastapi.authentication import Token
-# from authenticator import authenticator
-from token_auth import get_current_user
+from authenticator import authenticator
 from typing import Union, Optional, List
 from pydantic import BaseModel
 
@@ -42,7 +41,9 @@ async def create_event(
     info: EventIn,
     request: Request,
     response: Response,
-    repo: EventRepository = Depends(get_current_user),
+    repo: EventRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data)
+
 ):
     try:
         info = repo.create(info)
@@ -71,11 +72,12 @@ def delete_event(
     return repo.delete(event_id)
 
 
-@router.get("/events/{event_id}", response_model=Optional[EventOut])
+@router.get("/events{event_id}", response_model=Optional[EventOut])
 def get_one_event(
     event_id: int,
     response: Response,
     repo: EventRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
 ) -> EventOut:
     event = repo.get_one(event_id)
     if event is None:
