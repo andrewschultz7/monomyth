@@ -28,13 +28,16 @@ function Nav() {
                     <NavLink className="nav-link dropdown-item" to="/UserForm" id="dropdown">Create User</NavLink>
                   </li>
                   <li>
-                    <Link className="nav-link dropdown-item" to="/Campaigns/new" id="dropdown">Create Campaign</Link>
+                    <Link className="nav-link dropdown-item" to="/CampaignForm" id="dropdown">Create Campaign</Link>
                   </li>
                   <li>
-                    <NavLink className="nav-link dropdown-item" to="/Campaigns/Events/new" id="dropdown">Create Events</NavLink>
+                    <NavLink className="nav-link dropdown-item" to="/EventForm" id="dropdown">Create Events</NavLink>
                   </li>
                   <li>
-                    <NavLink className="nav-link dropdown-item" to="/users/Characters" id="dropdown">Create Character</NavLink>
+                    <NavLink className="nav-link dropdown-item" to="/CharacterForm" id="dropdown">Create Character</NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="nav-link dropdown-item" to="/ParticipantForm" id="dropdown">Create Participant</NavLink>
                   </li>
                   <li>
                     <NavLink className="nav-link dropdown-item" to="/LoginForm" id="dropdown">Login</NavLink>
