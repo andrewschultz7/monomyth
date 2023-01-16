@@ -7,8 +7,8 @@ from fastapi import (
     Request,
 )
 from jwtdown_fastapi.authentication import Token
-# from authenticator import authenticator
-from token_auth import get_current_user
+from authenticator import authenticator
+# from token_auth import get_current_user
 from typing import Union, Optional, List
 from pydantic import BaseModel
 
@@ -42,7 +42,8 @@ async def create_event(
     info: EventIn,
     request: Request,
     response: Response,
-    repo: EventRepository = Depends(get_current_user),
+    repo: EventRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
         info = repo.create(info)
@@ -54,19 +55,22 @@ async def create_event(
     return info
 
 
-@router.put("/events{event_id}", response_model=Union[EventOut, HttpError])
+@router.put("/events/{event_id}", response_model=Union[EventOut, HttpError])
 async def update_event(
     event_id: int,
     event: EventIn,
-    repo: EventRepository = Depends(),) -> Union[HttpError, EventOut]:
+    repo: EventRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
+    ) -> Union[HttpError, EventOut]:
 
     return repo.update(event_id, event)
 
 
-@router.delete("/events{event_id}", response_model=bool)
+@router.delete("/events/{event_id}", response_model=bool)
 def delete_event(
     event_id: int,
     repo: EventRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
 ) -> bool:
     return repo.delete(event_id)
 
@@ -76,6 +80,7 @@ def get_one_event(
     event_id: int,
     response: Response,
     repo: EventRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
 ) -> EventOut:
     event = repo.get_one(event_id)
     if event is None:
@@ -86,6 +91,7 @@ def get_one_event(
 @router.get("/events", response_model=Union[HttpError, List[EventOut]])
 def get_all_events(
     repo: EventRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
 ):
     return repo.get_all_events()
 
