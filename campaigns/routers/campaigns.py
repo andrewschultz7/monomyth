@@ -70,7 +70,9 @@ async def create_campaign(
 async def update_campaign(
     campaign_id: int,
     campaign: CampaignIn,
-    repo: CampaignRepository = Depends(),) -> Union[HttpError, CampaignOut]:
+    repo: CampaignRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
+    ) -> Union[HttpError, CampaignOut]:
 
     return repo.update(campaign_id, campaign)
 

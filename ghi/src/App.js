@@ -2,10 +2,15 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Nav from './Nav';
 import MainPage from './MainPage'
 import UserForm from './UserForm';
+import UserList from './UserList';
 import LoginForm from './LoginForm';
 import CampaignForm from './CampaignForm';
+import CampaignList from './CampaignList';
+import EventForm from './EventForm';
+import EventList from './EventList';
 import CharacterForm from './CharacterForm';
 import ParticipantForm from './ParticipantForm';
+import ParticipantList from './ParticipantList';
 // import ErrorNotification from './ErrorNotification';
 import './App.css';
 import { AuthProvider, useToken } from './AppAuth';
@@ -27,9 +32,14 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="./UserForm" element={<UserForm />} />
+          <Route path="./UserList" element={<UserList />} />
           <Route path="/CampaignForm" element={<CampaignForm />} />
+          <Route path="/CampaignList" element={<CampaignList />} />
+          <Route path="/EventForm" element={<EventForm />} />
+          <Route path="/EventList" element={<EventList />} />
           <Route path="/CharacterForm" element={<CharacterForm />} />
           <Route path="/ParticipantForm" element={<ParticipantForm />} />
+          <Route path="/ParticipantList" element={<ParticipantList />} />
           <Route path="/LoginForm" element={<LoginForm />} />
         </Routes>
       </div>

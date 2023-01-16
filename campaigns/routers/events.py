@@ -59,7 +59,9 @@ async def create_event(
 async def update_event(
     event_id: int,
     event: EventIn,
-    repo: EventRepository = Depends(),) -> Union[HttpError, EventOut]:
+    repo: EventRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
+    ) -> Union[HttpError, EventOut]:
 
     return repo.update(event_id, event)
 

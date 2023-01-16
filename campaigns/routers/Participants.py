@@ -57,7 +57,10 @@ async def create_participant(
 async def update_participant(
     participant_id: int,
     event: ParticipantIn,
-    repo: ParticipantRepository = Depends(),) -> Union[HttpError, ParticipantOut]:
+    repo: ParticipantRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
+    ) -> Union[HttpError, ParticipantOut]:
+
 
     return repo.update(participant_id, event)
 
