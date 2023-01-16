@@ -66,19 +66,22 @@ async def create_campaign(
     return info
 
 
-@router.put("/campaigns{campaign_id}", response_model=Union[CampaignOut, HttpError])
+@router.put("/campaigns/{campaign_id}", response_model=Union[CampaignOut, HttpError])
 async def update_campaign(
     campaign_id: int,
     campaign: CampaignIn,
-    repo: CampaignRepository = Depends(),) -> Union[HttpError, CampaignOut]:
+    repo: CampaignRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
+    ) -> Union[HttpError, CampaignOut]:
 
     return repo.update(campaign_id, campaign)
 
 
-@router.delete("/campaigns{campaign_id}", response_model=bool)
+@router.delete("/campaigns/{campaign_id}", response_model=bool)
 def delete_campaign(
     campaign_id: int,
     repo: CampaignRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
 ) -> bool:
     return repo.delete(campaign_id)
 
@@ -88,6 +91,7 @@ def get_one_campaign(
     campaign_id: int,
     response: Response,
     repo: CampaignRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
 ) -> CampaignOut:
     campaign = repo.get_one(campaign_id)
     if campaign is None:

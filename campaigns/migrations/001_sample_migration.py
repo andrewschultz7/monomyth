@@ -26,7 +26,7 @@ steps = [
             venuename VARCHAR(1000) NOT NULL,
             address VARCHAR(1000) NOT NULL,
             participants TEXT NOT NULL,
-            campaign VARCHAR(1000) NOT NULL,
+            campaign VARCHAR(1000) NOT NULL
         );
         """,
         # "Down" SQL statement
@@ -41,7 +41,7 @@ steps = [
             participant_id SERIAL PRIMARY KEY NOT NULL,
             character VARCHAR(1000) NOT NULL,
             email VARCHAR(1000) NOT NULL,
-            event VARCHAR(1000) NOT NULL,
+            event VARCHAR(1000) NOT NULL
         );
         """,
         # "Down" SQL statement

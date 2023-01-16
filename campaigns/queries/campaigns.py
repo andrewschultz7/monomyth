@@ -78,7 +78,7 @@ class CampaignRepository:
                 with conn.cursor() as db:
                     db.execute(
                         """
-                        UPDATE campaign
+                        UPDATE campaigns
                         SET title = %s
                         , genre = %s
                         , description = %s
