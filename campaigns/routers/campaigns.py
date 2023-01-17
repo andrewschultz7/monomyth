@@ -53,7 +53,7 @@ async def create_campaign(
     user: dict = Depends(authenticator.get_current_account_data),
 ):
     print('\n')
-    # print(account)
+    print(user)
     print('\n')
 
     try:

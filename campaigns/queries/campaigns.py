@@ -1,7 +1,9 @@
 from pydantic import BaseModel
 from typing import Optional, List, Union
 from datetime import date
-from queries.pool import pool
+from queries.pool import pool, pool2
+from fastapi import Depends
+from authenticator import authenticator
 
 
 class Error(BaseModel):
@@ -27,7 +29,10 @@ class CampaignOut(BaseModel):
     campaign_email: str
     users: Optional[str]
 
-
+class UserOut(BaseModel):
+    user_id: int
+    email: str
+    role: str
 
 
 class CampaignRepository:
@@ -143,7 +148,11 @@ class CampaignRepository:
         except Exception:
             return {"message": "Could not get all Campaigns"}
 
-    def create(self, campaign: CampaignIn) -> CampaignOut:
+    def create(
+        self,
+        campaign: CampaignIn,
+        user: dict = Depends(authenticator.get_current_account_data)
+        ) -> CampaignOut:
         with pool.connection() as conn:
             with conn.cursor() as db:
                 result = db.execute(
@@ -169,6 +178,15 @@ class CampaignRepository:
                     ]
                 )
                 campaign_id = result.fetchone()[0]
+        with pool2.connection() as conn2:
+            with conn2.cursor() as db2:
+                db2.execute(
+                    """
+                    UPDATE public.users
+                    SET role='gamemaster'
+                    """,
+                    [user.user_id]
+                )
                 old_data = campaign.dict()
                 return CampaignOut (campaign_id=campaign_id, **old_data)
                 # return campaign_in_to_out(campaign_id, campaign)
