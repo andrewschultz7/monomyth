@@ -12,29 +12,28 @@ function BootstrapInput(props) {
 }
 
 
-function UserForm(props) {
+function SignUpForm(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [campaigns, setCampaigns] = useState('');
+    const [role, setRole] = useState('');
 
     useEffect(() => {
-        async function getCampaigns() {
-            const url = '${process.env.REACT_APP_API}/monomyth/campaigns'
+        async function getRole() {
+            const url = '${process.env.REACT_APP_API}/monomyth/user/role'
             const response = fetch(url);
             if (response.ok) {
                 const data = await (await response).json();
-                setCampaigns(data);
+                setRole(data);
             }
         }
-        getCampaigns();
-    }, [setCampaigns])
+        getRole();
+    }, [setRole])
 
 
     return (
         <div className="row">
             <div className="offset-3 col-6">
-                <div className="shadow p-4 mt-4"></div>
-                    <h1>Sign Up</h1>
+                    <h1>Sign Up!</h1>
                     <form>
                         <BootstrapInput
                             id="email"
@@ -53,23 +52,22 @@ function UserForm(props) {
                             type="password" />
 
                         <div classname="mb-4">
-                            <label htmlFor="Campaign" className="form-label">Choose Your Campaign</label>
-                            <select className="form-select" id="campaign"aria-label="Choose Your Campaign">
+                            <label htmlFor="role" className="form-label">Choose Your Role</label>
+                            <select className="form-select" id="role"aria-label="Choose Your Role">
                                 <option>Open this select menu</option>
-                                {campaigns.map(campaign => (
-                                    <option key={campaign} value={campaign}>
-                                        {campaign}
+                                {user.role.map(role => (
+                                    <option key={role} value={role}>
+                                        {role}
                                     </option>
                                 ))}
                             </select>
                         </div>
-                        <button type="submit" className="btn btn-primary">Submit</button>
                         {/* <button className="btn btn-outline-secondary btn-lg px-2 gap-1">Submit</button> */}
-                        {/* <button disabled={campaigns.length === 0} type="submit" className="btn btn-primary">Submit</button> */}
+                        <button type="submit" className="btn btn-primary">Submit</button>
                     </form>
                 </div>
             </div>
     );
 }
 
-export default UserForm;
+export default SignUpForm;
