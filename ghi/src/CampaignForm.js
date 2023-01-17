@@ -11,58 +11,86 @@ function BootstrapInput(props) {
         </div>
     )
 }
-
+// const CampaignForm = () => {
 function CampaignForm(props) {
     const [title, setTitle] = useState('');
     const [genre, setGenre] = useState('');
     const [rulebook, setRulebook] = useState('');
     const [email, setEmail] = useState('');
     const [detail, setDetail] = useState('');
-    const [token, campaign] = useToken();
+    const token = useToken();
+    const campaign = token[6];
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        campaign(title, genre, rulebook, email, detail)
+        campaign(title, genre, rulebook, email, detail);
         console.log({title, genre, rulebook, email, detail});
     };
-    // const [user, setUser] = useState({})
-    // const campaign = token[6]
 
-    // useEffect(
-    //     async function handleSubmit (event) => {
-    //         event.preventDefault();
-    //         await campaign(title, genre, rulebook, email, detail);
-    //         console.log({title, genre, rulebook, email, detail});
-    // })
+    // const handleTitleChange = (event) => {
+    //     const value = event.target.value;
+    //     setTitle(value)
+    // }
+
+    // const handleGenreChange = (event) => {
+    //     const value = event.target.value;
+    //     setGenre(value)
+    // }
+
+    // const handleRulebookChange = (event) => {
+    //     const value = event.target.value;
+    //     setRulebook(value)
+    // }
+
+    // const handleEmailChange = (event) => {
+    //     const value = event.target.value;
+    //     setEmail(value)
+    // }
+
+    // const handleDetailChange = (event) => {
+    //     const value = event.target.value;
+    //     setDetail(value)
+    // }
 
 
+    // const handleSubmit = (event ) => {
+    //     event.preventDefault();
+    //     const newCampaign=  {
+    //         'title': title,
+    //         'genre': genre,
+    //         'rulebook': rulebook,
+    //         'email': email,
+    //         'detail': detail,
 
-    // useEffect(() => {
-    //     async function getUser() {
-    //         const userUrl = "https://localhost:8000/current";
-    //         let fetchOptions = {
-    //             "credentials": include
-    //         }
-    //         const response = await fetch(userUrl, fetchOptions);
-    //         if (response.ok) {
-    //             const user = await response.json();
-    //             setUser(user)
-    //         }
     //     }
-    //     if (token) {
-    //         getUser();
-    //     } else {
-    //         console.log("bad or no token")
-    //     }
-    // }, [token])
+    //     const campaignUrl = 'http://localhost:8000/CampaignForm/'
+    //     const fetchConfig = {
+    //         method: 'post',
+    //         body: JSON.stringify(newCampaign),
+    //         headers: {
+    //             "Content-Type" : "application/json"
+    //         },
+    //     };
+    //     fetch(campaignUrl, fetchConfig)
+    //     .then(response => response.json())
+    //     .then(() => {
+    //         setTitle('');
+    //         setGenre('');
+    //         setRulebook('');
+    //         setEmail('');
+    //         setDetail('');
+    //     })
+    //     .catch(e => console.log(`error: `, e));
+    // };
 
 
     return (
         <div className="row">
             <div className="offset-3 col-6">
                 <h1>Create A Campaign</h1>
-                <form action="/" className="form" id="form2" onSubmit={(e) => handleSubmit(e)}>
+                {/* <form action="/" className="form" id="form2" onSubmit={(e) => handleSubmit(e)}> */}
+                <form onSubmit={(e) => handleSubmit(e)}>
                     <BootstrapInput
                         id="title"
                         placeholder="you@example.com"
