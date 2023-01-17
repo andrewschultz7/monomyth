@@ -29,7 +29,7 @@ class EventOut(BaseModel):
 
 
 class EventRepository:
-    def get_one(self, event_id: int) -> Optional[EventOut]:
+    def get_one_event(self, event_id: int) -> Optional[EventOut]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -103,7 +103,7 @@ class EventRepository:
             return {"message": "Could not updateevents"}
 
 
-    def get_all(self) -> Union[Error, List[EventOut]]:
+    def get_all_events(self) -> Union[Error, List[EventOut]]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -145,14 +145,14 @@ class EventRepository:
                 result = db.execute(
                     """
                     INSERT INTO events
-                        (event_id
-                        , eventname,venuename
+                        (eventname
+                        , venuename
                         , address
                         , date
                         , participants
                         , campaign)
                     VALUES
-                        (%s, %s, %s, %s, %s, %s, %s)
+                        (%s, %s, %s, %s, %s, %s)
                     RETURNING event_id;
                     """,
                     [
@@ -160,7 +160,8 @@ class EventRepository:
                         event.venuename,
                         event.address,
                         event.date,
-                        event.participants
+                        event.participants,
+                        event.campaign
                     ]
                 )
                 event_id = result.fetchone()[0]

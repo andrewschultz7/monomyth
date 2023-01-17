@@ -64,9 +64,11 @@ class ParticipantRepository:
                 result = db.execute(
                     """
                     INSERT INTO participants
-                        (participant_id,character,email,event)
+                        (character
+                        ,email
+                        ,event)
                     VALUES
-                        (%s, %s, %s, %s)
+                        (%s, %s, %s)
                     RETURNING participant_id;
                     """,
                     [
@@ -80,3 +82,4 @@ class ParticipantRepository:
                 return ParticipantOut (participant_id=participant_id, **old_data)
 
 # this is where we did hashed_password in event
+# test

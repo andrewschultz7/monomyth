@@ -42,9 +42,9 @@ async def create_event(
     request: Request,
     response: Response,
     repo: EventRepository = Depends(),
-    user: dict = Depends(authenticator.get_current_account_data)
-
+    user: dict = Depends(authenticator.get_current_account_data),
 ):
+
     try:
         info = repo.create(info)
     except DuplicateEventError:
@@ -70,6 +70,7 @@ async def update_event(
 def delete_event(
     event_id: int,
     repo: EventRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
 ) -> bool:
     return repo.delete(event_id)
 
@@ -79,6 +80,7 @@ def get_one_event(
     event_id: int,
     response: Response,
     repo: EventRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
 ) -> EventOut:
     event = repo.get_one(event_id)
     if event is None:
@@ -89,6 +91,7 @@ def get_one_event(
 @router.get("/events", response_model=Union[HttpError, List[EventOut]])
 def get_all_events(
     repo: EventRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
 ):
     return repo.get_all_events()
 

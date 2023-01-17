@@ -7,11 +7,7 @@ from fastapi import (
     Request,
 )
 from jwtdown_fastapi.authentication import Token
-
 from authenticator import authenticator
-
-
-# from token_auth import get_current_user
 from typing import Union, Optional, List
 from pydantic import BaseModel
 
@@ -52,10 +48,6 @@ async def create_campaign(
     repo: CampaignRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ):
-    print('\n')
-    # print(account)
-    print('\n')
-
     try:
         info = repo.create(info)
     except DuplicateCampaignError:
@@ -81,6 +73,7 @@ async def update_campaign(
 def delete_campaign(
     campaign_id: int,
     repo: CampaignRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
 ) -> bool:
     return repo.delete(campaign_id)
 
@@ -90,6 +83,7 @@ def get_one_campaign(
     campaign_id: int,
     response: Response,
     repo: CampaignRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
 ) -> CampaignOut:
     campaign = repo.get_one(campaign_id)
     if campaign is None:

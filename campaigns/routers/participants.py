@@ -40,8 +40,7 @@ async def create_participant(
     request: Request,
     response: Response,
     repo: ParticipantRepository = Depends(),
-    user: dict = Depends(authenticator.get_current_account_data)
-
+    user: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
         info = repo.create(info)
@@ -61,7 +60,6 @@ async def update_participant(
     user: dict = Depends(authenticator.get_current_account_data),
     ) -> Union[HttpError, ParticipantOut]:
 
-
     return repo.update(participant_id, event)
 
 
@@ -69,6 +67,7 @@ async def update_participant(
 def delete_participant(
     participant_id: int,
     repo: ParticipantRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
 ) -> bool:
     return repo.delete(participant_id)
 
@@ -78,6 +77,7 @@ def get_one_participant(
     participant_id: int,
     response: Response,
     repo: ParticipantRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
 ) -> ParticipantOut:
     event = repo.get_one(participant_id)
     if event is None:
@@ -88,6 +88,7 @@ def get_one_participant(
 @router.get("/events/participants", response_model=Union[HttpError, List[ParticipantOut]])
 def get_all_participants(
     repo: ParticipantRepository = Depends(),
+    user: dict = Depends(authenticator.get_current_account_data),
 ):
     return repo.get_all_participants()
 
