@@ -1,7 +1,9 @@
 from pydantic import BaseModel
 from typing import Optional, List, Union
 from datetime import date
-from queries.pool import pool
+from queries.pool import pool, pool2
+from authenticator import authenticator
+from fastapi import Depends
 
 
 class Error(BaseModel):
@@ -143,7 +145,11 @@ class CampaignRepository:
         except Exception:
             return {"message": "Could not get all Campaigns"}
 
-    def create(self, campaign: CampaignIn) -> CampaignOut:
+    def create(
+        self,
+        campaign: CampaignIn,
+        user_id: int,
+        ) -> CampaignOut:
         with pool.connection() as conn:
             with conn.cursor() as db:
                 result = db.execute(
@@ -169,9 +175,18 @@ class CampaignRepository:
                     ]
                 )
                 campaign_id = result.fetchone()[0]
+        with pool2.connection() as conn2:
+            with conn2.cursor() as db2:
+                db2.execute(
+                    """
+                    UPDATE users
+                    SET role='gamemaster'
+                    WHERE user_id = %s
+                    """,
+                    [user_id]
+                )
                 old_data = campaign.dict()
                 return CampaignOut (campaign_id=campaign_id, **old_data)
-                # return campaign_in_to_out(campaign_id, campaign)
 
 # this is where we did hashed_password in Users
 
