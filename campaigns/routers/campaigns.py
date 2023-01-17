@@ -48,9 +48,6 @@ async def create_campaign(
     repo: CampaignRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ):
-    print("\n")
-    print(user)
-    print("\n")
     try:
         info = repo.create(info, user['user_id'])
     except DuplicateCampaignError:
