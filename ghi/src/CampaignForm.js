@@ -5,7 +5,7 @@ function BootstrapInput(props) {
     const { id, placeholder, labelText, value, onChange, type } = props;
 
     return (
-        <div classname="mb-3">
+        <div className="mb-3">
             <label htmlFor={id} className="form-label">{labelText}</label>
             <input value={value} onChange={onChange} required type={type} className="form-control" id={id} placeholder={placeholder } />
         </div>
@@ -18,8 +18,23 @@ function CampaignForm(props) {
     const [rulebook, setRulebook] = useState('');
     const [email, setEmail] = useState('');
     const [detail, setDetail] = useState('');
-    const [token] = useToken();
-    const [user, setUser] = useState({})
+    const [token, campaign] = useToken();
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        campaign(title, genre, rulebook, email, detail)
+        console.log({title, genre, rulebook, email, detail});
+    };
+    // const [user, setUser] = useState({})
+    // const campaign = token[6]
+
+    // useEffect(
+    //     async function handleSubmit (event) => {
+    //         event.preventDefault();
+    //         await campaign(title, genre, rulebook, email, detail);
+    //         console.log({title, genre, rulebook, email, detail});
+    // })
 
 
 
@@ -42,11 +57,12 @@ function CampaignForm(props) {
     //     }
     // }, [token])
 
+
     return (
         <div className="row">
             <div className="offset-3 col-6">
                 <h1>Create A Campaign</h1>
-                <form>
+                <form action="/" className="form" id="form2" onSubmit={(e) => handleSubmit(e)}>
                     <BootstrapInput
                         id="title"
                         placeholder="you@example.com"
@@ -83,7 +99,7 @@ function CampaignForm(props) {
                         onChange={e => setDetail(e.target.value)}
                         type="text" />
                     {/* <button className="btn btn-outline-secondary btn-lg px-2 gap-1">Submit</button> */}
-                    <button type="submit" className="btn btn-primary">Submit</button>
+                    <button onClick={handleSubmit} className="btn btn-primary">Create Campaign</button>
                 </form>
             </div>
         </div>

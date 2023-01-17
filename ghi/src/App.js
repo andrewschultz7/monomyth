@@ -8,7 +8,6 @@ import CampaignForm from './CampaignForm';
 import CampaignList from './CampaignList';
 import EventForm from './EventForm';
 import EventList from './EventList';
-import CharacterForm from './CharacterForm';
 import ParticipantForm from './ParticipantForm';
 import ParticipantList from './ParticipantList';
 // import ErrorNotification from './ErrorNotification';
@@ -31,13 +30,12 @@ function App() {
       <div className="container-fluid">
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="./UserForm" element={<UserForm />} />
-          <Route path="./UserList" element={<UserList />} />
+          <Route path="/UserForm" element={<UserForm />} />
+          <Route path="/UserList" element={<UserList />} />
           <Route path="/CampaignForm" element={<CampaignForm />} />
           <Route path="/CampaignList" element={<CampaignList />} />
           <Route path="/EventForm" element={<EventForm />} />
           <Route path="/EventList" element={<EventList />} />
-          <Route path="/CharacterForm" element={<CharacterForm />} />
           <Route path="/ParticipantForm" element={<ParticipantForm />} />
           <Route path="/ParticipantList" element={<ParticipantList />} />
           <Route path="/LoginForm" element={<LoginForm />} />
