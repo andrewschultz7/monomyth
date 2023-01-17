@@ -2,8 +2,8 @@ from pydantic import BaseModel
 from typing import Optional, List, Union
 from datetime import date
 from queries.pool import pool, pool2
-from fastapi import Depends
 from authenticator import authenticator
+from fastapi import Depends
 
 
 class Error(BaseModel):
@@ -151,7 +151,7 @@ class CampaignRepository:
     def create(
         self,
         campaign: CampaignIn,
-        user: dict = Depends(authenticator.get_current_account_data)
+        user_id: int,
         ) -> CampaignOut:
         with pool.connection() as conn:
             with conn.cursor() as db:
@@ -182,14 +182,14 @@ class CampaignRepository:
             with conn2.cursor() as db2:
                 db2.execute(
                     """
-                    UPDATE public.users
+                    UPDATE users
                     SET role='gamemaster'
+                    WHERE user_id = %s
                     """,
-                    [user.user_id]
+                    [user_id]
                 )
                 old_data = campaign.dict()
                 return CampaignOut (campaign_id=campaign_id, **old_data)
-                # return campaign_in_to_out(campaign_id, campaign)
 
 # this is where we did hashed_password in Users
 
