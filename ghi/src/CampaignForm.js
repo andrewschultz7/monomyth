@@ -58,50 +58,10 @@ function CampaignForm(props) {
             setDescription('');
         })
         .catch(e => console.log(`error: `, e));
-        // Navigate("/");
+        // useNavigate("/");
     };
 
-
-    // const handleTitleChange = (event) => {
-    //     const value = event.target.value;
-    //     setTitle(value)
-    // }
-
-    // const handleGenreChange = (event) => {
-    //     const value = event.target.value;
-    //     setGenre(value)
-    // }
-
-    // const handleRulebookChange = (event) => {
-    //     const value = event.target.value;
-    //     setRulebook(value)
-    // }
-
-    // const handleEmailChange = (event) => {
-    //     const value = event.target.value;
-    //     setEmail(value)
-    // }
-
-    // const handleDetailChange = (event) => {
-    //     const value = event.target.value;
-    //     setDetail(value)
-    // }
-
-
-    // const handleSubmit = (event ) => {
-    //     event.preventDefault();
-    //     const newCampaign=  {
-    //         'title': title,
-    //         'genre': genre,
-    //         'rulebook': rulebook,
-    //         'email': email,
-    //         'detail': detail,
-
-    //     }
-
-
     return (
-
         <div className="row">
             <div className="offset-3 col-6">
                 <h1>Create A Campaign</h1>

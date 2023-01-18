@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
+import { useState, useEffect, Navigate } from 'react';
 import {useToken} from './AppAuth';
 
 function BootstrapInput(props) {
@@ -18,39 +19,48 @@ function EventForm(props) {
     const [address, setAddress] = useState('');
     const [date, setDate] = useState('');
     const [participants, setParticipants] = useState('');
-    const [token, event] = useToken();
-    const [user, setUser] = useState({})
+    const [campaign, setCampaign] = useState('')
+    const [events] = useToken();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        event(eventname, venuename, address, date, participants)
-        console.log({eventname, venuename, address, date, participants});
+        let data= {}
+        data.eventname=eventname
+        data.venuename=venuename
+        data.address=address
+        data.date=date
+        data.participants=participants
+        data.campaign=campaign
+        console.log(data)
+        const eventUrl = 'http://localhost:8001/events'
+        const fetchConfig = {
+            method: 'post',
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type" : "application/json"
+            },
+            credentials : "include"
+        };
+        await fetch(eventUrl, fetchConfig)
+        .then(response => response.json())
+        .then(() => {
+            setEventName('');
+            setVenueName('');
+            setAddress('');
+            setDate('');
+            setParticipants('');
+            setCampaign('');
+            Navigate("/campaigns");
+        })
+        .catch(e => console.log(`error: `, e));
     };
 
-    // useEffect(() => {
-    //     async function getUser() {
-    //         const userUrl = "https://localhost:8000/current";
-    //         let fetchOptions = {
-    //             "credentials": include
-    //         }
-    //         const response = await fetch(userUrl, fetchOptions);
-    //         if (response.ok) {
-    //             const user = await response.json();
-    //             setUser(user)
-    //         }
-    //     }
-    //     if (token) {
-    //         getUser();
-    //     } else {
-    //         console.log("bad or no token")
-    //     }
-    // }, [token])
 
     return (
         <div className="row">
             <div className="offset-3 col-6">
-                <h1>Create A Campaign Event</h1>
-                <form>
+                <h1>Create An Event</h1>
+                <form action="/">
                     <BootstrapInput
                         id="eventname"
                         placeholder="Event Name"
@@ -87,6 +97,7 @@ function EventForm(props) {
                         onChange={e => setParticipants(e.target.value)}
                         type="text" />
                     {/* <button className="btn btn-outline-secondary btn-lg px-2 gap-1">Submit</button> */}
+                    {/* <button onClick={handleSubmit} => {Navigate("/signup-user")}>Create User</button> */}
                     <button onClick={handleSubmit} className="btn btn-primary">Submit</button>
                 </form>
             </div>
