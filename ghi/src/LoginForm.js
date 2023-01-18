@@ -1,58 +1,47 @@
-import { useEffect, useState } from 'react';
-import { useToken, useAuthContext } from './AppAuth';
+import React from "react";
+import { useState } from "react";
+import { useToken, login } from "./AppAuth";
+import { useNavigate } from "react-router-dom";
 
+const LoginForm = () => {
+	const [login] = useToken();
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+	// const [submitted, setSubmitted] = useState(false);
+	// const [invalid, setInvalid] = useState(false);
+	const navigate = useNavigate();
 
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		await login(username, password);
+		console.log(username, "is logged in");
+		navigate("/");
+	};
 
-
-function BootstrapInput(props) {
-    const { id, placeholder, labelText, value, onChange, type } = props;
-
-    return (
-        <div className="mb-3">
-            <label htmlFor={id} className="form-label">{labelText}</label>
-            <input value={value} onChange={onChange} required type={type} className="form-control" id={id} placeholder={placeholder } />
-        </div>
-    )
-}
-
-
-function LoginForm(props) {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    // eslint-disable-next-line
-    const [token, login] = useToken();
-
-    function submitLogin() {
-        login(email, password)
-    }
-
-    return (
-        <div className="row">
-            <div className="offset-3 col-6">
-                    <h1>Login</h1>
-                    <form>
-                        <BootstrapInput
-                            id="email"
-                            placeholder="you@example.com"
-                            labelText="Your email here"
-                            value={email}
-                            onSubmit={submitLogin}
-                            onChange={e => setEmail(e.target.value)}
-                            type="email" />
-
-                        <BootstrapInput
-                            id="password"
-                            placeholder="Enter Password"
-                            labelText="Password"
-                            value={password}
-                            onChange={e => setPassword(e.target.value)}
-                            type="password" />
-                        {/* <button className="btn btn-outline-secondary btn-lg px-2 gap-1">Submit</button> */}
-                        <button  type="submit" className="btn btn-primary">Submit</button>
-                    </form>
-                </div>
-            </div>
-    );
-}
-
+	return (
+		<h1>Ahoy!</h1>
+		// <>
+		// 	//   <div>
+		// //         <div>
+		// //             <div>
+		// //                 <h1>Sign in</h1>
+		// //                 <form
+		// //                 onSubmit={handleSubmit}
+		// //                 id="LoginForm">
+		// //                     <div>
+		// //                         <input onChange={e => setUsername(e.target.value)} placeholder="you@gmail.com" type="email" id="username" value={username} />
+		// //                         <label htmlFor="email">Email Address</label>
+		// //                     </div>
+		// //                     <div>
+		// //                         <input onChange={e => setPassword(e.target.value)} placeholder="Password" type="password" id="password" value={password}/>
+		// //                         <label htmlFor="password">Password</label>
+		// //                     </div>
+		// //                     <button onClick={login}>Log In</button>
+		// //                 </form>
+		// //             </div>
+		// //         </div>
+		// //     </div>
+		// </>
+	);
+};
 export default LoginForm;
