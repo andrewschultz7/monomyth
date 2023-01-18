@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Nav from './Nav';
 import MainPage from './MainPage'
-import UserForm from './UserForm';
+// import UserForm from './UserForm';
 import UserList from './UserList';
 // import LoginForm from './LoginForm';
 import CampaignForm from './CampaignForm';
@@ -33,7 +33,6 @@ function App() {
       <div className="container-fluid">
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/UserForm" element={<UserForm />} />
           <Route path="/UserList" element={<UserList />} />
           <Route path="/CampaignForm" element={<CampaignForm />} />
           <Route path="/CampaignList" element={<CampaignList />} />

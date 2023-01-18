@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+// import { Navigate, useNavigate } from "react-router-dom";
 import { useAuthContext, useToken } from "../AppAuth";
 
 const LoginForm = () => {
@@ -7,10 +8,12 @@ const LoginForm = () => {
 	const { isLoggedIn } = useAuthContext();
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
+    // const navigate = useNavigate()
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		login(username, password);
+
 	};
 
 	return (
