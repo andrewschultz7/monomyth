@@ -12,6 +12,7 @@ import EventList from './EventList';
 import ParticipantForm from './ParticipantForm';
 import LoginForm from './Users/Login';
 import ParticipantList from './ParticipantList';
+import Logout from './Users/Logout';
 // import ErrorNotification from './ErrorNotification';
 import './App.css';
 import { AuthProvider, useToken } from './AppAuth';
@@ -42,6 +43,7 @@ function App() {
           <Route path="/ParticipantForm" element={<ParticipantForm />} />
           <Route path="/ParticipantList" element={<ParticipantList />} />
           <Route path="/login" element={<LoginForm />} />
+          <Route path="/logout" element={<Logout />} />
           <Route path="/SignUpForm" element={<SignUpForm />} />
         </Routes>
       </div>
