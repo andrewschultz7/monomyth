@@ -8,7 +8,7 @@ from fastapi import (
 )
 from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
-
+from typing import List, Union, Optional
 from pydantic import BaseModel
 
 from queries.users import (
@@ -82,3 +82,12 @@ async def get_curr_user(
         "email": user.email,
         "role": user.role
     })
+
+# @router.get("/users", response_model=Union[HttpError, List
+# [UserOut]])
+# def get_all_users(
+#     repo: UserRepository = Depends(),
+#     user: dict = Depends(authenticator.get_current_account_data),
+#  ):
+
+#     return repo.get_all_users()

@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Nav from './Nav';
 import MainPage from './MainPage'
+import SignUpForm from './Users/SignUpForm';
 // import UserForm from './UserForm';
 import UserList from './UserList';
 // import LoginForm from './LoginForm';
@@ -41,6 +42,7 @@ function App() {
           <Route path="/ParticipantForm" element={<ParticipantForm />} />
           <Route path="/ParticipantList" element={<ParticipantList />} />
           <Route path="/login" element={<LoginForm />} />
+          <Route path="/SignUpForm" element={<SignUpForm />} />
         </Routes>
       </div>
     </AuthProvider>

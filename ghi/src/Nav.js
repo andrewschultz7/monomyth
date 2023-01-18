@@ -39,6 +39,9 @@ function Nav() {
                   <li>
                     <NavLink className="nav-link dropdown-item" to="login/" id="dropdown">Login</NavLink>
                   </li>
+                  <li>
+                    <NavLink className="nav-link dropdown-item" to="/SignUpForm" id="dropdown">Sign up</NavLink>
+                  </li>
                 </div>
               </div>
               <div className="dropdown">
