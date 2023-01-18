@@ -5,7 +5,7 @@ function BootstrapInput(props) {
     const { id, placeholder, labelText, value, onChange, type } = props;
 
     return (
-        <div classname="mb-3">
+        <div className="mb-3">
             <label htmlFor={id} className="form-label">{labelText}</label>
             <input value={value} onChange={onChange} required type={type} className="form-control" id={id} placeholder={placeholder } />
         </div>

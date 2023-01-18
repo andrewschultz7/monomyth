@@ -2,11 +2,15 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Nav from './Nav';
 import MainPage from './MainPage'
 import UserForm from './UserForm';
-// import LoginForm from './LoginForm';
+import UserList from './UserList';
+import LoginForm from './LoginForm';
 import CampaignForm from './CampaignForm';
-import CharacterForm from './CharacterForm';
+import CampaignList from './CampaignList';
+import EventForm from './EventForm';
+import EventList from './EventList';
 import ParticipantForm from './ParticipantForm';
 import LoginForm from './Users/Login';
+import ParticipantList from './ParticipantList';
 // import ErrorNotification from './ErrorNotification';
 import './App.css';
 import { AuthProvider, useToken } from './AppAuth';
@@ -29,10 +33,14 @@ function App() {
       <div className="container-fluid">
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="./UserForm" element={<UserForm />} />
+          <Route path="/UserForm" element={<UserForm />} />
+          <Route path="/UserList" element={<UserList />} />
           <Route path="/CampaignForm" element={<CampaignForm />} />
-          <Route path="/CharacterForm" element={<CharacterForm />} />
+          <Route path="/CampaignList" element={<CampaignList />} />
+          <Route path="/EventForm" element={<EventForm />} />
+          <Route path="/EventList" element={<EventList />} />
           <Route path="/ParticipantForm" element={<ParticipantForm />} />
+          <Route path="/ParticipantList" element={<ParticipantList />} />
           <Route path="/login" element={<LoginForm />} />
         </Routes>
       </div>
