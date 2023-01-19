@@ -10,13 +10,17 @@ class Error(BaseModel):
 class DuplicateCampaignError(ValueError):
     pass
 
+class UserList(BaseModel):
+    user_id: str
+    character: str
+
 class CampaignIn(BaseModel):
     title: str
     genre: str
     description: str
     rulebook: str
     campaign_email: str
-    users: Optional[str]
+    users: List[UserList]
 
 class CampaignOut(BaseModel):
     campaign_id: int
@@ -25,7 +29,7 @@ class CampaignOut(BaseModel):
     description: str
     rulebook: str
     campaign_email: str
-    users: Optional[str]
+    users: List[UserList]
 
 
 
@@ -55,6 +59,51 @@ class CampaignRepository:
                     return self.record_to_campaign_out(record)
         except Exception:
             return {"message": "Could not get that Campaign"}
+
+
+    def create(self, campaign: CampaignIn) -> CampaignOut:
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                print("\n")
+                print(self)
+                print("\n")
+                # sql_userid = db.execute(
+                #     """
+                #     SELECT user_id
+                #     FROM users
+                #     WHERE user_id = %s;
+                #     """,
+                #     [user_id],
+                # )
+
+
+                result = db.execute(
+                    """
+                    INSERT INTO campaigns
+                        (title
+                        , genre
+                        , description
+                        , rulebook
+                        , campaign_email
+                        , users)
+                    VALUES
+                        (%s, %s, %s, %s, %s, %s)
+                    RETURNING campaign_id;
+                    """,
+                    [
+                        campaign.title,
+                        campaign.genre,
+                        campaign.description,
+                        campaign.rulebook,
+                        campaign.campaign_email,
+                        campaign.users
+                    ]
+                )
+                campaign_id = result.fetchone()[0]
+                old_data = campaign.dict()
+                return CampaignOut (campaign_id=campaign_id, **old_data)
+                # return campaign_in_to_out(campaign_id, campaign)
+
 
     def delete(self, campaign_id: int) -> bool:
         try:
@@ -143,35 +192,6 @@ class CampaignRepository:
         except Exception:
             return {"message": "Could not get all Campaigns"}
 
-    def create(self, campaign: CampaignIn) -> CampaignOut:
-        with pool.connection() as conn:
-            with conn.cursor() as db:
-                result = db.execute(
-                    """
-                    INSERT INTO campaigns
-                        (title
-                        , genre
-                        , description
-                        , rulebook
-                        , campaign_email
-                        , users)
-                    VALUES
-                        (%s, %s, %s, %s, %s, %s)
-                    RETURNING campaign_id;
-                    """,
-                    [
-                        campaign.title,
-                        campaign.genre,
-                        campaign.description,
-                        campaign.rulebook,
-                        campaign.campaign_email,
-                        campaign.users
-                    ]
-                )
-                campaign_id = result.fetchone()[0]
-                old_data = campaign.dict()
-                return CampaignOut (campaign_id=campaign_id, **old_data)
-                # return campaign_in_to_out(campaign_id, campaign)
 
 # this is where we did hashed_password in Users
 

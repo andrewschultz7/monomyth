@@ -9,7 +9,7 @@ steps = [
             description TEXT NOT NULL,
             rulebook VARCHAR(1000) NOT NULL,
             campaign_email VARCHAR(1000) NOT NULL,
-            users TEXT NOT NULL
+            users text ARRAY NOT NULL
         );
         """,
         # "Down" SQL statement
@@ -25,6 +25,7 @@ steps = [
             eventname VARCHAR(1000) NOT NULL,
             venuename VARCHAR(1000) NOT NULL,
             address VARCHAR(1000) NOT NULL,
+            date DATE NOT NULL,
             participants TEXT NOT NULL,
             campaign VARCHAR(1000) NOT NULL
         );

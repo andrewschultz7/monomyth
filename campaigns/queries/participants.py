@@ -58,9 +58,12 @@ class ParticipantRepository:
         except Exception:
             return {"message": "Could not get all Participants"}
 
-    def create(self, participant: ParticipantIn) -> ParticipantOut:
+    def create(self, participant: ParticipantIn, event_id) -> ParticipantOut:
         with pool.connection() as conn:
             with conn.cursor() as db:
+                print("\n")
+                print(userid, " AAAAAAAAAAAA")
+                print("\n")
                 result = db.execute(
                     """
                     INSERT INTO participants
@@ -76,6 +79,13 @@ class ParticipantRepository:
                         participant.email,
                         participant.event,
                     ]
+                )
+                db.execute(
+                    """
+                    SELECT campaign_id
+                    WHERE event_id=event_id
+                    FROM events
+                    """
                 )
                 participant_id = result.fetchone()[0]
                 old_data = participant.dict()

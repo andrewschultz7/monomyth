@@ -17,14 +17,16 @@ function BootstrapInput(props) {
 function ParticipantForm(props) {
     const [character, setCharacter] = useState('');
     const [campaigns, setCampaigns] = useState('');
+    const [events, setEvents] = useState('');
 
 const handleSubmit = async (e) => {
         e.preventDefault();
         let data= {}
         data.character=character
         data.campaigns=campaigns
+        data.event=event
         console.log(data)
-        const participantsUrl = 'http://localhost:8001//events/participants'
+        const participantsUrl = 'http://localhost:8001/events/participants'
         const fetchConfig = {
             method: 'post',
             body: JSON.stringify(data),
@@ -38,6 +40,7 @@ const handleSubmit = async (e) => {
         .then(() => {
             setCharacter('');
             setCampaigns('');
+            setEvents('');
             Navigate("/campaigns");
         })
         .catch(e => console.log(`error: `, e));

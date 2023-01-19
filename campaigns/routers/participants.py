@@ -43,12 +43,15 @@ async def create_participant(
     user: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        info = repo.create(info)
+        info = repo.create(info, user)
     except DuplicateParticipantError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Cannot create an event with those credentials",
         )
+    print("\n")
+    print(info, " TTTTTTTTTTTTTTTTTTT")
+    print("\n")
     return info
 
 
