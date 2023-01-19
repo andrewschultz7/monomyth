@@ -46,7 +46,7 @@ build-docker-master_users:
     - echo "Deploying on CapRover..."
     - docker run caprover/cli-caprover:v2.1.1 caprover deploy --caproverUrl $CAPROVER_URL --caproverPassword $CAPROVER_PASSWORD --caproverApp_1 $CAPROVER_APP --imageName $CONTAINER_FULL_IMAGE_NAME_WITH_TAG
   only:
-    - master
+    - main
 
   build-docker-master_campaigns:
     image: docker:19.03.1
@@ -72,7 +72,7 @@ build-docker-master_users:
     - echo "Deploying on CapRover..."
     - docker run caprover/cli-caprover:v2.1.1 caprover deploy --caproverUrl $CAPROVER_URL --caproverPassword $CAPROVER_PASSWORD --caproverApp_2 $CAPROVER_APP --imageName $CONTAINER_FULL_IMAGE_NAME_WITH_TAG
   only:
-    - master
+    - main
 
 # Build the React/JavaScript front-end
 build-front-end-job:
