@@ -53,9 +53,6 @@ class ParticipantRepository:
                 participant.user_id = user["user_id"]
                 participant.event_id = event.event_id
                 participant.campaign_id = event.campaign_id
-                print("\n")
-                print(event)
-                print("\n")
                 result = db.execute(
                     """
                     INSERT INTO participants
