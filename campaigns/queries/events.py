@@ -11,25 +11,24 @@ class DuplicateEventError(ValueError):
     pass
 
 class EventIn(BaseModel):
+    # event_id: int
     eventname: str
     venuename: str
     address: str
-    date: str
-    participants: str
-    campaign: Optional[str]
+    date: date
+    campaign_id: Optional[int]
 
 class EventOut(BaseModel):
     event_id: int
     eventname: str
     venuename: str
     address: str
-    date: str
-    participants: str
-    campaign: Optional[str]
+    date: date
+    campaign_id: Optional[int]
 
 
 class EventRepository:
-    def get_one_event(self, event_id: int) -> Optional[EventOut]:
+    def get_one(self, event_id: int) -> Optional[EventOut]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -40,8 +39,7 @@ class EventRepository:
                         , venuename
                         , address
                         , date
-                        , participants
-                        , campaign
+                        , campaign_id
                         FROM events
                         WHERE event_id = %s
                         """,
@@ -81,8 +79,7 @@ class EventRepository:
                         , venuename = %s
                         , address = %s
                         , date = %s
-                        , participants = %s
-                        , campaign = %s
+                        , campaign_id = %s
                         WHERE event_id = %s
                         """,
                         [
@@ -90,10 +87,8 @@ class EventRepository:
                             event.venuename,
                             event.address,
                             event.date,
-                            event.participants,
-                            event.campaign,
+                            event.campaign_id,
                             event_id
-
                         ]
                     )
                 # old_data = event.dict()
@@ -114,8 +109,7 @@ class EventRepository:
                         , venuename
                         , address
                         , date
-                        , participants
-                        , campaign
+                        , campaign_id
                         FROM events
                         ORDER BY event_id;
                         """
@@ -127,15 +121,11 @@ class EventRepository:
                             eventname=record[1],
                             venuename=record[2],
                             address=record[3],
-                            thoughts=record[4],
+                            date=record[4],
+                            campaign_id=record[5],
                         )
                         result.append(event)
                     return result
-                    # ***  BELOW IS A LIST COMP WAY  OF WHATS ABOVE ***
-                    # return [
-                    #     self.record_to_event_out(record)
-                    #     for record in db
-                    # ]
         except Exception:
             return {"message": "Could not get all events"}
 
@@ -149,10 +139,9 @@ class EventRepository:
                         , venuename
                         , address
                         , date
-                        , participants
-                        , campaign)
+                        , campaign_id)
                     VALUES
-                        (%s, %s, %s, %s, %s, %s)
+                        (%s, %s, %s, %s, %s)
                     RETURNING event_id;
                     """,
                     [
@@ -160,8 +149,7 @@ class EventRepository:
                         event.venuename,
                         event.address,
                         event.date,
-                        event.participants,
-                        event.campaign
+                        event.campaign_id
                     ]
                 )
                 event_id = result.fetchone()[0]
@@ -179,7 +167,7 @@ class EventRepository:
             venuename=record[2],
             address=record[3],
             date=record[4],
-            participants=record[5]
+            campaign_id=record[5]
         )
 
 #Refactor of In to Out event

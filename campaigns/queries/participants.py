@@ -11,15 +11,17 @@ class DuplicateParticipantError(ValueError):
     pass
 
 class ParticipantIn(BaseModel):
+    user_id: int
     character: str
-    email: str
-    event: Optional[str]
+    event_id: int
+    campaign_id: int
 
 class ParticipantOut(BaseModel):
     participant_id: int
+    user_id: int
     character: str
-    email: str
-    event: Optional[str]
+    event_id: int = 0
+    campaign_id: int
 
 
 class ParticipantRepository:
@@ -29,63 +31,49 @@ class ParticipantRepository:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                        SELECT participant_id,character,email,event
+                        SELECT participant_id,character
                         FROM participants
                         ORDER BY participant_id;
                         """
                     )
-                    # result = []
-                    # for record in db:
-                    #     participant = ParticipantOut(
-                    #         participant_id= record[0],
-                    #         character=record[1],
-                    #         email=record[2],
-                    #         description=record[3],
-                    #         thoughts=record[4],
-                    #     )
-                    #     result.append(vacation)
-                    # return result
-                    # ***  BELOW IS A LIST COMP WAY  OF WHATS ABOVE ***
-                    return [
-                        ParticipantOut(
+                    result = []
+                    for record in db:
+                        participant = ParticipantOut(
                             participant_id= record[0],
                             character=record[1],
-                            email=record[2],
-                            event=record[3],
                         )
-                        for record in db
-                    ]
+                        result.append(participant)
+                    return result
         except Exception:
             return {"message": "Could not get all Participants"}
 
-    def create(self, participant: ParticipantIn, event_id) -> ParticipantOut:
+    def create(self, participant: ParticipantIn, event, user) -> ParticipantOut:
         with pool.connection() as conn:
             with conn.cursor() as db:
+                participant.user_id = user["user_id"]
+                participant.event_id = event.event_id
+                participant.campaign_id = event.campaign_id
                 print("\n")
-                print(userid, " AAAAAAAAAAAA")
+                print(event)
                 print("\n")
                 result = db.execute(
                     """
                     INSERT INTO participants
-                        (character
-                        ,email
-                        ,event)
+                        (user_id
+                        , character
+                        , event_id
+                        , campaign_id
+                       )
                     VALUES
-                        (%s, %s, %s)
+                        (%s, %s, %s, %s)
                     RETURNING participant_id;
                     """,
                     [
+                        participant.user_id,
                         participant.character,
-                        participant.email,
-                        participant.event,
+                        participant.event_id,
+                        participant.campaign_id,
                     ]
-                )
-                db.execute(
-                    """
-                    SELECT campaign_id
-                    WHERE event_id=event_id
-                    FROM events
-                    """
                 )
                 participant_id = result.fetchone()[0]
                 old_data = participant.dict()

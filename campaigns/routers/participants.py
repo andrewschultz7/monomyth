@@ -19,6 +19,11 @@ from queries.participants import (
     DuplicateParticipantError,
 )
 
+from queries.events import(
+    EventIn,
+    EventOut
+)
+
 
 class ParticipantForm(BaseModel):
     character: str
@@ -37,21 +42,21 @@ router = APIRouter()
 @router.post("/events/participants", response_model=ParticipantOut | HttpError)
 async def create_participant(
     info: ParticipantIn,
+    event: EventOut,
     request: Request,
     response: Response,
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        info = repo.create(info, user)
+        event.event_id = 15
+        event.campaign_id = 16
+        info = repo.create(info, event, user)
     except DuplicateParticipantError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Cannot create an event with those credentials",
         )
-    print("\n")
-    print(info, " TTTTTTTTTTTTTTTTTTT")
-    print("\n")
     return info
 
 

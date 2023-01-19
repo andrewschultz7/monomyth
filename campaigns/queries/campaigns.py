@@ -20,7 +20,7 @@ class CampaignIn(BaseModel):
     description: str
     rulebook: str
     campaign_email: str
-    users: List[UserList]
+    gamemaster_id: Optional[int]
 
 class CampaignOut(BaseModel):
     campaign_id: int
@@ -29,7 +29,7 @@ class CampaignOut(BaseModel):
     description: str
     rulebook: str
     campaign_email: str
-    users: List[UserList]
+    gamemaster_id: Optional[int]
 
 
 
@@ -47,7 +47,7 @@ class CampaignRepository:
                         , description
                         , rulebook
                         , campaign_email
-                        , users
+                        , gamemaster_id
                         FROM campaigns
                         WHERE campaign_id = %s
                         """,
@@ -65,18 +65,8 @@ class CampaignRepository:
         with pool.connection() as conn:
             with conn.cursor() as db:
                 print("\n")
-                print(self)
+                print(self, "SSSSSSSSSSSSSSSSSS")
                 print("\n")
-                # sql_userid = db.execute(
-                #     """
-                #     SELECT user_id
-                #     FROM users
-                #     WHERE user_id = %s;
-                #     """,
-                #     [user_id],
-                # )
-
-
                 result = db.execute(
                     """
                     INSERT INTO campaigns
@@ -85,7 +75,7 @@ class CampaignRepository:
                         , description
                         , rulebook
                         , campaign_email
-                        , users)
+                        , gamemaster_id)
                     VALUES
                         (%s, %s, %s, %s, %s, %s)
                     RETURNING campaign_id;
@@ -96,7 +86,7 @@ class CampaignRepository:
                         campaign.description,
                         campaign.rulebook,
                         campaign.campaign_email,
-                        campaign.users
+                        campaign.gamemaster_id
                     ]
                 )
                 campaign_id = result.fetchone()[0]
@@ -133,7 +123,7 @@ class CampaignRepository:
                         , description = %s
                         , rulebook = %s
                         , campaign_email = %s
-                        , users = %s
+                        , gamemaster_id = %s
                         WHERE campaign_id = %s
                         """,
                         [
@@ -142,7 +132,7 @@ class CampaignRepository:
                             campaign.description,
                             campaign.rulebook,
                             campaign.campaign_email,
-                            campaign.users,
+                            campaign.gamemaster_id,
                             campaign_id
 
                         ]
@@ -166,7 +156,7 @@ class CampaignRepository:
                         , description
                         , rulebook
                         , campaign_email
-                        , users
+                        , gamemaster_id
                         FROM campaigns
                         ORDER BY campaign_id;
                         """
@@ -180,7 +170,7 @@ class CampaignRepository:
                             description=record[3],
                             rulebook=record[4],
                             campaign_email=record[5],
-                            users=record[6],
+                            gamemaster_id=record[6],
                         )
                         result.append(campaign)
                     return result
@@ -203,7 +193,8 @@ class CampaignRepository:
             genre=record[2],
             description=record[3],
             rulebook=record[4],
-            campaign_email=record[5]
+            campaign_email=record[5],
+            gamemaster_id=record[6]
         )
 
 #Refactor of In to Out Campaign
