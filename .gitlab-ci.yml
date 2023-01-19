@@ -22,7 +22,7 @@ lint-test-job:
 #     - pip install -r requirements.txt
 #     - python -m pytest
 
-build-docker-master_users:
+build-user-backend:
   image: docker:19.03.1
   stage: build
   services:
@@ -48,7 +48,7 @@ build-docker-master_users:
   only:
     - main
 
-  build-docker-master_campaigns:
+  build-campaign-backend:
     image: docker:19.03.1
     stage: build
     services:
