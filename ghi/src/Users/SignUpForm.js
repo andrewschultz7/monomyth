@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { getTokenInternal, useToken} from "../AppAuth"
 
 function BootstrapInput(props) {
     const { id, placeholder, labelText, value, onChange, type } = props;
@@ -13,20 +14,22 @@ function BootstrapInput(props) {
 
 
 function SignUpForm(props) {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('');
-    const[users, setUsers] = useState('');
+    // const [role, setRole] = useState('');
+    // const[users, setUsers] = useState('');
+    const [token, login, logout, signup] = useToken();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        signup(username, password);
         let data = {}
-        data.email=email
+        data.email=username
         data.password=password
-        data.role=role
-        data.users=users
+        // data.role=role
+        // data.users=users
         console.log(data)
-        const signupUrl = 'http://localhost:8000/signup'
+        const signupUrl = `${process.env.REACT_APP_USERS_API_HOST}/signup`
         const fetchConfig = {
             method: 'post',
             body: JSON.stringify(data),
@@ -38,10 +41,10 @@ function SignUpForm(props) {
         await fetch(signupUrl, fetchConfig)
         .then(response => response.json())
         .then(() => {
-            setEmail('');
+            setUsername('');
             setPassword('');
-            setRole('');
-            setUsers('');
+            // setRole('');
+            // setUsers('');
         })
         .catch(e => console.log('error: ', e));
     };
@@ -68,8 +71,8 @@ function SignUpForm(props) {
                             id="email"
                             placeholder="you@example.com"
                             labelText="Your email here"
-                            value={email}
-                            onChange={e => setEmail(e.target.value)}
+                            value={username}
+                            onChange={e => setUsername(e.target.value)}
                             type="email" />
 
                         <BootstrapInput
