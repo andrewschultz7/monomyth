@@ -27,11 +27,14 @@ class EventForm(BaseModel):
     participants: str
     campaign: Optional[str]
 
+
 class AccountToken(Token):
     account: EventOut
 
+
 class HttpError(BaseModel):
     detail: str
+
 
 router = APIRouter()
 
@@ -61,7 +64,7 @@ async def update_event(
     event: EventIn,
     repo: EventRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
-    ) -> Union[HttpError, EventOut]:
+) -> Union[HttpError, EventOut]:
 
     return repo.update(event_id, event)
 
@@ -94,7 +97,6 @@ def get_all_events(
     user: dict = Depends(authenticator.get_current_account_data),
 ):
     return repo.get_all_events()
-
 
     # form = EventForm(username=info.email, password=info.password)
     # token = await authenticator.login(response, request, form, repo)
