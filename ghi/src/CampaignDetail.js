@@ -1,35 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import { useAuthContext } from './AppAuth'
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-const CampaignList = () => {
-    const [campaigns, setCampaigns] = useState([]);
+const CampaignDetail = () => {
+    const [campaign, setCampaign] = useState([]);
     const { token } = useAuthContext();
+    const { id } = useParams();
     // const [token, setToken] = useState([]);
 
     useEffect(() => {
         async function getCampaign() {
-            const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns`;
+            const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${id}`;
             if (token) {
-                console.log("token exists")
                 const response = await fetch(url, {
                     headers: { Authorization: `Bearer ${token}` },
                     });
-            // try {
                 if (response.ok) {
                 const data = await response.json();
-                setCampaigns(data);
+                setCampaign(data);
                 }
-            // } catch (e) {
-            //     console.error(e);
-            // }
-            }
-            else {
-                console.log("HELLO")
             }
         }
         getCampaign();
-    }, [token])
+    }, [setCampaign])
 
     return (
         <div className="container-fluid">
@@ -37,7 +30,7 @@ const CampaignList = () => {
             <table className="table table-striped">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th>id</th>
                             <th>Title</th>
                             <th>Genre</th>
                             <th>Description</th>
@@ -46,32 +39,24 @@ const CampaignList = () => {
                             <th>Users</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {campaigns?.map((campaign) => {
-                            return(
-                                <tr key={campaign.campaign_id}>
-                                    <td><Link to={`/Campaigns/${campaign.campaign_id}/`}>
-                                        <button className="btn btn-outline-dark fw-bold">
-                                            CLICK ME
-                                        </button>
-                                    </Link></td>
-                                    <td>{campaign.title}</td>
-                                    <td>{campaign.genre}</td>
-                                    <td>{campaign.description}</td>
-                                    <td>{campaign.rulebook}</td>
-                                    <td>{campaign.campaign_email}</td>
-                                    <td>{campaign.users}</td>
-                              </tr>
-                            )
-                        })}
-                    </tbody>
+                    {campaign ? <tbody>
+                        <tr key={campaign.campaign_id}>
+                            <td>{campaign.campaign_id}</td>
+                            <td>{campaign.title}</td>
+                            <td>{campaign.genre}</td>
+                            <td>{campaign.description}</td>
+                            <td>{campaign.rulebook}</td>
+                            <td>{campaign.campaign_email}</td>
+                            <td>{campaign.users}</td>
+                        </tr>
+                    </tbody> :'THERE IS NOTHING HERE'}
                 </table>
         </div>
     )
 }
 
 
-export default CampaignList
+export default CampaignDetail
 
 // import React from 'react'
 // import { useToken } from './AppAuth'
