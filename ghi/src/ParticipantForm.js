@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect, Navigate } from 'react';
-import {useToken} from './AppAuth';
+import {getToken, useToken} from './AppAuth';
 
 function BootstrapInput(props) {
     const { id, placeholder, labelText, value, onChange, type } = props;
@@ -21,11 +21,12 @@ function ParticipantForm(props) {
 
 const handleSubmit = async (e) => {
         e.preventDefault();
+        // debugger;
         let data= {}
         data.character=character
-        data.campaigns=campaigns
-        data.event=event
-        console.log(data)
+        data.campaigns=19
+        // data.event=event
+        console.log("data", data);
         const participantsUrl = 'http://localhost:8001/events/participants'
         const fetchConfig = {
             method: 'post',
@@ -50,7 +51,7 @@ const handleSubmit = async (e) => {
         <div className="row">
             <div className="offset-3 col-6">
                 <h1>Participate in an Event!</h1>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <BootstrapInput
                         id="character"
                         placeholder="Character Name"
@@ -58,7 +59,7 @@ const handleSubmit = async (e) => {
                         value={character}
                         onChange={e => setCharacter(e.target.value)}
                         type="text" />
-                    <button type="submit" className="btn btn-primary">Submit</button>
+                    <button  type="submit" className="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div>

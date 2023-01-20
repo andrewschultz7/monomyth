@@ -50,7 +50,7 @@ async def create_participant(
 ):
     try:
         event.event_id = 15
-        event.campaign_id = 16
+        # event.campaign_id = 16
         info = repo.create(info, event, user)
     except DuplicateParticipantError:
         raise HTTPException(

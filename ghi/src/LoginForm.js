@@ -21,7 +21,7 @@ function LoginForm(props) {
     const [password, setPassword] = useState('');
     // eslint-disable-next-line
     const [token, login] = useToken();
-
+    console.log("AAAAAAAAAAAAAAAAAAAAAA")
     function submitLogin() {
         login(email, password)
     }
