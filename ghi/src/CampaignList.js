@@ -11,6 +11,7 @@ const CampaignList = () => {
         async function getCampaign() {
             const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns`;
             if (token) {
+                console.log("token exists")
                 const response = await fetch(url, {
                     headers: { Authorization: `Bearer ${token}` },
                     });
@@ -23,9 +24,12 @@ const CampaignList = () => {
             //     console.error(e);
             // }
             }
+            else {
+                console.log("HELLO")
+            }
         }
         getCampaign();
-    }, [setCampaigns])
+    }, [token])
 
     return (
         <div className="container-fluid">
