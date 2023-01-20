@@ -1,6 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional, List, Union
-from datetime import date
+from typing import List, Union
 from queries.pool import pool
 
 
@@ -60,7 +59,7 @@ class UserRepository:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    result = db.execute(
+                    db.execute(
                         """
                         SELECT user_id,email,password,role
                         FROM users

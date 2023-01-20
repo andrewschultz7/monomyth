@@ -25,11 +25,14 @@ class ParticipantForm(BaseModel):
     email: str
     event: Optional[str]
 
+
 class AccountToken(Token):
     account: ParticipantOut
 
+
 class HttpError(BaseModel):
     detail: str
+
 
 router = APIRouter()
 
@@ -52,13 +55,16 @@ async def create_participant(
     return info
 
 
-@router.put("/events/participants/{participant_id}", response_model=Union[ParticipantOut, HttpError])
+@router.put(
+    "/events/participants/{participant_id}",
+    response_model=Union[ParticipantOut, HttpError],
+)
 async def update_participant(
     participant_id: int,
     event: ParticipantIn,
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
-    ) -> Union[HttpError, ParticipantOut]:
+) -> Union[HttpError, ParticipantOut]:
 
     return repo.update(participant_id, event)
 
@@ -72,7 +78,10 @@ def delete_participant(
     return repo.delete(participant_id)
 
 
-@router.get("/events/participants/{participant_id}", response_model=Optional[ParticipantOut])
+@router.get(
+    "/events/participants/{participant_id}",
+    response_model=Optional[ParticipantOut],
+)
 def get_one_participant(
     participant_id: int,
     response: Response,
@@ -85,13 +94,15 @@ def get_one_participant(
     return event
 
 
-@router.get("/events/participants", response_model=Union[HttpError, List[ParticipantOut]])
+@router.get(
+    "/events/participants",
+    response_model=Union[HttpError, List[ParticipantOut]],
+)
 def get_all_participants(
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ):
     return repo.get_all_participants()
-
 
     # form = EventForm(username=info.email, password=info.password)
     # token = await authenticator.login(response, request, form, repo)

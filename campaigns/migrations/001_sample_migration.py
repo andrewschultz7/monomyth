@@ -15,7 +15,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE campaigns;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -32,7 +32,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE events;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -47,6 +47,6 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE participants;
-        """
+        """,
     ],
 ]

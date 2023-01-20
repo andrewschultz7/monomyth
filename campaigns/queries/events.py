@@ -7,23 +7,26 @@ from queries.pool import pool
 class Error(BaseModel):
     message: str
 
+
 class DuplicateEventError(ValueError):
     pass
+
 
 class EventIn(BaseModel):
     eventname: str
     venuename: str
     address: str
-    date: str
+    date: date
     participants: str
     campaign: Optional[str]
+
 
 class EventOut(BaseModel):
     event_id: int
     eventname: str
     venuename: str
     address: str
-    date: str
+    date: date
     participants: str
     campaign: Optional[str]
 
@@ -45,7 +48,7 @@ class EventRepository:
                         FROM events
                         WHERE event_id = %s
                         """,
-                        [event_id]
+                        [event_id],
                     )
                     record = result.fetchone()
                     if record is None:
@@ -63,12 +66,11 @@ class EventRepository:
                         DELETE FROM events
                         WHERE event_id = %s;
                         """,
-                        [event_id]
+                        [event_id],
                     )
                     return True
         except Exception:
             return False
-
 
     def update(self, event_id: int, event: EventIn) -> Union[EventOut, Error]:
         try:
@@ -92,16 +94,14 @@ class EventRepository:
                             event.date,
                             event.participants,
                             event.campaign,
-                            event_id
-
-                        ]
+                            event_id,
+                        ],
                     )
                 # old_data = event.dict()
                 # return EventOut(event_id=event_id, **old_data)
                 return self.event_in_to_out(event_id, event)
         except Exception:
             return {"message": "Could not updateevents"}
-
 
     def get_all_events(self) -> Union[Error, List[EventOut]]:
         try:
@@ -123,7 +123,7 @@ class EventRepository:
                     result = []
                     for record in db:
                         event = EventOut(
-                            event_id= record[0],
+                            event_id=record[0],
                             eventname=record[1],
                             venuename=record[2],
                             address=record[3],
@@ -161,28 +161,28 @@ class EventRepository:
                         event.address,
                         event.date,
                         event.participants,
-                        event.campaign
-                    ]
+                        event.campaign,
+                    ],
                 )
                 event_id = result.fetchone()[0]
                 old_data = event.dict()
-                return EventOut (event_id=event_id, **old_data)
+                return EventOut(event_id=event_id, **old_data)
                 # return event_in_to_out(event_id, event)
 
-# this is where we did hashed_password in campaign
+    # this is where we did hashed_password in campaign
 
-#Refactor for event Out
+    # Refactor for event Out
     def record_to_event_out(self, record):
         return EventOut(
-            event_id= record[0],
+            event_id=record[0],
             eventname=record[1],
             venuename=record[2],
             address=record[3],
             date=record[4],
-            participants=record[5]
+            participants=record[5],
         )
 
-#Refactor of In to Out event
+    # Refactor of In to Out event
     def event_in_to_out(self, event_id: int, event: EventIn):
         old_data = event.dict()
         return EventOut(event_id=event_id, **old_data)
