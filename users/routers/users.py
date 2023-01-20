@@ -17,6 +17,7 @@ from queries.users import (
     UserRepository,
     DuplicateUserError,
 )
+import json
 
 
 class AccountForm(BaseModel):
@@ -36,7 +37,7 @@ async def protected_endpoint(
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     return True
-    
+
 
 @router.get("/token", response_model=AccountToken | None)
 async def get_token(
@@ -68,3 +69,16 @@ async def create_account(
     form = AccountForm(username=info.email, password=info.password)
     token = await authenticator.login(response, request, form, repo)
     return AccountToken(account=account, **token.dict())
+
+@router.get("/current", response_model=UserOut | None)
+async def get_curr_user(
+    request: Request,
+    repo: UserRepository = Depends()
+):
+    data = request.payload["user"]["email"]
+    user = repo.get(data)
+    return json.dumps({
+        "id": user.id,
+        "email": user.email,
+        "role": user.role
+    })
