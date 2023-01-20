@@ -1,15 +1,23 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Nav from './Nav';
 import MainPage from './MainPage'
-import UserForm from './UserForm';
-import LoginForm from './LoginForm';
+import SignUpForm from './Users/SignUpForm';
+// import UserForm from './UserForm';
+import UserList from './UserList';
+// import LoginForm from './LoginForm';
 import CampaignForm from './CampaignForm';
-import CharacterForm from './CharacterForm';
+import CampaignList from './CampaignList';
+import EventForm from './EventForm';
+import EventList from './EventList';
 import ParticipantForm from './ParticipantForm';
+import LoginForm from './Users/Login';
+import ParticipantList from './ParticipantList';
+import Logout from './Users/Logout';
 // import ErrorNotification from './ErrorNotification';
 import './App.css';
 import { AuthProvider, useToken } from './AppAuth';
-
+import { useAuthContext } from './AppAuth';
+import CampaignDetail from './CampaignDetail';
 
 function GetToken() {
     // Get token from JWT cookie (if already logged in)
@@ -18,6 +26,8 @@ function GetToken() {
 }
 
 function App() {
+  // const { token } = useAuthContext();
+	// console.log(token);
   return (
     <BrowserRouter>
     <AuthProvider>
@@ -26,11 +36,17 @@ function App() {
       <div className="container-fluid">
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="./UserForm" element={<UserForm />} />
+          <Route path="/UserList" element={<UserList />} />
           <Route path="/CampaignForm" element={<CampaignForm />} />
-          <Route path="/CharacterForm" element={<CharacterForm />} />
+          <Route path="/CampaignList" element={<CampaignList />} />
+          <Route path="/Campaigns/:id/" element={<CampaignDetail />} />
+          <Route path="/EventForm" element={<EventForm />} />
+          <Route path="/EventList" element={<EventList />} />
           <Route path="/ParticipantForm" element={<ParticipantForm />} />
-          <Route path="/LoginForm" element={<LoginForm />} />
+          <Route path="/ParticipantList" element={<ParticipantList />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/logout" element={<Logout />} />
+          <Route path="/SignUpForm" element={<SignUpForm />} />
         </Routes>
       </div>
     </AuthProvider>

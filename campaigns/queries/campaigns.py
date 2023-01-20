@@ -29,7 +29,10 @@ class CampaignOut(BaseModel):
     campaign_email: str
     users: Optional[str]
 
-
+class UserOut(BaseModel):
+    user_id: int
+    email: str
+    role: str
 
 
 class CampaignRepository:
