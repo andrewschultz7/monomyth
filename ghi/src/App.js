@@ -21,12 +21,12 @@ import { useAuthContext } from './AppAuth';
 function GetToken() {
     // Get token from JWT cookie (if already logged in)
     useToken();
-    return null
+    // return null
 }
 
 function App() {
-  const { token } = useAuthContext();
-	console.log(token);
+  // const { token } = useAuthContext();
+	// console.log(token);
   return (
     <BrowserRouter>
     <AuthProvider>

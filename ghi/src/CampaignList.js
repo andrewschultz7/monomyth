@@ -1,19 +1,37 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useAuthContext } from './AppAuth'
 
-class CampaignList extends React.Component {
 
-    async componentDidMount() {
-        const url = `http://localhost:8100/api/models/`
-        const response = await fetch(url)
-        if (response.ok) {
-            const data = await response.json()
-            this.setState({models : data.models})
+const CampaignList = () => {
+const { token } = useAuthContext();
+    const [campaigns, setCampaigns] = useState([]);
+    // const [token, setToken] = useState([]);
+
+    useEffect(() => {
+        async function getCampaign() {
+            const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns`;
+            if (token) {
+                const response = await fetch(url, {
+                    headers: { Authorization: `Bearer ${token}` },
+                    });
+            // try {
+                if (response.ok) {
+                const data = await response.json();
+                setCampaigns(data);
+                }
+            // } catch (e) {
+            //     console.error(e);
+            // }
+            } else {
+                setInterval(() => {
+                    getCampaign();
+                }, 500);
+            }
         }
-    }
+        getCampaign();
+    }, [setCampaigns])
 
-
-    render(){
-    return(
+    return (
         <div className="container-fluid">
             <h1>Campaign List</h1>
             <table className="table table-striped">
@@ -28,16 +46,15 @@ class CampaignList extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state?.campaigns?.map(campaigns => {
+                        {campaigns?.map((campaign) => {
                             return(
-                                <tr key={campaigns.campaign_id}>
-                                    <td>{campaigns.title}</td>
-                                    <td>{campaigns.genre}</td>
-                                    <td>{campaigns.description}</td>
-                                    <td>{campaigns.rulebook}</td>
-                                    <td>{campaigns.campaign_email}</td>
-                                    <td>{campaigns.users}</td>
-                                    {/* <td><img src={campaigns.picture_url} className='img-thumbnail' width="300px" height="300px"/></td> */}
+                                <tr key={campaign.campaign_id}>
+                                    <td>{campaign.title}</td>
+                                    <td>{campaign.genre}</td>
+                                    <td>{campaign.description}</td>
+                                    <td>{campaign.rulebook}</td>
+                                    <td>{campaign.campaign_email}</td>
+                                    <td>{campaign.users}</td>
                               </tr>
                             )
                         })}
@@ -46,6 +63,86 @@ class CampaignList extends React.Component {
         </div>
     )
 }
-}
+
 
 export default CampaignList
+
+
+
+// import React from 'react'
+// import { useToken } from './AppAuth'
+
+
+// const CampaignList = () => {
+//     const []
+// class CampaignList extends React.Component {
+//     state = {
+//         campaigns: [],
+//     }
+
+//     // async getToken() {
+//     //     const url = `${process.env.REACT_APP_USERS_API_HOST}/token`
+//     //     const response = await fetch(url, {
+//     //         method: "get",
+//     //         headers: {
+//     //             'Content-Type': 'application/json',
+//     //             Authorization: `Bearer ${useToken}` },
+//     //     });
+//     // }
+
+//     async getCampaign() {
+//         const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns`
+//         const response = await fetch(url);
+//         try {
+//             if (response.ok) {
+//                 const data = await response.json()
+//                 const campaigns = data.campaigns;
+//                 this.setState({
+//                     campaigns : data.campaigns,
+//                 });
+//             }
+//         } catch (e) {
+//             console.error(e);
+//         }
+//     }
+//     async componentDidMount() {
+//         this.getCampaign();
+//     }
+
+//     render(){
+//     return(
+//         <div className="container-fluid">
+//             <h1>Campaign List</h1>
+//             <table className="table table-striped">
+//                     <thead>
+//                         <tr>
+//                             <th>Title</th>
+//                             <th>Genre</th>
+//                             <th>Description</th>
+//                             <th>Rulebook</th>
+//                             <th>Campaign Contact Email</th>
+//                             <th>Users</th>
+//                         </tr>
+//                     </thead>
+//                     <tbody>
+//                         {this.state?.campaigns?.map((campaign) => {
+//                             return(
+//                                 <tr key={campaign.campaign_id}>
+//                                     <td>{campaign.title}</td>
+//                                     <td>{campaign.genre}</td>
+//                                     <td>{campaign.description}</td>
+//                                     <td>{campaign.rulebook}</td>
+//                                     <td>{campaign.campaign_email}</td>
+//                                     <td>{campaign.users}</td>
+//                                     {/* <td><img src={campaigns.picture_url} className='img-thumbnail' width="300px" height="300px"/></td> */}
+//                               </tr>
+//                             )
+//                         })}
+//                     </tbody>
+//                 </table>
+//         </div>
+//     )
+// }
+// }
+
+// export default CampaignList
