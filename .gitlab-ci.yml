@@ -8,7 +8,7 @@ lint-test-job:
   image: python:3-bullseye
   stage: test
   script:
-    # - pip install flake8
+    - pip install flake8
     - flake8 users, campaigns
 
 # Run the unit tests
