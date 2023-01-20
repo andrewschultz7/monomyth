@@ -17,11 +17,12 @@ import Logout from './Users/Logout';
 import './App.css';
 import { AuthProvider, useToken } from './AppAuth';
 import { useAuthContext } from './AppAuth';
+import CampaignDetail from './CampaignDetail';
 
 function GetToken() {
     // Get token from JWT cookie (if already logged in)
     useToken();
-    // return null
+    return null
 }
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
           <Route path="/UserList" element={<UserList />} />
           <Route path="/CampaignForm" element={<CampaignForm />} />
           <Route path="/CampaignList" element={<CampaignList />} />
+          <Route path="/Campaigns/:id/" element={<CampaignDetail />} />
           <Route path="/EventForm" element={<EventForm />} />
           <Route path="/EventList" element={<EventList />} />
           <Route path="/ParticipantForm" element={<ParticipantForm />} />

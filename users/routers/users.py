@@ -24,13 +24,17 @@ class AccountForm(BaseModel):
     username: str
     password: str
 
+
 class AccountToken(Token):
     account: UserOut
+
 
 class HttpError(BaseModel):
     detail: str
 
+
 router = APIRouter()
+
 
 @router.get("/endpoint", response_model=bool)
 async def protected_endpoint(
@@ -42,7 +46,7 @@ async def protected_endpoint(
 @router.get("/token", response_model=AccountToken | None)
 async def get_token(
     request: Request,
-    account: UserOut = Depends(authenticator.try_get_current_account_data)
+    account: UserOut = Depends(authenticator.try_get_current_account_data),
 ) -> AccountToken | None:
     if account and authenticator.cookie_name in request.cookies:
         return {
@@ -50,6 +54,7 @@ async def get_token(
             "type": "Bearer",
             "account": account,
         }
+
 
 @router.post("/signup", response_model=AccountToken | HttpError)
 async def create_account(
@@ -70,18 +75,13 @@ async def create_account(
     token = await authenticator.login(response, request, form, repo)
     return AccountToken(account=account, **token.dict())
 
+
 @router.get("/current", response_model=UserOut | None)
-async def get_curr_user(
-    request: Request,
-    repo: UserRepository = Depends()
-):
+async def get_curr_user(request: Request, repo: UserRepository = Depends()):
     data = request.payload["user"]["email"]
     user = repo.get(data)
-    return json.dumps({
-        "id": user.id,
-        "email": user.email,
-        "role": user.role
-    })
+    return json.dumps({"id": user.id, "email": user.email, "role": user.role})
+
 
 # @router.get("/users", response_model=Union[HttpError, List
 # [UserOut]])

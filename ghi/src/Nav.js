@@ -59,10 +59,13 @@ function Nav() {
                     <NavLink className="nav-link dropdown-item" to="/CampaignList" id="dropdown">Campaign List</NavLink>
                   </li>
                   <li>
+                    <NavLink className="nav-link dropdown-item" to="/Campaigns/:id/" id="dropdown">Campaign Detail</NavLink>
+                  </li>
+                  <li>
                     <NavLink className="nav-link dropdown-item" to="/EventList" id="dropdown">Event List</NavLink>
+                  </li>
                   <li>
                     <NavLink className="nav-link dropdown-item" to="/ParticipantList" id="dropdown">Participant List</NavLink>
-                  </li>
                   </li>
                 </div>
               </div>
