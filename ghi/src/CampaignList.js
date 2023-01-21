@@ -53,7 +53,7 @@ const CampaignList = () => {
                                 <tr key={campaign.campaign_id}>
                                     <td><Link to={`/Campaigns/${campaign.campaign_id}/`}>
                                         <button className="btn btn-outline-dark fw-bold">
-                                            CLICK ME
+                                            Campaign Details
                                         </button>
                                     </Link></td>
                                     <td>{campaign.title}</td>

@@ -46,9 +46,9 @@ const EventList = () => {
                         {events?.map((event) => {
                             return(
                                 <tr key={event.event_id}>
-                                    <td><Link to={`/Events/${event.event_id}/`}>
+                                    <td><Link to={`/events/${event.event_id}/`}>
                                         <button className="btn btn-outline-dark fw-bold">
-                                            CLICK ME!
+                                            Register for Event!
                                         </button>
                                     </Link></td>
                                     <td>{event.eventname}</td>
