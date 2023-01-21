@@ -1,7 +1,9 @@
 from pydantic import BaseModel
 from typing import Optional, List, Union
 from datetime import date
-from queries.pool import pool
+from queries.pool import pool, pool2
+from authenticator import authenticator
+from fastapi import Depends
 
 
 class Error(BaseModel):
@@ -31,7 +33,10 @@ class CampaignOut(BaseModel):
     campaign_email: str
     gamemaster_id: Optional[int]
 
-
+class UserOut(BaseModel):
+    user_id: int
+    email: str
+    role: str
 
 
 class CampaignRepository:

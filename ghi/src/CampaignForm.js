@@ -22,7 +22,7 @@ function CampaignForm(props) {
     const [campaign_email, setEmail] = useState('');
     const [description, setDescription] = useState('');
     const [users, setUsers] = useState('');
-    const [campaign] = useToken();
+    // const [campaign] = useToken();
     // const campaign = token[6];
 
 

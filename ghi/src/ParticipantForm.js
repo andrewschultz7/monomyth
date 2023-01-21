@@ -24,9 +24,8 @@ const handleSubmit = async (e) => {
         // debugger;
         let data= {}
         data.character=character
-        data.campaigns=19
-        // data.event=event
-        console.log("data", data);
+        data.campaigns=campaigns
+        console.log(data)
         const participantsUrl = 'http://localhost:8001/events/participants'
         const fetchConfig = {
             method: 'post',

@@ -20,7 +20,7 @@ function EventForm(props) {
     const [date, setDate] = useState('');
     const [participants, setParticipants] = useState('');
     const [campaign, setCampaign] = useState('')
-    const [events] = useToken();
+    // const [events] = useToken();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -50,7 +50,6 @@ function EventForm(props) {
             setDate('');
             setParticipants('');
             setCampaign('');
-            Navigate("/campaigns");
         })
         .catch(e => console.log(`error: `, e));
     };

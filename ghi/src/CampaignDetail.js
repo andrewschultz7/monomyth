@@ -6,6 +6,7 @@ const CampaignDetail = () => {
     const [campaign, setCampaign] = useState([]);
     const { token } = useAuthContext();
     const { id } = useParams();
+    const [events, setEvents] = useState([]);
     // const [token, setToken] = useState([]);
 
     useEffect(() => {
@@ -22,15 +23,33 @@ const CampaignDetail = () => {
             }
         }
         getCampaign();
-    }, [setCampaign])
+
+        async function getEvent() {
+            const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/events`;
+            if (token) {
+                console.log("token exists")
+                const response = await fetch(url, {
+                    headers: { Authorization: `Bearer ${token}` },
+                    });
+                if (response.ok) {
+                const data = await response.json();
+                setEvents(data);
+                }
+            }
+            else {
+                console.log("Hello Event List")
+            }
+        }
+        getEvent();
+    }, [token])
 
     return (
         <div className="container-fluid">
-            <h1>Campaign List</h1>
+            <h1>Campaign Details</h1>
             <table className="table table-striped">
                     <thead>
                         <tr>
-                            <th>id</th>
+                            <th>Campaign ID</th>
                             <th>Title</th>
                             <th>Genre</th>
                             <th>Description</th>
@@ -50,6 +69,39 @@ const CampaignDetail = () => {
                             <td>{campaign.users}</td>
                         </tr>
                     </tbody> :'THERE IS NOTHING HERE'}
+                </table>
+                <h2>Campaign Events</h2>
+                <table className="table table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Event Name</th>
+                            <th>Venue Name</th>
+                            <th>Address</th>
+                            <th>Date</th>
+                            <th>Participants</th>
+                            <th>Associated Campaign</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {events?.map((event) => {
+                            return(
+                                <tr key={event.event_id}>
+                                    <td><Link to={`/Events/${event.event_id}/`}>
+                                        <button className="btn btn-outline-dark fw-bold">
+                                            CLICK ME!
+                                        </button>
+                                    </Link></td>
+                                    <td>{event.eventname}</td>
+                                    <td>{event.venuename}</td>
+                                    <td>{event.address}</td>
+                                    <td>{event.date}</td>
+                                    <td>{event.participants}</td>
+                                    <td>{event.campaign}</td>
+                                </tr>
+                            )
+                        })}
+                    </tbody>
                 </table>
         </div>
     )
