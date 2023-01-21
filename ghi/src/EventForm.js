@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect, Navigate } from 'react';
+import { useState, useEffect } from 'react';
 import {useToken} from './AppAuth';
 
 function BootstrapInput(props) {
@@ -20,7 +20,6 @@ function EventForm(props) {
     const [date, setDate] = useState('');
     const [participants, setParticipants] = useState('');
     const [campaign, setCampaign] = useState('')
-    // const [events] = useToken();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -95,8 +94,6 @@ function EventForm(props) {
                         value={participants}
                         onChange={e => setParticipants(e.target.value)}
                         type="text" />
-                    {/* <button className="btn btn-outline-secondary btn-lg px-2 gap-1">Submit</button> */}
-                    {/* <button onClick={handleSubmit} => {Navigate("/signup-user")}>Create User</button> */}
                     <button onClick={handleSubmit} className="btn btn-primary">Submit</button>
                 </form>
             </div>
