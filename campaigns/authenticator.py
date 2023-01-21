@@ -10,6 +10,7 @@ class MyAuthenticator(Authenticator):
         email: str,
     ):
         pass
+        pass
 
     def get_account_getter(
         self,
