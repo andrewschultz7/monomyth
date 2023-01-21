@@ -3,8 +3,6 @@ from main import app
 from routers.events import EventOut
 from authenticator import authenticator
 from queries.events import EventRepository
-from datetime import datetime, date
-
 
 
 event_out = EventOut(
@@ -12,15 +10,18 @@ event_out = EventOut(
             eventname="test",
             venuename="a place",
             address="500 test place",
-            date= datetime.date(2023, 10, 10),
+            date=2023-10-10,
             participants="me",
             campaign="star wars"
         )
 
 client = TestClient(app)
+
+
 class FakeEventRepository:
     def get_one(self, event_id):
         return event_out
+
 
 def fake_authenticator():
     pass

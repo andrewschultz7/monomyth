@@ -15,9 +15,12 @@ campaign_out = CampaignOut(
         )
 
 client = TestClient(app)
+
+
 class FakeCampaignRepository:
     def get_one(self, campaign_id):
         return campaign_out
+
 
 def fake_authenticator():
     pass
