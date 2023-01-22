@@ -6,6 +6,7 @@ from fastapi import (
     APIRouter,
     Request,
 )
+from typing import List, Union
 from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
 from pydantic import BaseModel
