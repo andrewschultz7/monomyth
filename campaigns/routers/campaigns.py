@@ -34,11 +34,11 @@ class HttpError(BaseModel):
 
 router = APIRouter()
 
-# not_authorized = HTTPException(
-#     status_code=status.HTTP_401_UNAUTHORIZED,
-#     detail="Invalid authentication credentials",
-#     headers={"WWW-Authenticate": "Bearer"},
-# )
+not_authorized = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Invalid authentication credentials",
+    headers={"WWW-Authenticate": "Bearer"},
+)
 
 @router.post("/campaigns", response_model=CampaignOut | HttpError)
 async def create_campaign(

@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect, Navigate } from 'react';
 import { useParams } from 'react-router-dom';
 import {getToken, useToken} from './AppAuth';
+// import { useNavigate } from 'react-router-dom';
 
 function BootstrapInput(props) {
     const { id, placeholder, labelText, value, onChange, type } = props;
@@ -48,6 +49,7 @@ const handleSubmit = async (e) => {
             // Navigate("/campaigns");
         })
         .catch(e => console.log(`error: `, e));
+        // useNavigate("/");
     };
 
     return (
