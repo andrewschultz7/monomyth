@@ -13,9 +13,10 @@ function BootstrapInput(props) {
         </div>
     )
 }
+
 function CampaignEdit(props) {
     const { campaignId } = useParams();
-    const [campaign, setCampaign] = useState([]);
+    const [campaign, setCampaign] = useState('');
     const { token } = useAuthContext();
     const [title, setTitle] = useState('');
     const [genre, setGenre] = useState('');
@@ -45,13 +46,30 @@ function CampaignEdit(props) {
         e.preventDefault();
         let data= {}
         data.campaign_id={campaignId}
-        data.title=title
-        data.genre=genre
-        data.description=description
-        data.rulebook=rulebook
-        data.campaign_email=campaign_email
-        data.users=users
-        console.log(data)
+        if (title === ''){
+            data.title=campaign.title;
+        } else {data.title=title};
+
+        if (genre === ''){
+            data.genre=campaign.genre;
+        } else {data.genre=genre};
+
+        if (description === ''){
+            data.description=campaign.description;
+        } else {data.description=description};
+
+        if (rulebook === ''){
+            data.rulebook=campaign.rulebook;
+        } else {data.rulebook=rulebook};
+
+        if (campaign_email === ''){
+            data.campaign_email=campaign.campaign_email;
+        } else {data.campaign_email=campaign_email};
+
+        if (users === ''){
+            data.users=campaign.users;
+        } else {data.users=users};
+
         const campaignUrl = `http://localhost:8001/campaigns/${campaignId}`
         const fetchConfig = {
             method: 'put',
@@ -64,8 +82,8 @@ function CampaignEdit(props) {
         await fetch(campaignUrl, fetchConfig)
         .then(response => response.json())
         .then(() => {
-            setTitle('');
-            setGenre('');
+            setTitle(campaignId);
+            setGenre(genre);
             setRulebook('');
             setEmail('');
             setUsers('');
@@ -82,9 +100,8 @@ function CampaignEdit(props) {
                 <form onSubmit={(e) => handleSubmit(e)}>
                     <BootstrapInput
                         id="title"
-                        // placeholder="you@example.com"
                         placeholder={campaign.title}
-                        labelText="Your Campaign Title here"
+                        labelText="email"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         type="text" />
@@ -116,7 +133,6 @@ function CampaignEdit(props) {
                         value={description}
                         onChange={e => setDescription(e.target.value)}
                         type="text" />
-                    {/* <button className="btn btn-outline-secondary btn-lg px-2 gap-1">Submit</button> */}
                     <button onClick={handleSubmit} className="btn btn-primary">Edit Campaign</button>
                 </form>
             </div>

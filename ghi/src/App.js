@@ -9,6 +9,7 @@ import CampaignForm from './CampaignForm';
 import CampaignEdit from './CampaignEdit';
 import CampaignList from './CampaignList';
 import EventForm from './EventForm';
+import EventDetail from './EventDetail';
 import EventList from './EventList';
 import ParticipantForm from './ParticipantForm';
 import LoginForm from './Users/Login';
@@ -41,6 +42,7 @@ function App() {
           <Route path="/CampaignForm" element={<CampaignForm />} />
           <Route path="/CampaignList" element={<CampaignList />} />
           <Route path="/Campaigns/:campaignId/" element={<CampaignDetail />} />
+          <Route path="/Campaigns/:campaignId/:eventId" element={<EventDetail />} />
           <Route path="/EventForm" element={<EventForm />} />
           <Route path="/EventList" element={<EventList />} />
           <Route path="/Campaigns/:campaignId/:eventId/ParticipantForm" element={<ParticipantForm />} />
