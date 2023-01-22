@@ -6,6 +6,7 @@ import SignUpForm from './Users/SignUpForm';
 import UserList from './UserList';
 // import LoginForm from './LoginForm';
 import CampaignForm from './CampaignForm';
+import CampaignEdit from './CampaignEdit';
 import CampaignList from './CampaignList';
 import EventForm from './EventForm';
 import EventList from './EventList';
@@ -39,10 +40,11 @@ function App() {
           <Route path="/UserList" element={<UserList />} />
           <Route path="/CampaignForm" element={<CampaignForm />} />
           <Route path="/CampaignList" element={<CampaignList />} />
-          <Route path="/Campaigns/:id/" element={<CampaignDetail />} />
+          <Route path="/Campaigns/:campaignId/" element={<CampaignDetail />} />
           <Route path="/EventForm" element={<EventForm />} />
           <Route path="/EventList" element={<EventList />} />
-          <Route path="/ParticipantForm" element={<ParticipantForm />} />
+          <Route path="/Campaigns/:campaignId/:eventId/ParticipantForm" element={<ParticipantForm />} />
+          <Route path="/Campaigns/:campaignId/edit" element={<CampaignEdit />} />
           <Route path="/ParticipantList" element={<ParticipantList />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/logout" element={<Logout />} />

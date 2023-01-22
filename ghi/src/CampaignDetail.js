@@ -5,13 +5,13 @@ import { Link, useParams } from "react-router-dom";
 const CampaignDetail = () => {
     const [campaign, setCampaign] = useState([]);
     const { token } = useAuthContext();
-    const { id } = useParams();
+    const { campaignId } = useParams();
     const [events, setEvents] = useState([]);
     // const [token, setToken] = useState([]);
 
     useEffect(() => {
         async function getCampaign() {
-            const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${id}`;
+            const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}`;
             if (token) {
                 const response = await fetch(url, {
                     headers: { Authorization: `Bearer ${token}` },
@@ -66,7 +66,7 @@ const CampaignDetail = () => {
                             <td>{campaign.description}</td>
                             <td>{campaign.rulebook}</td>
                             <td>{campaign.campaign_email}</td>
-                            <td>{campaign.users}</td>
+                            {/* <td>{campaign.users}</td> */}
                         </tr>
                     </tbody> :'THERE IS NOTHING HERE'}
                 </table>
@@ -87,17 +87,17 @@ const CampaignDetail = () => {
                         {events?.map((event) => {
                             return(
                                 <tr key={event.event_id}>
-                                    <td><Link to={`/Events/${event.event_id}/`}>
+                                    <td><Link to={`/campaigns/${campaignId}/${event.event_id}/ParticipantForm`}>
                                         <button className="btn btn-outline-dark fw-bold">
-                                            CLICK ME!
+                                            Register for Adventure
                                         </button>
                                     </Link></td>
                                     <td>{event.eventname}</td>
                                     <td>{event.venuename}</td>
                                     <td>{event.address}</td>
                                     <td>{event.date}</td>
-                                    <td>{event.participants}</td>
-                                    <td>{event.campaign}</td>
+                                    {/* <td>{event.participants}</td> */}
+                                    <td>{event.campaign_id}</td>
                                 </tr>
                             )
                         })}

@@ -66,7 +66,7 @@ class CampaignRepository:
             return {"message": "Could not get that Campaign"}
 
 
-    def create(self, campaign: CampaignIn) -> CampaignOut:
+    def create(self, campaign: CampaignIn, user_id) -> CampaignOut:
         with pool.connection() as conn:
             with conn.cursor() as db:
                 print("\n")

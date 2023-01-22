@@ -27,8 +27,8 @@ from queries.events import(
 
 class ParticipantForm(BaseModel):
     character: str
-    email: str
-    event: Optional[str]
+    event_id: int
+    campaign_id: int
 
 class AccountToken(Token):
     account: ParticipantOut
@@ -41,17 +41,15 @@ router = APIRouter()
 
 @router.post("/events/participants", response_model=ParticipantOut | HttpError)
 async def create_participant(
-    info: ParticipantIn,
-    event: EventOut,
+    info: ParticipantForm,
     request: Request,
     response: Response,
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ):
+    print(user, "TTTTTTTTTTTTTTTTTTTTTTT")
     try:
-        event.event_id = 15
-        # event.campaign_id = 16
-        info = repo.create(info, event, user)
+        info = repo.create(info, user)
     except DuplicateParticipantError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

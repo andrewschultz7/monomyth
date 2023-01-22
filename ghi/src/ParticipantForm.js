@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect, Navigate } from 'react';
+import { useParams } from 'react-router-dom';
 import {getToken, useToken} from './AppAuth';
 
 function BootstrapInput(props) {
@@ -16,15 +17,18 @@ function BootstrapInput(props) {
 
 function ParticipantForm(props) {
     const [character, setCharacter] = useState('');
-    const [campaigns, setCampaigns] = useState('');
+    // const [campaigns, setCampaigns] = useState('');
     const [events, setEvents] = useState('');
+    const { campaignId, eventId } = useParams();
 
 const handleSubmit = async (e) => {
         e.preventDefault();
         // debugger;
         let data= {}
+        // data.user_id=user_id
         data.character=character
-        data.campaigns=campaigns
+        data.event_id=eventId
+        data.campaign_id=campaignId
         console.log(data)
         const participantsUrl = 'http://localhost:8001/events/participants'
         const fetchConfig = {
@@ -39,9 +43,9 @@ const handleSubmit = async (e) => {
         .then(response => response.json())
         .then(() => {
             setCharacter('');
-            setCampaigns('');
-            setEvents('');
-            Navigate("/campaigns");
+            // setCampaigns('');
+            // setEvents('');
+            // Navigate("/campaigns");
         })
         .catch(e => console.log(`error: `, e));
     };

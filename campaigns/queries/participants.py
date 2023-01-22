@@ -11,7 +11,6 @@ class DuplicateParticipantError(ValueError):
     pass
 
 class ParticipantIn(BaseModel):
-    user_id: int
     character: str
     event_id: int
     campaign_id: int
@@ -47,12 +46,10 @@ class ParticipantRepository:
         except Exception:
             return {"message": "Could not get all Participants"}
 
-    def create(self, participant: ParticipantIn, event, user) -> ParticipantOut:
+    def create(self, participant: ParticipantIn, user) -> ParticipantOut:
         with pool.connection() as conn:
             with conn.cursor() as db:
-                participant.user_id = user["user_id"]
-                participant.event_id = event.event_id
-                participant.campaign_id = event.campaign_id
+                # participant.user_id = user["user_id"]
                 result = db.execute(
                     """
                     INSERT INTO participants
@@ -66,7 +63,7 @@ class ParticipantRepository:
                     RETURNING participant_id;
                     """,
                     [
-                        participant.user_id,
+                        user["user_id"],
                         participant.character,
                         participant.event_id,
                         participant.campaign_id,
@@ -74,7 +71,7 @@ class ParticipantRepository:
                 )
                 participant_id = result.fetchone()[0]
                 old_data = participant.dict()
-                return ParticipantOut (participant_id=participant_id, **old_data)
+                return ParticipantOut (participant_id=participant_id, user_id=user["user_id"], **old_data)
 
 # this is where we did hashed_password in event
 # test
