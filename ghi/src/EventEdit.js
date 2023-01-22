@@ -45,16 +45,31 @@ function EventEdit(props) {
       const handleSubmit = async (e) => {
         e.preventDefault();
         let data= {}
-        data.eventname=eventname
-        data.venuename=venuename
-        data.address=address
-        data.date=date
-        data.participants=participants
-        data.campaign=campaign
+        data.event_id = {eventId}
+         if (eventname === ''){
+            data.eventname=event.eventname;
+        } else {data.eventname=eventname};
+
+        if (venuename === ''){
+            data.venuename=event.venuename;
+        } else {data.venuename=venuename};
+
+        if (address === ''){
+            data.address=event.address;
+        } else {data.address=address};
+
+        if (date === ''){
+            data.date=event.date;
+        } else {data.date=date};
+
+        if (participants === ''){
+            data.participants=event.participants;
+        } else {data.participants=participants};
+
         console.log(data)
         const eventUrl = 'http://localhost:8001/events'
         const fetchConfig = {
-            method: 'post',
+            method: 'put',
             body: JSON.stringify(data),
             headers: {
                 "Content-Type" : "application/json"

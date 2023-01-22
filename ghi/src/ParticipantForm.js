@@ -1,8 +1,7 @@
 import React from 'react';
 import { useState, useEffect, Navigate } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {getToken, useToken} from './AppAuth';
-// import { useNavigate } from 'react-router-dom';
 
 function BootstrapInput(props) {
     const { id, placeholder, labelText, value, onChange, type } = props;
@@ -18,39 +17,34 @@ function BootstrapInput(props) {
 
 function ParticipantForm(props) {
     const [character, setCharacter] = useState('');
-    // const [campaigns, setCampaigns] = useState('');
     const [events, setEvents] = useState('');
     const { campaignId, eventId } = useParams();
+    const navigate = useNavigate();
 
-const handleSubmit = async (e) => {
-        e.preventDefault();
-        // debugger;
-        let data= {}
-        // data.user_id=user_id
-        data.character=character
-        data.event_id=eventId
-        data.campaign_id=campaignId
-        console.log(data)
-        const participantsUrl = 'http://localhost:8001/events/participants'
-        const fetchConfig = {
-            method: 'post',
-            body: JSON.stringify(data),
-            headers: {
-                "Content-Type" : "application/json"
-            },
-            credentials : "include"
+    const handleSubmit = async (e) => {
+            e.preventDefault();
+            let data= {}
+            data.character=character
+            data.event_id=eventId
+            data.campaign_id=campaignId
+            console.log(data)
+            const participantsUrl = 'http://localhost:8001/events/participants'
+            const fetchConfig = {
+                method: 'post',
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type" : "application/json"
+                },
+                credentials : "include"
+            };
+            await fetch(participantsUrl, fetchConfig)
+            .then(response => response.json())
+            .then(() => {
+                setCharacter('');
+            })
+            .catch(e => console.log(`error: `, e));
+            navigate(`/Campaigns/${campaignId}/`);
         };
-        await fetch(participantsUrl, fetchConfig)
-        .then(response => response.json())
-        .then(() => {
-            setCharacter('');
-            // setCampaigns('');
-            // setEvents('');
-            // Navigate("/campaigns");
-        })
-        .catch(e => console.log(`error: `, e));
-        // useNavigate("/");
-    };
 
     return (
         <div className="row">
@@ -64,7 +58,7 @@ const handleSubmit = async (e) => {
                         value={character}
                         onChange={e => setCharacter(e.target.value)}
                         type="text" />
-                    <button  type="submit" className="btn btn-primary">Submit</button>
+                    <button  onClick={handleSubmit} className="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div>

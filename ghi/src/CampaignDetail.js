@@ -25,7 +25,7 @@ const CampaignDetail = () => {
         getCampaign();
 
         async function getEvent() {
-            const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/events`;
+            const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events`;
             if (token) {
                 console.log("token exists")
                 const response = await fetch(url, {
@@ -55,7 +55,6 @@ const CampaignDetail = () => {
                             <th>Description</th>
                             <th>Rulebook</th>
                             <th>Campaign Contact Email</th>
-                            <th>Users</th>
                         </tr>
                     </thead>
                     {campaign ? <tbody>
@@ -66,7 +65,11 @@ const CampaignDetail = () => {
                             <td>{campaign.description}</td>
                             <td>{campaign.rulebook}</td>
                             <td>{campaign.campaign_email}</td>
-                            {/* <td>{campaign.users}</td> */}
+                             <td><Link to={`/EventForm`}>
+                                        <button className="btn btn-outline-dark fw-bold">
+                                            CREATE EVENT
+                                        </button>
+                                    </Link></td>
                         </tr>
                     </tbody> :'THERE IS NOTHING HERE'}
                 </table>
@@ -96,8 +99,11 @@ const CampaignDetail = () => {
                                     <td>{event.venuename}</td>
                                     <td>{event.address}</td>
                                     <td>{event.date}</td>
-                                    {/* <td>{event.participants}</td> */}
-                                    <td>{event.campaign_id}</td>
+                                     <td><Link to={`/Campaigns/${campaign.campaign_id}/${event.event_id}/edit/`}>
+                                        <button className="btn btn-outline-dark fw-bold">
+                                            EDIT
+                                        </button>
+                                    </Link></td>
                                 </tr>
                             )
                         })}
