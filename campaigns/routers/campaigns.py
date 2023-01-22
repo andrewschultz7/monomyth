@@ -40,7 +40,7 @@ not_authorized = HTTPException(
     headers={"WWW-Authenticate": "Bearer"},
 )
 
-@router.post("/campaigns", response_model=CampaignOut | HttpError)
+@router.post("/Campaigns/{campaign_id}", response_model=CampaignOut | HttpError)
 async def create_campaign(
     info: CampaignIn,
     request: Request,
@@ -58,7 +58,7 @@ async def create_campaign(
     return info
 
 
-@router.put("/campaigns/{campaign_id}", response_model=Union[CampaignOut, HttpError])
+@router.put("/Campaigns/{campaign_id}", response_model=Union[CampaignOut, HttpError])
 async def update_campaign(
     campaign_id: int,
     campaign: CampaignIn,
@@ -69,7 +69,7 @@ async def update_campaign(
     return repo.update(campaign_id, campaign)
 
 
-@router.delete("/campaigns/{campaign_id}", response_model=bool)
+@router.delete("/Campaigns/{campaign_id}", response_model=bool)
 def delete_campaign(
     campaign_id: int,
     repo: CampaignRepository = Depends(),
@@ -78,7 +78,7 @@ def delete_campaign(
     return repo.delete(campaign_id)
 
 
-@router.get("/campaigns/{campaign_id}", response_model=Optional[CampaignOut])
+@router.get("/Campaigns/{campaign_id}", response_model=Optional[CampaignOut])
 def get_one_campaign(
     campaign_id: int,
     response: Response,
@@ -91,7 +91,7 @@ def get_one_campaign(
     return campaign
 
 
-@router.get("/campaigns", response_model=Union[HttpError, List[CampaignOut]])
+@router.get("/Campaigns", response_model=Union[HttpError, List[CampaignOut]])
 def get_all_campaigns(
     repo: CampaignRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect, Navigate } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import {useToken} from './AppAuth';
 
 function BootstrapInput(props) {
@@ -14,13 +15,14 @@ function BootstrapInput(props) {
 }
 
 function EventForm(props) {
+    const { campaignId } = useParams();
     const [eventname, setEventName] = useState('');
     const [venuename, setVenueName] = useState('');
     const [address, setAddress] = useState('');
     const [date, setDate] = useState('');
     const [participants, setParticipants] = useState('');
     const [campaign, setCampaign] = useState('')
-    // const [events] = useToken();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -30,9 +32,9 @@ function EventForm(props) {
         data.address=address
         data.date=date
         data.participants=participants
-        data.campaign=campaign
+        data.campaign_id=campaignId
         console.log(data)
-        const eventUrl = 'http://localhost:8001/events'
+        const eventUrl = `http://localhost:8001/Campaigns/${campaignId}/events/`
         const fetchConfig = {
             method: 'post',
             body: JSON.stringify(data),
@@ -52,6 +54,7 @@ function EventForm(props) {
             setCampaign('');
         })
         .catch(e => console.log(`error: `, e));
+        navigate(`/Campaigns/${campaignId}/`);
     };
 
 
@@ -95,8 +98,6 @@ function EventForm(props) {
                         value={participants}
                         onChange={e => setParticipants(e.target.value)}
                         type="text" />
-                    {/* <button className="btn btn-outline-secondary btn-lg px-2 gap-1">Submit</button> */}
-                    {/* <button onClick={handleSubmit} => {Navigate("/signup-user")}>Create User</button> */}
                     <button onClick={handleSubmit} className="btn btn-primary">Submit</button>
                 </form>
             </div>

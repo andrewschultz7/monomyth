@@ -62,7 +62,6 @@ function CampaignForm(props) {
         <div className="row">
             <div className="offset-3 col-6">
                 <h1>Create A Campaign</h1>
-                {/* <form action="/" className="form" id="form2" onSubmit={(e) => handleSubmit(e)}> */}
                 <form onSubmit={(e) => handleSubmit(e)}>
                     <BootstrapInput
                         id="title"

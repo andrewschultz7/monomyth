@@ -8,10 +8,11 @@ const CampaignDetail = () => {
     const { campaignId } = useParams();
     const [events, setEvents] = useState([]);
     // const [token, setToken] = useState([]);
+    let e = 0;
 
     useEffect(() => {
         async function getCampaign() {
-            const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}`;
+            const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/Campaigns/${campaignId}/`;
             if (token) {
                 const response = await fetch(url, {
                     headers: { Authorization: `Bearer ${token}` },
@@ -19,13 +20,14 @@ const CampaignDetail = () => {
                 if (response.ok) {
                 const data = await response.json();
                 setCampaign(data);
+                // console.log(data)
                 }
             }
         }
         getCampaign();
 
         async function getEvent() {
-            const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events`;
+            const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/Campaigns/${campaignId}/EventList`;
             if (token) {
                 console.log("token exists")
                 const response = await fetch(url, {
@@ -41,6 +43,35 @@ const CampaignDetail = () => {
             }
         }
         getEvent();
+
+        const deleteEvent = async (e) => {
+            let data = events[e]
+            // data.events.event
+            // data.event_id = e.event_id
+            console.log(data, "AAAAAAAAAAAAAAAAA")
+            // data.event_id = event_id
+            const url = `http://localhost:8001/Campaigns/${campaignId}/events/${data}`;
+            const fetchConfig = {
+            method: 'delete',
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type" : "application/json"
+            },
+            credentials : "include"
+        };
+        await fetch(url, fetchConfig)
+        .then(response => response.json())
+        // .then(() => {
+        //     setTitle('');
+        //     setGenre('');
+        //     setRulebook('');
+        //     setEmail('');
+        //     setUsers('');
+        //     setDescription('');
+        // })
+        // .catch(e => console.log(`error: `, e));
+        }
+        deleteEvent();
     }, [token])
 
     return (
@@ -65,7 +96,7 @@ const CampaignDetail = () => {
                             <td>{campaign.description}</td>
                             <td>{campaign.rulebook}</td>
                             <td>{campaign.campaign_email}</td>
-                             <td><Link to={`/EventForm`}>
+                             <td><Link to={`/Campaigns/${campaignId}/EventForm`}>
                                         <button className="btn btn-outline-dark fw-bold">
                                             CREATE EVENT
                                         </button>
@@ -82,8 +113,8 @@ const CampaignDetail = () => {
                             <th>Venue Name</th>
                             <th>Address</th>
                             <th>Date</th>
-                            <th>Participants</th>
-                            <th>Associated Campaign</th>
+                            {/* <th>Participants</th> */}
+                            {/* <th>Associated Campaign</th> */}
                         </tr>
                     </thead>
                     <tbody>
@@ -104,6 +135,12 @@ const CampaignDetail = () => {
                                             EDIT
                                         </button>
                                     </Link></td>
+                                     <td>
+                                        <button className="btn btn-outline-dark fw-bold" value={event.event_id} onClick=
+                                        {(e) => this.deleteEvent(e.target.value)}>
+                                            DELETE {e}
+                                        </button>
+                                    </td>
                                 </tr>
                             )
                         })}

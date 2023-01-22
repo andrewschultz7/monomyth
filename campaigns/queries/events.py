@@ -98,7 +98,7 @@ class EventRepository:
             return {"message": "Could not updateevents"}
 
 
-    def get_all_events(self) -> Union[Error, List[EventOut]]:
+    def get_all_events(self, campaignId) -> Union[Error, List[EventOut]]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -111,8 +111,10 @@ class EventRepository:
                         , date
                         , campaign_id
                         FROM events
+                        WHERE campaign_id = %s
                         ORDER BY event_id;
-                        """
+                        """,
+                        [campaignId]
                     )
                     result = []
                     for record in db:

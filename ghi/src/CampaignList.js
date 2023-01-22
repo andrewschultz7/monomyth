@@ -10,7 +10,7 @@ const CampaignList = () => {
 
     useEffect(() => {
         async function getCampaign() {
-            const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns`;
+            const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/Campaigns`;
             if (token) {
                 console.log("token exists")
                 const response = await fetch(url, {
