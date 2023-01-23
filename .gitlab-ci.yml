@@ -14,7 +14,10 @@ lint-test-job:
 
 #Run the unit tests
 api-unit-campaigns-test-job:
+
   image: python:3-bullseye
+  variables:
+    SIGNING_KEY: ${SIGNING_KEY}
   stage: test
   needs:
     - lint-test-job
@@ -22,6 +25,8 @@ api-unit-campaigns-test-job:
     - cd campaigns
     - pip install -r requirements.txt
     - python -m pytest
+
+
 
 #Run the unit tests
 # api-unit-users-test-job:
