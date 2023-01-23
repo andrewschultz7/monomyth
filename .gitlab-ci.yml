@@ -29,16 +29,20 @@ api-unit-campaigns-test-job:
 
 
 
+
 #Run the unit tests
-# api-unit-users-test-job:
-#   image: python:3-bullseye
-#   stage: test
-#   needs:
-#     - lint-test-job
-#   script:
-#     - cd users
-#     - pip install -r requirements.txt
-#     - python -m pytest
+api-unit-users-test-job:
+  image: python:3-bullseye
+  variables:
+    SIGNING_KEY: ${SIGNING_KEY}
+    DATABASE_URL: ${DATABASE_URL2}
+  stage: test
+  needs:
+    - lint-test-job
+  script:
+    - cd users
+    - pip install -r requirements.txt
+    - python -m pytest
 
 build-user-backend:
   image: docker:19.03.1
