@@ -7,11 +7,13 @@ const CampaignDetail = () => {
     const { token } = useAuthContext();
     const { campaignId } = useParams();
     const [events, setEvents] = useState([]);
-    // const [token, setToken] = useState([]);
+    const [user, setUser] = useState();
+    const [value, setValue] = useState();
+    let e = 0;
 
     useEffect(() => {
         async function getCampaign() {
-            const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}`;
+            const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/Campaigns/${campaignId}/`;
             if (token) {
                 const response = await fetch(url, {
                     headers: { Authorization: `Bearer ${token}` },
@@ -25,7 +27,7 @@ const CampaignDetail = () => {
         getCampaign();
 
         async function getEvent() {
-            const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events`;
+            const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/Campaigns/${campaignId}/EventList`;
             if (token) {
                 console.log("token exists")
                 const response = await fetch(url, {
@@ -41,7 +43,30 @@ const CampaignDetail = () => {
             }
         }
         getEvent();
-    }, [token])
+
+    }, [token, setEvents])
+
+    const deleteEvent = async (event_id) => {
+        let data = event_id
+        const url = `http://localhost:8001/Campaigns/${campaignId}/events/${data}`;
+        const fetchConfig = {
+        method: 'delete',
+        body: JSON.stringify(data),
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type" : "application/json"
+        },
+        credentials : "include"
+    };
+    await fetch(url, fetchConfig)
+    .then(response => response.json())
+    .then(() => {
+    })
+    .catch(e => console.log(`error: `, e));
+    setEvents([]);
+
+}
+
 
     return (
         <div className="container-fluid">
@@ -65,7 +90,7 @@ const CampaignDetail = () => {
                             <td>{campaign.description}</td>
                             <td>{campaign.rulebook}</td>
                             <td>{campaign.campaign_email}</td>
-                             <td><Link to={`/EventForm`}>
+                             <td><Link to={`/Campaigns/${campaignId}/EventForm`}>
                                         <button className="btn btn-outline-dark fw-bold">
                                             CREATE EVENT
                                         </button>
@@ -82,11 +107,12 @@ const CampaignDetail = () => {
                             <th>Venue Name</th>
                             <th>Address</th>
                             <th>Date</th>
-                            <th>Participants</th>
-                            <th>Associated Campaign</th>
+                            {/* <th>Participants</th> */}
+                            {/* <th>Associated Campaign</th> */}
                         </tr>
                     </thead>
                     <tbody>
+                        {/* {user.role=='a' && events?.map((event) => { */}
                         {events?.map((event) => {
                             return(
                                 <tr key={event.event_id}>
@@ -99,11 +125,18 @@ const CampaignDetail = () => {
                                     <td>{event.venuename}</td>
                                     <td>{event.address}</td>
                                     <td>{event.date}</td>
-                                     <td><Link to={`/Campaigns/${campaign.campaign_id}/${event.event_id}/edit/`}>
+                                     <td> {}
+                                        <Link to={`/Campaigns/${campaign.campaign_id}/${event.event_id}/edit/`}>
                                         <button className="btn btn-outline-dark fw-bold">
                                             EDIT
                                         </button>
                                     </Link></td>
+                                     <td>
+                                        <button className="btn btn-outline-dark fw-bold" value={event.event_id} onClick=
+                                        {e => deleteEvent(e.target.value)}>
+                                            DELETE
+                                        </button>
+                                    </td>
                                 </tr>
                             )
                         })}

@@ -39,7 +39,7 @@ class HttpError(BaseModel):
 router = APIRouter()
 
 
-@router.post("/events/participants", response_model=ParticipantOut | HttpError)
+@router.post("/Campaigns/{campaign_id}/{event_id}/participants", response_model=ParticipantOut | HttpError)
 async def create_participant(
     info: ParticipantForm,
     request: Request,

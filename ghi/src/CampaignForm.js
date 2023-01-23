@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { Navigate, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 function BootstrapInput(props) {
@@ -14,6 +15,7 @@ function BootstrapInput(props) {
 }
 
 function CampaignForm(props) {
+    const { campaignId } = useParams();
     const [title, setTitle] = useState('');
     const [genre, setGenre] = useState('');
     const [rulebook, setRulebook] = useState('');
@@ -24,8 +26,6 @@ function CampaignForm(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // await campaign(title, genre, rulebook, email, detail);
-        // console.log({title, genre, rulebook, email, detail});
         let data= {}
         data.title=title
         data.genre=genre
@@ -34,7 +34,7 @@ function CampaignForm(props) {
         data.campaign_email=campaign_email
         data.users=users
         console.log(data)
-        const campaignUrl = 'http://localhost:8001/campaigns'
+        const campaignUrl = 'http://localhost:8001/Campaigns'
         const fetchConfig = {
             method: 'post',
             body: JSON.stringify(data),
@@ -54,14 +54,13 @@ function CampaignForm(props) {
             setDescription('');
         })
         .catch(e => console.log(`error: `, e));
-        navigate("/CampaignList");
+        navigate(`/Campaigns/${campaignId}/`);
     };
 
     return (
         <div className="row">
             <div className="offset-3 col-6">
                 <h1>Create A Campaign</h1>
-                {/* <form action="/" className="form" id="form2" onSubmit={(e) => handleSubmit(e)}> */}
                 <form onSubmit={(e) => handleSubmit(e)}>
                     <BootstrapInput
                         id="title"
@@ -98,7 +97,6 @@ function CampaignForm(props) {
                         value={description}
                         onChange={e => setDescription(e.target.value)}
                         type="text" />
-                    {/* <button className="btn btn-outline-secondary btn-lg px-2 gap-1">Submit</button> */}
                     <button onClick={handleSubmit} className="btn btn-primary">Create Campaign</button>
                 </form>
             </div>
