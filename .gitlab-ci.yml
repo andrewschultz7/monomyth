@@ -18,6 +18,7 @@ api-unit-campaigns-test-job:
   image: python:3-bullseye
   variables:
     SIGNING_KEY: ${SIGNING_KEY}
+    DATABASE_URL: ${DATABASE_URL}
   stage: test
   needs:
     - lint-test-job
