@@ -7,7 +7,8 @@ const CampaignDetail = () => {
     const { token } = useAuthContext();
     const { campaignId } = useParams();
     const [events, setEvents] = useState([]);
-    // const [token, setToken] = useState([]);
+    const [user, setUser] = useState();
+    const [value, setValue] = useState();
     let e = 0;
 
     useEffect(() => {
@@ -20,7 +21,6 @@ const CampaignDetail = () => {
                 if (response.ok) {
                 const data = await response.json();
                 setCampaign(data);
-                // console.log(data)
                 }
             }
         }
@@ -44,35 +44,29 @@ const CampaignDetail = () => {
         }
         getEvent();
 
-        const deleteEvent = async (e) => {
-            let data = events[e]
-            // data.events.event
-            // data.event_id = e.event_id
-            console.log(data, "AAAAAAAAAAAAAAAAA")
-            // data.event_id = event_id
-            const url = `http://localhost:8001/Campaigns/${campaignId}/events/${data}`;
-            const fetchConfig = {
-            method: 'delete',
-            body: JSON.stringify(data),
-            headers: {
-                "Content-Type" : "application/json"
-            },
-            credentials : "include"
-        };
-        await fetch(url, fetchConfig)
-        .then(response => response.json())
-        // .then(() => {
-        //     setTitle('');
-        //     setGenre('');
-        //     setRulebook('');
-        //     setEmail('');
-        //     setUsers('');
-        //     setDescription('');
-        // })
-        // .catch(e => console.log(`error: `, e));
-        }
-        deleteEvent();
-    }, [token])
+    }, [token, setEvents])
+
+    const deleteEvent = async (event_id) => {
+        let data = event_id
+        const url = `http://localhost:8001/Campaigns/${campaignId}/events/${data}`;
+        const fetchConfig = {
+        method: 'delete',
+        body: JSON.stringify(data),
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type" : "application/json"
+        },
+        credentials : "include"
+    };
+    await fetch(url, fetchConfig)
+    .then(response => response.json())
+    .then(() => {
+    })
+    .catch(e => console.log(`error: `, e));
+    setEvents([]);
+
+}
+
 
     return (
         <div className="container-fluid">
@@ -118,6 +112,7 @@ const CampaignDetail = () => {
                         </tr>
                     </thead>
                     <tbody>
+                        {/* {user.role=='a' && events?.map((event) => { */}
                         {events?.map((event) => {
                             return(
                                 <tr key={event.event_id}>
@@ -130,15 +125,16 @@ const CampaignDetail = () => {
                                     <td>{event.venuename}</td>
                                     <td>{event.address}</td>
                                     <td>{event.date}</td>
-                                     <td><Link to={`/Campaigns/${campaign.campaign_id}/${event.event_id}/edit/`}>
+                                     <td> {}
+                                        <Link to={`/Campaigns/${campaign.campaign_id}/${event.event_id}/edit/`}>
                                         <button className="btn btn-outline-dark fw-bold">
                                             EDIT
                                         </button>
                                     </Link></td>
                                      <td>
                                         <button className="btn btn-outline-dark fw-bold" value={event.event_id} onClick=
-                                        {(e) => this.deleteEvent(e.target.value)}>
-                                            DELETE {e}
+                                        {e => deleteEvent(e.target.value)}>
+                                            DELETE
                                         </button>
                                     </td>
                                 </tr>

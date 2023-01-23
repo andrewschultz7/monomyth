@@ -28,7 +28,7 @@ function ParticipantForm(props) {
             data.event_id=eventId
             data.campaign_id=campaignId
             console.log(data)
-            const participantsUrl = 'http://localhost:8001/events/participants'
+            const participantsUrl = `http://localhost:8001/Campaigns/${campaignId}/${eventId}/participants`
             const fetchConfig = {
                 method: 'post',
                 body: JSON.stringify(data),

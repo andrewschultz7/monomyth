@@ -35,7 +35,7 @@ function CampaignForm(props) {
         data.campaign_email=campaign_email
         data.users=users
         console.log(data)
-        const campaignUrl = 'http://localhost:8001/campaigns'
+        const campaignUrl = 'http://localhost:8001/Campaigns'
         const fetchConfig = {
             method: 'post',
             body: JSON.stringify(data),

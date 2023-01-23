@@ -40,7 +40,7 @@ not_authorized = HTTPException(
     headers={"WWW-Authenticate": "Bearer"},
 )
 
-@router.post("/Campaigns/{campaign_id}", response_model=CampaignOut | HttpError)
+@router.post("/Campaigns", response_model=CampaignOut | HttpError)
 async def create_campaign(
     info: CampaignIn,
     request: Request,
