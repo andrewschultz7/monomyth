@@ -33,7 +33,7 @@ function App() {
       <Nav />
       <div className="container-fluid">
         <Routes>
-          <Route path="/" element={<MainPage />} />
+          <Route path="/Home" element={<MainPage />} />
           <Route path="/Campaigns/:campaignId/" element={<CampaignDetail />} />
           <Route path="/Campaigns/:campaignId/edit" element={<CampaignEdit />} />
           <Route path="/CampaignForm" element={<CampaignForm />} />
@@ -44,7 +44,7 @@ function App() {
           <Route path="/EventList" element={<EventList />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/logout" element={<Logout />} />
-          <Route path="/Campaigns/:campaignId/:eventId/ParticipantForm" element={<ParticipantForm />} />
+          <Route path="/ParticipantForm" element={<ParticipantForm />} />
           <Route path="/ParticipantList" element={<ParticipantList />} />
           <Route path="/SignUpForm" element={<SignUpForm />} />
           <Route path="/UserList" element={<UserList />} />

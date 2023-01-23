@@ -1,6 +1,7 @@
 import React from 'react';
-import { useState, useEffect, Navigate } from 'react';
+import { useState, useEffect } from 'react';
 import {useToken} from './AppAuth';
+import { useNavigate } from "react-router-dom";
 
 function BootstrapInput(props) {
     const { id, placeholder, labelText, value, onChange, type } = props;
@@ -19,8 +20,8 @@ function EventForm(props) {
     const [address, setAddress] = useState('');
     const [date, setDate] = useState('');
     const [participants, setParticipants] = useState('');
-    const [campaign, setCampaign] = useState('')
-    // const [events] = useToken();
+    const [campaign, setCampaign] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -52,6 +53,7 @@ function EventForm(props) {
             setCampaign('');
         })
         .catch(e => console.log(`error: `, e));
+        navigate('/CampaignList');
     };
 
 

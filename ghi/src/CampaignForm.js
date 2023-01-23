@@ -1,8 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import {useToken} from './AppAuth';
 
 function BootstrapInput(props) {
     const { id, placeholder, labelText, value, onChange, type } = props;
@@ -22,6 +20,7 @@ function CampaignForm(props) {
     const [campaign_email, setEmail] = useState('');
     const [description, setDescription] = useState('');
     const [users, setUsers] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -55,7 +54,7 @@ function CampaignForm(props) {
             setDescription('');
         })
         .catch(e => console.log(`error: `, e));
-        // useNavigate("/");
+        navigate("/CampaignList");
     };
 
     return (

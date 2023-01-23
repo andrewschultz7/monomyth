@@ -57,6 +57,11 @@ const EventList = () => {
                                     <td>{event.date}</td>
                                     <td>{event.participants}</td>
                                     <td>{event.campaign}</td>
+                                        <td><Link to={`/Events/${event.event_id}/edit/`}>
+                                        <button className="btn btn-outline-dark fw-bold">
+                                            EDIT
+                                        </button>
+                                    </Link></td>
                                 </tr>
                             )
                         })}

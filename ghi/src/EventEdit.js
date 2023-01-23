@@ -1,6 +1,5 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
 import { useNavigate, useParams } from 'react-router-dom';
 import {useToken, useAuthContext} from './AppAuth';
 

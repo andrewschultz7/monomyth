@@ -49,7 +49,7 @@ function SignUpForm(props) {
             // setUsers('');
         })
         .catch(e => console.log('error: ', e));
-        navigate("/");
+        navigate("/Home");
     };
 
     // useEffect(() => {

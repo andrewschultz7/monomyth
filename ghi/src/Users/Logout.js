@@ -10,7 +10,7 @@ export default function Logout() {
     e.preventDefault();
     logout();
     console.log("logged out");
-    navigate("/");
+    navigate("/Home");
   };
 
   return (
