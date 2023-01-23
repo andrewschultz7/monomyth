@@ -40,7 +40,7 @@ services:
       DATABASE_URL: postgresql://campaigns:password@postgres/campaigns
       DATABASE_URL2: postgresql://users:password@postgres/users
       WAIT_HOSTS: postgres:5432
-      SIGNING_KEY: 35a13da1e58164c16f145306b46d956a6e89bffffa609452aa667b7c0128fd24
+      SIGNING_KEY: ${SIGNING_KEY}
 
   users:
     build:
