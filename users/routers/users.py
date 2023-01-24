@@ -7,7 +7,7 @@ from fastapi import (
     Request,
 )
 from jwtdown_fastapi.authentication import Token
-from authenticator import authenticator
+from authenticator import authenticator, MyAuthenticator
 from pydantic import BaseModel
 
 from queries.users import (
@@ -61,6 +61,7 @@ async def create_account(
     request: Request,
     response: Response,
     repo: UserRepository = Depends(),
+    authenticator: MyAuthenticator = Depends(authenticator)
 ):
     hashed_password = authenticator.hash_password(info.password)
     try:
