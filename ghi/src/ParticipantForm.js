@@ -17,7 +17,8 @@ function BootstrapInput(props) {
 
 function ParticipantForm(props) {
     const [character, setCharacter] = useState('');
-    const [events, setEvents] = useState('');
+    const [event, setEvent] = useState('');
+    const [campaign, setCampaign] = useState('');
     const { campaignId, eventId } = useParams();
     const navigate = useNavigate();
 
@@ -28,7 +29,7 @@ function ParticipantForm(props) {
             data.event_id=eventId
             data.campaign_id=campaignId
             console.log(data)
-            const participantsUrl = `http://localhost:8001/Campaigns/${campaignId}/${eventId}/participants`
+            const participantsUrl = `http://localhost:8001/Campaigns/${campaignId}/events/${eventId}/participants/`
             const fetchConfig = {
                 method: 'post',
                 body: JSON.stringify(data),
@@ -41,6 +42,8 @@ function ParticipantForm(props) {
             .then(response => response.json())
             .then(() => {
                 setCharacter('');
+                setEvent('');
+                setCampaign('');
             })
             .catch(e => console.log(`error: `, e));
             navigate(`/Campaigns/${campaignId}/`);

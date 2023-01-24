@@ -39,7 +39,7 @@ class HttpError(BaseModel):
 router = APIRouter()
 
 
-@router.post("/Campaigns/{campaign_id}/{event_id}/participants", response_model=ParticipantOut | HttpError)
+@router.post("/Campaigns/{campaign_id}/events/{event_id}/participants", response_model=ParticipantOut | HttpError)
 async def create_participant(
     info: ParticipantForm,
     request: Request,
@@ -48,17 +48,18 @@ async def create_participant(
     user: dict = Depends(authenticator.get_current_account_data),
 ):
     print(user, "TTTTTTTTTTTTTTTTTTTTTTT")
+   
     try:
         info = repo.create(info, user)
     except DuplicateParticipantError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Cannot create an event with those credentials",
+            detail="Cannot create a Participant with those credentials",
         )
     return info
 
 
-@router.put("/events/participants/{participant_id}", response_model=Union[ParticipantOut, HttpError])
+@router.put("/Campaigns/{campaign_id}/events/{event_id}/participants/{participant_id}", response_model=Union[ParticipantOut, HttpError])
 async def update_participant(
     participant_id: int,
     event: ParticipantIn,
@@ -78,7 +79,7 @@ def delete_participant(
     return repo.delete(participant_id)
 
 
-@router.get("/events/participants/{participant_id}", response_model=Optional[ParticipantOut])
+@router.get("/Campaigns/{campaign_id}/events/{event_id}/participants/{participant_id}", response_model=Optional[ParticipantOut])
 def get_one_participant(
     participant_id: int,
     response: Response,
@@ -91,7 +92,7 @@ def get_one_participant(
     return event
 
 
-@router.get("/events/participants", response_model=Union[HttpError, List[ParticipantOut]])
+@router.get("/Campaigns/{campaign_id}/events/{event_id}/participants", response_model=Union[HttpError, List[ParticipantOut]])
 def get_all_participants(
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),

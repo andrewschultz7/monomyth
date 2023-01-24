@@ -9,6 +9,9 @@ const CampaignDetail = () => {
     const [events, setEvents] = useState([]);
     const [user, setUser] = useState();
     const [value, setValue] = useState();
+    const [participants, setParticipants] = useState([]);
+    const { eventID } = useParams();
+    const { participantId } = useParams();
     let e = 0;
 
     useEffect(() => {
@@ -44,7 +47,25 @@ const CampaignDetail = () => {
         }
         getEvent();
 
-    }, [token, setEvents])
+         async function getParticipant() {
+            const url = `http://localhost:8001/Campaigns/${campaignId}/events/${eventID}/participants`;
+            if (token) {
+                console.log("hello little token")
+                const response = await fetch(url, {
+                    headers: { Authorization: `Bearer ${token}` },
+                    });
+                if (response.ok) {
+                const data = await response.json();
+                setParticipants(data);
+                }
+            }
+            else {
+                console.log("Hiiiiii")
+            }
+        }
+        getParticipant();
+
+    }, [token])
 
     const deleteEvent = async (event_id) => {
         let data = event_id
@@ -138,6 +159,24 @@ const CampaignDetail = () => {
                                         </button>
                                     </td>
                                 </tr>
+                            )
+                        })}
+                    </tbody>
+                    </table>
+                <h2>Registered Participants</h2>
+                <table className="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Character Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {participants?.map(participant => {
+                            return(
+                                <tr key={participant.participant_id}>
+                                    <td>{participant.character}</td>
+
+                              </tr>
                             )
                         })}
                     </tbody>

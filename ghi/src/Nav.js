@@ -28,10 +28,10 @@ function Nav() {
                     <Link className="nav-link dropdown-item" to="/CampaignForm" id="dropdown">Create Campaign</Link>
                   </li>
                   <li>
-                    <NavLink className="nav-link dropdown-item" to="/EventForm" id="dropdown">Create Events</NavLink>
+                    <NavLink className="nav-link dropdown-item" to="/Campaigns/:campaignID/EventForm" id="dropdown">Create Events</NavLink>
                   </li>
                   <li>
-                    <NavLink className="nav-link dropdown-item" to="/ParticipantForm" id="dropdown">Create Participant</NavLink>
+                    <NavLink className="nav-link dropdown-item" to="/Campaigns/:campaignID/:eventID/ParticipantForm" id="dropdown">Create Participant</NavLink>
                   </li>
                     <li>
                       <NavLink className="nav-link dropdown-item" to="login" id="dropdown">Login</NavLink>
@@ -62,7 +62,7 @@ function Nav() {
                     <NavLink className="nav-link dropdown-item" to="/Campaigns/:campaignId/EventList" id="dropdown">Event List</NavLink>
                   </li>
                   <li>
-                    <NavLink className="nav-link dropdown-item" to="/ParticipantList" id="dropdown">Participant List</NavLink>
+                    <NavLink className="nav-link dropdown-item" to="/Campaigns/:campaignID/:eventID/ParticipantList" id="dropdown">Participant List</NavLink>
                   </li>
                 </div>
               </div>

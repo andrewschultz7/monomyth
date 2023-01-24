@@ -44,8 +44,8 @@ function App() {
           <Route path="/Campaigns/:campaignId/EventList" element={<EventList />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/logout" element={<Logout />} />
-          <Route path="/ParticipantForm" element={<ParticipantForm />} />
-          <Route path="/ParticipantList" element={<ParticipantList />} />
+          <Route path="/Campaigns/:campaignId/:eventId/ParticipantForm" element={<ParticipantForm />} />
+          <Route path="/Campaigns/:campaignId/:eventId/ParticipantList" element={<ParticipantList />} />
           <Route path="/SignUpForm" element={<SignUpForm />} />
           <Route path="/UserList" element={<UserList />} />
         </Routes>
