@@ -1,7 +1,7 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
 
 function BootstrapInput(props) {
     const { id, placeholder, labelText, value, onChange, type } = props;
