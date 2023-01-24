@@ -11,21 +11,21 @@ const CampaignList = () => {
         async function getCampaign() {
             const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns`;
             if (token) {
-                console.log("token exists")
+                console.log(token, " token exists")
                 const response = await fetch(url, {
-                    headers: { Authorization: `Bearer ${token}` },
+                    headers: { Authorization: `Bearer ${token.access_token}` },
                     });
-            // try {
+            try {
                 if (response.ok) {
                 const data = await response.json();
                 setCampaigns(data);
                 }
-            // } catch (e) {
-            //     console.error(e);
-            // }
+            } catch (e) {
+                console.error(e);
+            }
             }
             else {
-                console.log("HELLO")
+
             }
         }
         getCampaign();

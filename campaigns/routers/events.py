@@ -36,9 +36,10 @@ class HttpError(BaseModel):
 router = APIRouter()
 
 
-@router.post("/events", response_model=EventOut | HttpError)
+@router.post("/campaigns/{campaign_id}/events/", response_model=EventOut | HttpError)
 async def create_event(
     info: EventIn,
+    campaign_id: int,
     request: Request,
     response: Response,
     repo: EventRepository = Depends(),
@@ -55,18 +56,17 @@ async def create_event(
     return info
 
 
-@router.put("/events/{event_id}", response_model=Union[EventOut, HttpError])
+@router.put("/campaigns/{campaign_id}/events/{event_id}", response_model=Union[EventOut, HttpError])
 async def update_event(
     event_id: int,
     event: EventIn,
     repo: EventRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
     ) -> Union[HttpError, EventOut]:
-
     return repo.update(event_id, event)
 
 
-@router.delete("/events/{event_id}", response_model=bool)
+@router.delete("/campaigns/{campaign_id}/events/{event_id}", response_model=bool)
 def delete_event(
     event_id: int,
     repo: EventRepository = Depends(),
@@ -75,7 +75,7 @@ def delete_event(
     return repo.delete(event_id)
 
 
-@router.get("/events/{event_id}", response_model=Optional[EventOut])
+@router.get("/campaigns/{campaign_id}/events/{event_id}", response_model=Optional[EventOut])
 def get_one_event(
     event_id: int,
     response: Response,
@@ -88,12 +88,14 @@ def get_one_event(
     return event
 
 
-@router.get("/events", response_model=Union[HttpError, List[EventOut]])
+@router.get("/campaigns/{campaign_id}/eventlist", response_model=Union[HttpError, List[EventOut]])
 def get_all_events(
+    campaign_id: int,
     repo: EventRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ):
-    return repo.get_all_events()
+
+    return repo.get_all_events(campaign_id)
 
 
     # form = EventForm(username=info.email, password=info.password)

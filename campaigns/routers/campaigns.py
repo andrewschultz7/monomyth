@@ -87,6 +87,7 @@ def get_one_campaign(
 ) -> CampaignOut:
     campaign = repo.get_one(campaign_id)
     if campaign is None:
+        print("campaign stopped here")
         response.status_code = 404
     return campaign
 

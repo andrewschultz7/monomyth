@@ -69,9 +69,6 @@ class CampaignRepository:
     def create(self, campaign: CampaignIn, user_id) -> CampaignOut:
         with pool.connection() as conn:
             with conn.cursor() as db:
-                print("\n")
-                print(self, "SSSSSSSSSSSSSSSSSS")
-                print("\n")
                 result = db.execute(
                     """
                     INSERT INTO campaigns
@@ -91,7 +88,7 @@ class CampaignRepository:
                         campaign.description,
                         campaign.rulebook,
                         campaign.campaign_email,
-                        campaign.gamemaster_id
+                        user_id
                     ]
                 )
                 campaign_id = result.fetchone()[0]

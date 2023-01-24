@@ -39,7 +39,7 @@ class HttpError(BaseModel):
 router = APIRouter()
 
 
-@router.post("/events/participants", response_model=ParticipantOut | HttpError)
+@router.post("/campaigns/{campaign_id}/events/{event_id}/participants", response_model=ParticipantOut | HttpError)
 async def create_participant(
     info: ParticipantForm,
     request: Request,
@@ -47,7 +47,6 @@ async def create_participant(
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ):
-    print(user, "TTTTTTTTTTTTTTTTTTTTTTT")
     try:
         info = repo.create(info, user)
     except DuplicateParticipantError:
@@ -96,6 +95,7 @@ def get_all_participants(
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ):
+    print("Participants YYYYYYYYYYYYYY")
     return repo.get_all_participants()
 
 
