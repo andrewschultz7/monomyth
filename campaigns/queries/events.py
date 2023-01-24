@@ -70,11 +70,12 @@ class EventRepository:
 
     def update(self, event_id: int, event: EventIn) -> Union[EventOut, Error]:
         try:
+            print( "FIRST: FIRING EVENT UPDATE QUERIES")
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     db.execute(
                         """
-                        UPDATE event
+                        UPDATE events
                         SET eventname = %s
                         , venuename = %s
                         , address = %s
@@ -93,6 +94,7 @@ class EventRepository:
                     )
                 # old_data = event.dict()
                 # return EventOut(event_id=event_id, **old_data)
+                print( "FIRING EVENT UPDATE QUERIES", event_id, event)
                 return self.event_in_to_out(event_id, event)
         except Exception:
             return {"message": "Could not updateevents"}

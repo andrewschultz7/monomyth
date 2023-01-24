@@ -14,6 +14,7 @@ function BootstrapInput(props) {
     )
 }
 function EventEdit(props) {
+    console.log("PROPS: ", props)
     const { eventId } = useParams();
     const { campaignId } = useParams();
     const { token } = useAuthContext();
@@ -40,7 +41,7 @@ function EventEdit(props) {
                 }
             }
             getEvent();
-        }, [token])
+        }, [token.access_token])
 
       const handleSubmit = async (e) => {
         e.preventDefault();

@@ -29,15 +29,16 @@ const CampaignList = () => {
             }
         }
         getCampaign();
-    }, [token])
+    }, [])
+    // token was in array above
 
     return (
         <>
         <h2 className='text-center'>Campaigns</h2>
         <div>
-            {campaigns?.map((campaign) => {
+            {campaigns.map((campaign) => {
                 return (
-        <div className="card">
+        <div key = {campaign.campaign_id} className="card">
             <div className="card-header">
                 {campaign.genre}
             </div>

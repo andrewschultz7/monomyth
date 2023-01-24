@@ -10,15 +10,23 @@ const CampaignDetail = () => {
     const [participants, setParticipants] = useState();
     const [user, setUser] = useState();
     const [value, setValue] = useState();
+    const [deleted, setDeleted] = useState(false);
+    const userId = token.account.user_id
     let e = 0;
-    const tokenDict = {headers: { Authorization: `Bearer ${token.access_token}` },
-                    }
+    // const tokenDict = {headers: { Authorization: `Bearer ${token.access_token}` },
+    //                 }
+    console.log(" BEFORE TOKEN DICT", token)
+    // const tokenDict = {headers: { Authorization: `Bearer ${token.access_token}` }}
+    console.log(" AFTER TOKEN DICT")
+
+
 
     useEffect(()=> {
         Promise.all([
-            fetch(`${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/`, tokenDict),
-            fetch(`${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/eventlist`, tokenDict),
-            fetch(`${process.env.REACT_APP_CAMPAIGNS_API_HOST}/events/participants`, tokenDict),
+            fetch(`${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/`, {headers: { Authorization: `Bearer ${token.access_token}` }}),
+            fetch(`${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/eventlist`, {headers: { Authorization: `Bearer ${token.access_token}` }}),
+            fetch(`${process.env.REACT_APP_CAMPAIGNS_API_HOST}/events/participants`, {headers: { Authorization: `Bearer ${token.access_token}` }}),
+            console.log("Campaign detail token", token)
         ])
             .then(([resCampaigns, resEvents, resParticipants]) =>
                 Promise.all([resCampaigns.json(), resEvents.json(), resParticipants.json()])
@@ -27,8 +35,9 @@ const CampaignDetail = () => {
                 setCampaign(dataCampaigns);
                 setEvents(dataEvents);
                 setParticipants(dataParticipants);
+                setDeleted(false)
             });
-    },[token])
+    },[deleted])
 
     // useEffect(() => {
     //     async function getCampaign() {
@@ -93,12 +102,13 @@ const CampaignDetail = () => {
 
     const deleteEvent = async (event_id) => {
         let data = event_id
-        const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/${campaignId}/events/${data}`;
+        console.log('FIRING DELETE EVENT : ', data, campaignId)
+        const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events/${data}`;
         const fetchConfig = {
         method: 'delete',
         body: JSON.stringify(data),
         headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token.access_token}`,
             "Content-Type" : "application/json"
         },
         credentials : "include"
@@ -108,7 +118,8 @@ const CampaignDetail = () => {
     .then(() => {
     })
     .catch(e => console.log(`error: `, e));
-    window.location.reload();
+    setDeleted(true);
+    // window.location.reload();
 
 }
 
@@ -180,7 +191,7 @@ const CampaignDetail = () => {
                                     <td>{event.venuename}</td>
                                     <td>{event.address}</td>
                                     <td>{event.date}</td>
-                                    <td> {token.account.user_id===campaign.gamemaster_id
+                                    <td> {userId===campaign.gamemaster_id
                                     ?
                                        <Link to={`/Campaigns/${campaign.campaign_id}/${event.event_id}/edit/`}>
                                         <button className="btn btn-outline-dark fw-bold">
@@ -190,7 +201,7 @@ const CampaignDetail = () => {
                                          :"   "
                                          }
                                     </td>
-                                     <td> {token.account.user_id===campaign.gamemaster_id
+                                     <td> {userId===campaign.gamemaster_id
                                     ?
                                         <button className="btn btn-outline-dark fw-bold" value={event.event_id} onClick=
                                         {e => deleteEvent(e.target.value)}>

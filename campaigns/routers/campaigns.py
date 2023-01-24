@@ -66,6 +66,7 @@ async def update_campaign(
     user: dict = Depends(authenticator.get_current_account_data),
     ) -> Union[HttpError, CampaignOut]:
 
+    print("INFO OOOOOOOOOOOOO")
     return repo.update(campaign_id, campaign)
 
 
