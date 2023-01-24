@@ -14,9 +14,11 @@ user_out = UserOutWithPassword(
 token = Token(access_token="test", token_type="test")
 account_token = AccountToken(account=user_out, **token.dict())
 
+
 class FakeUserRepository:
     def create(self, info, hashed_password):
         return user_out
+
 
 class FakeAuthenticator:
     def hash_password(self, password):
@@ -27,8 +29,8 @@ class FakeAuthenticator:
 
 
 def test_create_user():
-    app.dependency_overrides[get_authenticator]=FakeAuthenticator
-    app.dependency_overrides[UserRepository]=FakeUserRepository
-    user_in=UserIn(email="no@No.com", password="password")
+    app.dependency_overrides[get_authenticator] = FakeAuthenticator
+    app.dependency_overrides[UserRepository] = FakeUserRepository
+    user_in = UserIn(email="no@No.com", password="password")
     response = client.post("/signup", json=user_in.dict())
     assert response.status_code == 200
