@@ -13,7 +13,7 @@ const ParticipantList = () => {
             if (token) {
                 console.log("hello little token")
                 const response = await fetch(url, {
-                    headers: { Authorization: `Bearer ${token}` },
+                    headers: { Authorization: `Bearer ${token.access_token}` },
                     });
                 if (response.ok) {
                 const data = await response.json();

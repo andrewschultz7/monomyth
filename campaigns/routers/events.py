@@ -95,6 +95,7 @@ def get_all_events(
     repo: EventRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ):
+
     return repo.get_all_events(campaign_id)
 
 

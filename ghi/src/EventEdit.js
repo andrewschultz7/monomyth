@@ -31,7 +31,7 @@ function EventEdit(props) {
                 const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/Campaigns/${campaignId}/events/${eventId}`;
                 if (token) {
                     const response = await fetch(url, {
-                        headers: { Authorization: `Bearer ${token}` },
+                        headers: { Authorization: `Bearer ${token.access_token}` },
                         });
                     if (response.ok) {
                     const data = await response.json();

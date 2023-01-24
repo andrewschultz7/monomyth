@@ -15,8 +15,9 @@ const CampaignDetail = () => {
         async function getCampaign() {
             const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/Campaigns/${campaignId}/`;
             if (token) {
+                console.log(campaign.gamemaster_id)
                 const response = await fetch(url, {
-                    headers: { Authorization: `Bearer ${token}` },
+                    headers: { Authorization: `Bearer ${token.access_token}` },
                     });
                 if (response.ok) {
                 const data = await response.json();
@@ -29,9 +30,8 @@ const CampaignDetail = () => {
         async function getEvent() {
             const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/Campaigns/${campaignId}/EventList`;
             if (token) {
-                console.log("token exists")
                 const response = await fetch(url, {
-                    headers: { Authorization: `Bearer ${token}` },
+                    headers: { Authorization: `Bearer ${token.access_token}` },
                     });
                 if (response.ok) {
                 const data = await response.json();
@@ -44,7 +44,7 @@ const CampaignDetail = () => {
         }
         getEvent();
 
-    }, [token, setEvents])
+    }, [token])
 
     const deleteEvent = async (event_id) => {
         let data = event_id
@@ -63,7 +63,7 @@ const CampaignDetail = () => {
     .then(() => {
     })
     .catch(e => console.log(`error: `, e));
-    setEvents([]);
+    window.location.reload();
 
 }
 
@@ -125,17 +125,24 @@ const CampaignDetail = () => {
                                     <td>{event.venuename}</td>
                                     <td>{event.address}</td>
                                     <td>{event.date}</td>
-                                     <td> {}
-                                        <Link to={`/Campaigns/${campaign.campaign_id}/${event.event_id}/edit/`}>
+                                    <td> {token.account.user_id===campaign.gamemaster_id
+                                    ?
+                                       <Link to={`/Campaigns/${campaign.campaign_id}/${event.event_id}/edit/`}>
                                         <button className="btn btn-outline-dark fw-bold">
                                             EDIT
                                         </button>
-                                    </Link></td>
-                                     <td>
+                                    </Link>
+                                         :"   "
+                                         }
+                                    </td>
+                                     <td> {token.account.user_id===campaign.gamemaster_id
+                                    ?
                                         <button className="btn btn-outline-dark fw-bold" value={event.event_id} onClick=
                                         {e => deleteEvent(e.target.value)}>
                                             DELETE
                                         </button>
+                                        :"   "
+                                         }
                                     </td>
                                 </tr>
                             )

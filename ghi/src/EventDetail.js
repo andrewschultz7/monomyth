@@ -15,7 +15,7 @@ const EventDetail = () => {
             if (token) {
                 console.log("token exists")
                 const response = await fetch(url, {
-                    headers: { Authorization: `Bearer ${token}` },
+                    headers: { Authorization: `Bearer ${token.access_token}` },
                     });
                 if (response.ok) {
                 const data = await response.json();

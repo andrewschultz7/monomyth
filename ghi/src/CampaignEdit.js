@@ -31,7 +31,7 @@ function CampaignEdit(props) {
                 const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}`;
                 if (token) {
                     const response = await fetch(url, {
-                        headers: { Authorization: `Bearer ${token}` },
+                        headers: { Authorization: `Bearer ${token.access_token}` },
                         });
                     if (response.ok) {
                     const data = await response.json();

@@ -14,7 +14,7 @@ const CampaignList = () => {
             if (token) {
                 console.log("token exists")
                 const response = await fetch(url, {
-                    headers: { Authorization: `Bearer ${token}` },
+                    headers: { Authorization: `Bearer ${token.access_token}` },
                     });
             // try {
                 if (response.ok) {
@@ -62,11 +62,15 @@ const CampaignList = () => {
                                     <td>{campaign.rulebook}</td>
                                     <td>{campaign.campaign_email}</td>
                                     <td>{campaign.users}</td>
-                                    <td><Link to={`/Campaigns/${campaign.campaign_id}/edit/`}>
+                                    <td>{token.account.user_id===campaign.gamemaster_id
+                                    ?
+                                        <Link to={`/Campaigns/${campaign.campaign_id}/edit/`}>
                                         <button className="btn btn-outline-dark fw-bold">
                                             EDIT
                                         </button>
-                                    </Link></td>
+                                    </Link>:"   "
+                                         }
+                                    </td>
                               </tr>
                             )
                         })}
