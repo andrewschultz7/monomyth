@@ -7,7 +7,7 @@ from fastapi import (
     Request,
 )
 from jwtdown_fastapi.authentication import Token
-from authenticator import authenticator
+from authenticator import authenticator, MyAuthenticator
 from pydantic import BaseModel
 
 from queries.users import (
@@ -55,12 +55,17 @@ async def get_token(
         }
 
 
+async def get_authenticator():
+    return authenticator
+
+
 @router.post("/signup", response_model=AccountToken | HttpError)
 async def create_account(
     info: UserIn,
     request: Request,
     response: Response,
     repo: UserRepository = Depends(),
+    authenticator: MyAuthenticator = Depends(get_authenticator),
 ):
     hashed_password = authenticator.hash_password(info.password)
     try:

@@ -11,7 +11,7 @@
 #             eventname="test",
 #             venuename="a place",
 #             address="500 test place",
-#             date=date.today(),
+#             date=datetime.date(),
 #             participants="me",
 #             campaign="star wars"
 # )
