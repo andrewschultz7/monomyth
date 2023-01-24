@@ -77,14 +77,14 @@ def delete_participant(
     return repo.delete(participant_id)
 
 
-@router.get("/events/participants/{participant_id}", response_model=Optional[ParticipantOut])
+@router.get("/events/participants/{user_id}", response_model=Optional[ParticipantOut])
 def get_one_participant(
-    participant_id: int,
+    user_id: int,
     response: Response,
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ) -> ParticipantOut:
-    event = repo.get_one(participant_id)
+    event = repo.get_one(user_id)
     if event is None:
         response.status_code = 404
     return event
