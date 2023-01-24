@@ -48,7 +48,7 @@ const EventDetail = () => {
                         {events?.map((event) => {
                             return(
                                 <tr key={event.event_id}>
-                                    <td><Link to={`/campaigns/${campaignId}/${event.event_id}/ParticipantForm`}>
+                                    <td><Link to={`/campaigns/${campaignId}/${event.event_id}/participantform`}>
                                         <button className="btn btn-outline-dark fw-bold">
                                             Register for Adventure
                                         </button>

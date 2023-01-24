@@ -21,7 +21,7 @@ const ParticipantList = () => {
                 }
             }
             else {
-                console.log("Hiiiiii")
+
             }
         }
         getParticipant();
@@ -43,7 +43,7 @@ const ParticipantList = () => {
                         {participants?.map(participant => {
                             return(
                                 <tr key={participant.participant_id}>
-                                    <td><Link to={`/Participants/${participant.participant_id}`}>
+                                    <td><Link to={`/participants/${participant.participant_id}`}>
                                         <button>
                                             Clicketh thine button
                                         </button>

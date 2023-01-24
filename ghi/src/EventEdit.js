@@ -23,12 +23,12 @@ function EventEdit(props) {
     const [date, setDate] = useState('');
     const [participants, setParticipants] = useState('');
     const [event, setEvent] = useState('')
-    const [campaign, setCampaign] = useState('')
+    const [campaign_id, setCampaign] = useState('')
     const navigate = useNavigate();
 
     useEffect(() => {
             async function getEvent() {
-                const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/Campaigns/${campaignId}/events/${eventId}`;
+                const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events/${eventId}`;
                 if (token) {
                     const response = await fetch(url, {
                         headers: { Authorization: `Bearer ${token.access_token}` },
@@ -66,8 +66,10 @@ function EventEdit(props) {
             data.participants=event.participants;
         } else {data.participants=participants};
 
+        data.campaign_id=campaignId
+
         console.log(data)
-        const eventUrl = `http://localhost:8001/Campaigns/${campaignId}/events/${eventId}`
+        const eventUrl = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events/${eventId}`
         const fetchConfig = {
             method: 'put',
             body: JSON.stringify(data),
@@ -87,7 +89,7 @@ function EventEdit(props) {
             setCampaign('');
         })
         .catch(e => console.log(`error: `, e));
-        navigate(`/Campaigns/${campaignId}`);
+        navigate(`/campaigns/${campaignId}`);
     };
 
     return (

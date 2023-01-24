@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { useAuthContext } from './AppAuth'
 import { Navigate, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import {useToken} from './AppAuth';
@@ -17,6 +18,7 @@ function BootstrapInput(props) {
 
 function CampaignForm(props) {
     const { campaignId } = useParams();
+    const { token } = useAuthContext();
     const [title, setTitle] = useState('');
     const [genre, setGenre] = useState('');
     const [rulebook, setRulebook] = useState('');
@@ -34,13 +36,14 @@ function CampaignForm(props) {
         data.rulebook=rulebook
         data.campaign_email=campaign_email
         data.users=users
-        console.log(data)
-        const campaignUrl = 'http://localhost:8001/Campaigns'
+        console.log("campaign new submit", data )
+        const campaignUrl = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns`
         const fetchConfig = {
             method: 'post',
             body: JSON.stringify(data),
             headers: {
-                "Content-Type" : "application/json"
+                "Content-Type" : "application/json",
+                Authorization: `Bearer ${token.access_token}`
             },
             credentials : "include"
         };
@@ -55,7 +58,7 @@ function CampaignForm(props) {
             setDescription('');
         })
         .catch(e => console.log(`error: `, e));
-        navigate(`/Campaigns/${campaignId}/`);
+        navigate(`/campaigns/${campaignId}/`);
     };
 
     return (

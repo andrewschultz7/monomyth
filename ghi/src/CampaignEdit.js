@@ -45,7 +45,9 @@ function CampaignEdit(props) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         let data= {}
+
         data.campaign_id={campaignId}
+
         if (title === ''){
             data.title=campaign.title;
         } else {data.title=title};
@@ -70,7 +72,8 @@ function CampaignEdit(props) {
             data.users=campaign.users;
         } else {data.users=users};
 
-        const campaignUrl = `http://localhost:8001/campaigns/${campaignId}`
+        console.log(campaign, "campaign edit")
+        const campaignUrl = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}`
         const fetchConfig = {
             method: 'put',
             body: JSON.stringify(data),
@@ -82,15 +85,15 @@ function CampaignEdit(props) {
         await fetch(campaignUrl, fetchConfig)
         .then(response => response.json())
         .then(() => {
-            setTitle(campaignId);
-            setGenre(genre);
+            setTitle('');
+            setGenre('');
             setRulebook('');
             setEmail('');
             setUsers('');
             setDescription('');
         })
         .catch(e => console.log(`error: `, e));
-        navigate(`/Campaigns/${campaignId}/`);
+        navigate(`/campaigns/${campaignId}/`);
     };
 
     return (

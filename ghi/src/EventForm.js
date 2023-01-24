@@ -34,7 +34,7 @@ function EventForm(props) {
         data.participants=participants
         data.campaign_id=campaignId
         console.log(data)
-        const eventUrl = `http://localhost:8001/Campaigns/${campaignId}/events/`
+        const eventUrl = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events/`
         const fetchConfig = {
             method: 'post',
             body: JSON.stringify(data),
@@ -54,7 +54,7 @@ function EventForm(props) {
             setCampaign('');
         })
         .catch(e => console.log(`error: `, e));
-        navigate(`/Campaigns/${campaignId}/`);
+        navigate(`/campaigns/${campaignId}/`);
     };
 
 

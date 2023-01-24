@@ -24,13 +24,17 @@ class ParticipantOut(BaseModel):
 
 
 class ParticipantRepository:
-    def get_all(self) -> Union[Error, List[ParticipantOut]]:
+    def get_all_participants(self) -> Union[Error, List[ParticipantOut]]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                        SELECT participant_id,character
+                        SELECT participant_id
+                        , user_id
+                        , character
+                        , event_id
+                        , campaign_id
                         FROM participants
                         ORDER BY participant_id;
                         """
@@ -39,7 +43,10 @@ class ParticipantRepository:
                     for record in db:
                         participant = ParticipantOut(
                             participant_id= record[0],
-                            character=record[1],
+                            user_id=record[1],
+                            character=record[2],
+                            event_id=record[3],
+                            campaign_id=record[4],
                         )
                         result.append(participant)
                     return result

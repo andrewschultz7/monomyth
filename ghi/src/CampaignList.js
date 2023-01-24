@@ -10,23 +10,23 @@ const CampaignList = () => {
 
     useEffect(() => {
         async function getCampaign() {
-            const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/Campaigns`;
+            const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns`;
             if (token) {
-                console.log("token exists")
+                console.log(token, " token exists")
                 const response = await fetch(url, {
                     headers: { Authorization: `Bearer ${token.access_token}` },
                     });
-            // try {
+            try {
                 if (response.ok) {
                 const data = await response.json();
                 setCampaigns(data);
                 }
-            // } catch (e) {
-            //     console.error(e);
-            // }
+            } catch (e) {
+                console.error(e);
+            }
             }
             else {
-                console.log("HELLO")
+
             }
         }
         getCampaign();
@@ -51,7 +51,7 @@ const CampaignList = () => {
                         {campaigns?.map((campaign) => {
                             return(
                                 <tr key={campaign.campaign_id}>
-                                    <td><Link to={`/Campaigns/${campaign.campaign_id}/`}>
+                                    <td><Link to={`/campaigns/${campaign.campaign_id}/`}>
                                         <button className="btn btn-outline-dark fw-bold">
                                             DETAILS
                                         </button>
@@ -64,7 +64,7 @@ const CampaignList = () => {
                                     <td>{campaign.users}</td>
                                     <td>{token.account.user_id===campaign.gamemaster_id
                                     ?
-                                        <Link to={`/Campaigns/${campaign.campaign_id}/edit/`}>
+                                        <Link to={`/campaigns/${campaign.campaign_id}/edit/`}>
                                         <button className="btn btn-outline-dark fw-bold">
                                             EDIT
                                         </button>
