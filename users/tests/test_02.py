@@ -1,9 +1,7 @@
 from fastapi.testclient import TestClient
 from main import app
-from users.queries import UserOutWithPassword, UserIn
-from users.queries.users import UserRepository
-from users.routers import AccountToken
-from authenticator import authenticator
+from queries.users import UserOutWithPassword, UserIn, UserRepository
+from routers.users import AccountToken, get_authenticator
 from jwtdown_fastapi.authentication import Token
 
 
@@ -24,12 +22,12 @@ class FakeAuthenticator:
     def hash_password(self, password):
         return "password"
 
-    def login(self, response, request, form, repo):
+    async def login(self, response, request, form, repo):
         return token
 
 
 def test_create_user():
-    app.dependency_overrides[authenticator]=FakeAuthenticator
+    app.dependency_overrides[get_authenticator]=FakeAuthenticator
     app.dependency_overrides[UserRepository]=FakeUserRepository
     user_in=UserIn(email="no@No.com", password="password")
     response = client.post("/signup", json=user_in.dict())

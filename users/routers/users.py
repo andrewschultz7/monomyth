@@ -54,6 +54,8 @@ async def get_token(
             "account": account,
         }
 
+async def get_authenticator():
+    return authenticator
 
 @router.post("/signup", response_model=AccountToken | HttpError)
 async def create_account(
@@ -61,7 +63,7 @@ async def create_account(
     request: Request,
     response: Response,
     repo: UserRepository = Depends(),
-    authenticator: MyAuthenticator = Depends(authenticator)
+    authenticator: MyAuthenticator = Depends(get_authenticator)
 ):
     hashed_password = authenticator.hash_password(info.password)
     try:
