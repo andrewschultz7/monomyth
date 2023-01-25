@@ -44,6 +44,7 @@ not_authorized = HTTPException(
 )
 
 
+
 @router.post("/campaigns", response_model=CampaignOut | HttpError)
 async def create_campaign(
     info: CampaignIn,

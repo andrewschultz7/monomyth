@@ -6,16 +6,13 @@ from queries.pool import pool
 class Error(BaseModel):
     message: str
 
-
 class DuplicateParticipantError(ValueError):
     pass
-
 
 class ParticipantIn(BaseModel):
     character: str
     event_id: int
     campaign_id: int
-
 
 class ParticipantOut(BaseModel):
     participant_id: int
@@ -24,13 +21,12 @@ class ParticipantOut(BaseModel):
     event_id: int = 0
     campaign_id: int
 
-
 class ParticipantRepository:
     def get_all_participants(self) -> Union[Error, List[ParticipantOut]]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    result = db.execute(
+                    db.execute(
                         """
                         SELECT participant_id
                         , user_id

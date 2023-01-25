@@ -27,14 +27,11 @@ class EventForm(BaseModel):
     participants: str
     campaign: Optional[str]
 
-
 class AccountToken(Token):
     account: EventOut
 
-
 class HttpError(BaseModel):
     detail: str
-
 
 router = APIRouter()
 

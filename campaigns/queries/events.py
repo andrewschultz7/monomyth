@@ -7,10 +7,8 @@ from queries.pool import pool
 class Error(BaseModel):
     message: str
 
-
 class DuplicateEventError(ValueError):
     pass
-
 
 class EventIn(BaseModel):
     # event_id: int
@@ -19,6 +17,7 @@ class EventIn(BaseModel):
     address: str
     date: date
     campaign_id: Optional[int]
+
 
 
 class EventOut(BaseModel):
