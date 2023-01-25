@@ -7,8 +7,10 @@ from queries.pool import pool
 class Error(BaseModel):
     message: str
 
+
 class DuplicateEventError(ValueError):
     pass
+
 
 class EventIn(BaseModel):
     # event_id: int
@@ -17,6 +19,7 @@ class EventIn(BaseModel):
     address: str
     date: date
     campaign_id: Optional[int]
+
 
 class EventOut(BaseModel):
     event_id: int
@@ -43,7 +46,7 @@ class EventRepository:
                         FROM events
                         WHERE event_id = %s
                         """,
-                        [event_id]
+                        [event_id],
                     )
                     record = result.fetchone()
                     if record is None:
@@ -61,16 +64,15 @@ class EventRepository:
                         DELETE FROM events
                         WHERE event_id = %s;
                         """,
-                        [event_id]
+                        [event_id],
                     )
                     return True
         except Exception:
             return False
 
-
     def update(self, event_id: int, event: EventIn) -> Union[EventOut, Error]:
         try:
-            print( "FIRST: FIRING EVENT UPDATE QUERIES")
+            print("FIRST: FIRING EVENT UPDATE QUERIES")
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     db.execute(
@@ -89,16 +91,15 @@ class EventRepository:
                             event.address,
                             event.date,
                             event.campaign_id,
-                            event_id
-                        ]
+                            event_id,
+                        ],
                     )
                 # old_data = event.dict()
                 # return EventOut(event_id=event_id, **old_data)
-                print( "FIRING EVENT UPDATE QUERIES", event_id, event)
+                print("FIRING EVENT UPDATE QUERIES", event_id, event)
                 return self.event_in_to_out(event_id, event)
         except Exception:
             return {"message": "Could not updateevents"}
-
 
     def get_all_events(self, campaign_id) -> Union[Error, List[EventOut]]:
         try:
@@ -116,12 +117,12 @@ class EventRepository:
                         WHERE campaign_id = %s
                         ORDER BY event_id;
                         """,
-                        [campaign_id]
+                        [campaign_id],
                     )
                     result = []
                     for record in db:
                         event = EventOut(
-                            event_id= record[0],
+                            event_id=record[0],
                             eventname=record[1],
                             venuename=record[2],
                             address=record[3],
@@ -153,28 +154,28 @@ class EventRepository:
                         event.venuename,
                         event.address,
                         event.date,
-                        event.campaign_id
-                    ]
+                        event.campaign_id,
+                    ],
                 )
                 event_id = result.fetchone()[0]
                 old_data = event.dict()
-                return EventOut (event_id=event_id, **old_data)
+                return EventOut(event_id=event_id, **old_data)
                 # return event_in_to_out(event_id, event)
 
-# this is where we did hashed_password in campaign
+    # this is where we did hashed_password in campaign
 
-#Refactor for event Out
+    # Refactor for event Out
     def record_to_event_out(self, record):
         return EventOut(
-            event_id= record[0],
+            event_id=record[0],
             eventname=record[1],
             venuename=record[2],
             address=record[3],
             date=record[4],
-            campaign_id=record[5]
+            campaign_id=record[5],
         )
 
-#Refactor of In to Out event
+    # Refactor of In to Out event
     def event_in_to_out(self, event_id: int, event: EventIn):
         old_data = event.dict()
         return EventOut(event_id=event_id, **old_data)

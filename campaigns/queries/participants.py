@@ -1,19 +1,21 @@
 from pydantic import BaseModel
 from typing import Optional, List, Union
-from datetime import date
 from queries.pool import pool
 
 
 class Error(BaseModel):
     message: str
 
+
 class DuplicateParticipantError(ValueError):
     pass
+
 
 class ParticipantIn(BaseModel):
     character: str
     event_id: int
     campaign_id: int
+
 
 class ParticipantOut(BaseModel):
     participant_id: int
@@ -42,7 +44,7 @@ class ParticipantRepository:
                     result = []
                     for record in db:
                         participant = ParticipantOut(
-                            participant_id= record[0],
+                            participant_id=record[0],
                             user_id=record[1],
                             character=record[2],
                             event_id=record[3],
@@ -67,7 +69,7 @@ class ParticipantRepository:
                         FROM participants
                         WHERE user_id = %s
                         """,
-                        [user_id]
+                        [user_id],
                     )
                     record = result.fetchone()
                     if record is None:
@@ -97,26 +99,25 @@ class ParticipantRepository:
                         participant.character,
                         participant.event_id,
                         participant.campaign_id,
-                    ]
+                    ],
                 )
                 participant_id = result.fetchone()[0]
                 old_data = participant.dict()
-                return ParticipantOut (participant_id=participant_id, user_id=user["user_id"], **old_data)
-
+                return ParticipantOut(
+                    participant_id=participant_id,
+                    user_id=user["user_id"],
+                    **old_data
+                )
 
     def participant_in_to_out(self, user_id: int, participant: ParticipantIn):
-            old_data = participant.dict()
-            return ParticipantOut(user_id==user_id, **old_data)
-
+        old_data = participant.dict()
+        return ParticipantOut(user_id == user_id, **old_data)
 
     def record_to_participant_out(self, record):
         return ParticipantOut(
-            participant_id= record[0],
+            participant_id=record[0],
             user_id=record[1],
             character=record[2],
             event_id=record[3],
-            campaign_id=record[4]
+            campaign_id=record[4],
         )
-
-# this is where we did hashed_password in event
-# test

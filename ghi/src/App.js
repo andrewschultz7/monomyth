@@ -25,27 +25,12 @@ import { useEffect, useState } from 'react';
 
 
 function GetToken() {
-    // console.log("get token first")
     useToken();
-    // console.log("APPJS NOW")
     return null
 }
 
 function App() {
 const [ token, setToken] = useState('');
-
-  // useEffect(() => {
-  //   async function fetchToken() {
-  //     console.log("Inside use effect before getToken")
-  //     const token = await getTokenInternal();
-  //     console.log("Inside useeffect after getToken ", token)
-  //     setToken(token);
-
-  //   }
-  //   if (!token) {
-  //     fetchToken();
-  //   }
-  // }, [setToken, token]);
 
   return (
     <BrowserRouter>
