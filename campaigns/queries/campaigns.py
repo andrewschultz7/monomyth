@@ -1,20 +1,20 @@
 from pydantic import BaseModel
 from typing import Optional, List, Union
-from datetime import date
-from queries.pool import pool, pool2
-from authenticator import authenticator
-from fastapi import Depends
+from queries.pool import pool
 
 
 class Error(BaseModel):
     message: str
 
+
 class DuplicateCampaignError(ValueError):
     pass
+
 
 class UserList(BaseModel):
     user_id: str
     character: str
+
 
 class CampaignIn(BaseModel):
     title: str
@@ -24,6 +24,7 @@ class CampaignIn(BaseModel):
     campaign_email: str
     gamemaster_id: Optional[int]
 
+
 class CampaignOut(BaseModel):
     campaign_id: int
     title: str
@@ -32,6 +33,7 @@ class CampaignOut(BaseModel):
     rulebook: str
     campaign_email: str
     gamemaster_id: Optional[int]
+
 
 class UserOut(BaseModel):
     user_id: int
@@ -56,7 +58,7 @@ class CampaignRepository:
                         FROM campaigns
                         WHERE campaign_id = %s
                         """,
-                        [campaign_id]
+                        [campaign_id],
                     )
                     record = result.fetchone()
                     if record is None:
@@ -64,7 +66,6 @@ class CampaignRepository:
                     return self.record_to_campaign_out(record)
         except Exception:
             return {"message": "Could not get that Campaign"}
-
 
     def create(self, campaign: CampaignIn, user_id) -> CampaignOut:
         with pool.connection() as conn:
@@ -88,14 +89,13 @@ class CampaignRepository:
                         campaign.description,
                         campaign.rulebook,
                         campaign.campaign_email,
-                        user_id
-                    ]
+                        user_id,
+                    ],
                 )
                 campaign_id = result.fetchone()[0]
                 old_data = campaign.dict()
-                return CampaignOut (campaign_id=campaign_id, **old_data)
+                return CampaignOut(campaign_id=campaign_id, **old_data)
                 # return campaign_in_to_out(campaign_id, campaign)
-
 
     def delete(self, campaign_id: int) -> bool:
         try:
@@ -106,14 +106,15 @@ class CampaignRepository:
                         DELETE FROM campaigns
                         WHERE campaign_id = %s;
                         """,
-                        [campaign_id]
+                        [campaign_id],
                     )
                     return True
         except Exception:
             return False
 
-
-    def update(self, campaign_id: int, campaign: CampaignIn) -> Union[CampaignOut, Error]:
+    def update(
+        self, campaign_id: int, campaign: CampaignIn
+    ) -> Union[CampaignOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -135,16 +136,14 @@ class CampaignRepository:
                             campaign.rulebook,
                             campaign.campaign_email,
                             campaign.gamemaster_id,
-                            campaign_id
-
-                        ]
+                            campaign_id,
+                        ],
                     )
                 # old_data = campaign.dict()
                 # return CampaignOut(campaign_id=campaign_id, **old_data)
                 return self.campaign_in_to_out(campaign_id, campaign)
         except Exception:
             return {"message": "Could not updateCampaigns"}
-
 
     def get_all_campaigns(self) -> Union[Error, List[CampaignOut]]:
         try:
@@ -166,7 +165,7 @@ class CampaignRepository:
                     result = []
                     for record in db:
                         campaign = CampaignOut(
-                            campaign_id= record[0],
+                            campaign_id=record[0],
                             title=record[1],
                             genre=record[2],
                             description=record[3],
@@ -184,22 +183,21 @@ class CampaignRepository:
         except Exception:
             return {"message": "Could not get all Campaigns"}
 
+    # this is where we did hashed_password in Users
 
-# this is where we did hashed_password in Users
-
-#Refactor for Campaign Out
+    # Refactor for Campaign Out
     def record_to_campaign_out(self, record):
         return CampaignOut(
-            campaign_id= record[0],
+            campaign_id=record[0],
             title=record[1],
             genre=record[2],
             description=record[3],
             rulebook=record[4],
             campaign_email=record[5],
-            gamemaster_id=record[6]
+            gamemaster_id=record[6],
         )
 
-#Refactor of In to Out Campaign
+    # Refactor of In to Out Campaign
     def campaign_in_to_out(self, campaign_id: int, campaign: CampaignIn):
         old_data = campaign.dict()
         return CampaignOut(campaign_id=campaign_id, **old_data)

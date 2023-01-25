@@ -1,6 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional, List, Union
-from datetime import date
+from typing import List, Union
 from queries.pool import pool
 
 
@@ -67,6 +66,9 @@ class UserRepository:
                         WHERE email = %s;
                         """
                     )
+                    record = result.fetchall()
+                    if record is None:
+                        return None
                     return [
                         UserOut(
                             user_id=record[0],

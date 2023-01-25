@@ -15,7 +15,6 @@ import ParticipantForm from './ParticipantForm';
 import ParticipantList from './ParticipantList';
 import SignUpForm from './Users/SignUpForm';
 import UserDetail from './UserDetail';
-import ParticipantDetail from './ParticipantDetail';
 import './App.css';
 import { AuthProvider, useToken } from './AppAuth';
 import { useAuthContext } from './AppAuth';
@@ -48,7 +47,6 @@ function App() {
           <Route path="/participantlist" element={<ParticipantList />} />
           <Route path="/signupform" element={<SignUpForm />} />
           <Route path="/userdetail" element={<UserDetail />} />
-          <Route path="/participantdetail" elemet={<ParticipantDetail />} />
         </Routes>
       </div>
     </AuthProvider>

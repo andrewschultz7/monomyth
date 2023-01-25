@@ -33,25 +33,14 @@ const ParticipantList = () => {
             <table className="table table-striped">
                     <thead>
                         <tr>
-                            <th></th>
                             <th>Character</th>
-                            <th>Email</th>
-                            <th>Event</th>
                         </tr>
                     </thead>
                     <tbody>
                         {participants?.map(participant => {
                             return(
                                 <tr key={participant.participant_id}>
-                                    <td><Link to={`/participants/${participant.participant_id}`}>
-                                        <button>
-                                            Clicketh thine button
-                                        </button>
-                                    </Link></td>
                                     <td>{participant.character}</td>
-                                    <td>{participant.email}</td>
-                                    <td>{participant.event}</td>
-
                               </tr>
                             )
                         })}

@@ -24,18 +24,18 @@ function Nav() {
                   Create...
                 </button>
                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <li>
+                  {/* <li>
                     <NavLink className="nav-link dropdown-item" to="/userform" id="dropdown">Create User</NavLink>
-                  </li>
+                  </li> */}
                   <li>
                     <Link className="nav-link dropdown-item" to="/campaignform" id="dropdown">Create Campaign</Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <NavLink className="nav-link dropdown-item" to="/eventform" id="dropdown">Create Events</NavLink>
-                  </li>
-                  <li>
+                  </li> */}
+                  {/* <li>
                     <NavLink className="nav-link dropdown-item" to="/participantform" id="dropdown">Create Participant</NavLink>
-                  </li>
+                  </li> */}
                 </div>
               </div>
               <div className="dropdown">
@@ -49,18 +49,18 @@ function Nav() {
                   <li>
                     <NavLink className="nav-link dropdown-item" to="/campaignlist" id="dropdown">Campaign List</NavLink>
                   </li>
-                  <li>
+                  {/* <li>
                     <NavLink className="nav-link dropdown-item" to="/campaigns/:id/" id="dropdown">Campaign Detail</NavLink>
-                  </li>
-                  <li>
+                  </li> */}
+                  {/* <li>
                     <NavLink className="nav-link dropdown-item" to="/campaigns/:campaignId/eventlist" id="dropdown">Event List</NavLink>
-                  </li>
+                  </li> */}
                   <li>
                     <NavLink className="nav-link dropdown-item" to="/participantlist" id="dropdown">Participant List</NavLink>
                   </li>
-                  <li>
+                  {/* <li>
                     <NavLink className="nav-link dropdown-item" to="/participantdetail" id="dropdown">Participant Details</NavLink>
-                  </li>
+                  </li> */}
                 </div>
               </div>
             </ul>
