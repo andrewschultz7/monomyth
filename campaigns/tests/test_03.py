@@ -24,10 +24,8 @@
 #     def get_one(self, user_id):
 #         return participant_out
 
-
 # def fake_authenticator():
 #     pass
-
 
 # def test_get_participant():
 #     app.dependency_overrides[
