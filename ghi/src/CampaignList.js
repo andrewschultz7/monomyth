@@ -45,7 +45,7 @@ const CampaignList = () => {
             <div className="card-body">
                 <h5 className="card-title">{campaign.title}</h5>
                 <p className="card-text">{campaign.description}</p>
-                <Link to={`/Campaigns/${campaign.campaign_id}/`}>
+                <Link to={`/campaigns/${campaign.campaign_id}/`}>
                                         <button className="btn btn-outline-dark fw-bold">
                                             DETAILS
                                         </button>

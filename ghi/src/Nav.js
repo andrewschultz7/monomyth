@@ -25,16 +25,16 @@ function Nav() {
                 </button>
                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <li>
-                    <NavLink className="nav-link dropdown-item" to="/UserForm" id="dropdown">Create User</NavLink>
+                    <NavLink className="nav-link dropdown-item" to="/userform" id="dropdown">Create User</NavLink>
                   </li>
                   <li>
-                    <Link className="nav-link dropdown-item" to="/CampaignForm" id="dropdown">Create Campaign</Link>
+                    <Link className="nav-link dropdown-item" to="/campaignform" id="dropdown">Create Campaign</Link>
                   </li>
                   <li>
-                    <NavLink className="nav-link dropdown-item" to="/EventForm" id="dropdown">Create Events</NavLink>
+                    <NavLink className="nav-link dropdown-item" to="/eventform" id="dropdown">Create Events</NavLink>
                   </li>
                   <li>
-                    <NavLink className="nav-link dropdown-item" to="/ParticipantForm" id="dropdown">Create Participant</NavLink>
+                    <NavLink className="nav-link dropdown-item" to="/participantform" id="dropdown">Create Participant</NavLink>
                   </li>
                 </div>
               </div>
@@ -44,19 +44,22 @@ function Nav() {
                 </button>
                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <li>
-                    <NavLink className="nav-link dropdown-item " to="/UserList" id="dropdown">User Info</NavLink>
+                    <NavLink className="nav-link dropdown-item " to="/userdetail" id="dropdown">User Info</NavLink>
                   </li>
                   <li>
-                    <NavLink className="nav-link dropdown-item" to="/CampaignList" id="dropdown">Campaign List</NavLink>
+                    <NavLink className="nav-link dropdown-item" to="/campaignlist" id="dropdown">Campaign List</NavLink>
                   </li>
                   <li>
-                    <NavLink className="nav-link dropdown-item" to="/Campaigns/:id/" id="dropdown">Campaign Detail</NavLink>
+                    <NavLink className="nav-link dropdown-item" to="/campaigns/:id/" id="dropdown">Campaign Detail</NavLink>
                   </li>
                   <li>
-                    <NavLink className="nav-link dropdown-item" to="/Campaigns/:campaignId/EventList" id="dropdown">Event List</NavLink>
+                    <NavLink className="nav-link dropdown-item" to="/campaigns/:campaignId/eventlist" id="dropdown">Event List</NavLink>
                   </li>
                   <li>
-                    <NavLink className="nav-link dropdown-item" to="/ParticipantList" id="dropdown">Participant List</NavLink>
+                    <NavLink className="nav-link dropdown-item" to="/participantlist" id="dropdown">Participant List</NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="nav-link dropdown-item" to="/participantdetail" id="dropdown">Participant Details</NavLink>
                   </li>
                 </div>
               </div>
@@ -69,7 +72,7 @@ function Nav() {
             <NavLink className="nav-link dropdown-item text-white" to="logout" id="dropdown">Logout</NavLink>
           </li>
         <li>
-          <NavLink className="nav-link dropdown-item text-white" to="/SignUpForm" id="dropdown">Sign up</NavLink>
+          <NavLink className="nav-link dropdown-item text-white" to="/signupform" id="dropdown">Sign up</NavLink>
         </li>
           {/* <nav className="navbar navbar-expand-lg navbar-dark bg-success">
       <div className="container-fluid">

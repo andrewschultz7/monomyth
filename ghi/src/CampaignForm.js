@@ -58,7 +58,7 @@ function CampaignForm(props) {
             setDescription('');
         })
         .catch(e => console.log(`error: `, e));
-        navigate(`/CampaignList`);
+        navigate(`/campaignlist`);
     };
 
     return (

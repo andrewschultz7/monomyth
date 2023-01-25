@@ -25,8 +25,8 @@ const CampaignDetail = () => {
         Promise.all([
             fetch(`${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/`, {headers: { Authorization: `Bearer ${token.access_token}` }}),
             fetch(`${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/eventlist`, {headers: { Authorization: `Bearer ${token.access_token}` }}),
-            fetch(`${process.env.REACT_APP_CAMPAIGNS_API_HOST}/events/participants/${userId}`, {headers: { Authorization: `Bearer ${token.access_token}` }}),
-            console.log("PARTICIPANTS", participants)
+            fetch(`${process.env.REACT_APP_CAMPAIGNS_API_HOST}/events/participants/`, {headers: { Authorization: `Bearer ${token.access_token}` }}),
+            console.log("Event", events)
         ])
             .then(([resCampaigns, resEvents, resParticipants]) =>
                 Promise.all([resCampaigns.json(), resEvents.json(), resParticipants.json()])
@@ -146,7 +146,8 @@ const CampaignDetail = () => {
                             <td>{campaign.description}</td>
                             <td>{campaign.rulebook}</td>
                             <td>{campaign.campaign_email}</td>
-                             <td>{token.account.user_id===campaign.gamemaster_id
+                            {console.log("Before Token", token.account.user_id, campaign.gamemaster_id)}
+                            <td>{token.account.user_id===campaign.gamemaster_id
                                     ?
                                 <Link to={`/Campaigns/${campaignId}/EventForm`}>
                                         <button className="btn btn-outline-dark fw-bold">
@@ -173,13 +174,15 @@ const CampaignDetail = () => {
                     </thead>
                     <tbody>
                         {events?.map((event) => {
-                            {console.log("event CCCCCCCCCCC", event.event_id, participants.event_id, event.event_id==participants.event_id)}
                             return(
                                 <tr key={event.event_id}>
                                     <td>
+                                        {console.log("event CCCCCCCCCCC", event.event_id, participants.event_id, event.event_id==participants.event_id)}
+                                    {/* {participants.event_id!==event.event_id
+                                    ?'': */}
                                         {participants.event_id!==event.event_id
                                     ?
-                                        <Link to={`/campaigns/${campaignId}/${event.event_id}/ParticipantForm`}>
+                                        <Link to={`/campaigns/${campaignId}/${event.event_id}/participantform`}>
                                         <button className="btn btn-outline-dark fw-bold">
                                             Register for Adventure
                                         </button>

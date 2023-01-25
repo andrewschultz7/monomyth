@@ -77,7 +77,7 @@ def delete_participant(
     return repo.delete(participant_id)
 
 
-@router.get("/events/participants/{user_id}", response_model=Optional[ParticipantOut])
+@router.get("/events/participants/{participant_id}", response_model=Optional[ParticipantOut])
 def get_one_participant(
     user_id: int,
     response: Response,
