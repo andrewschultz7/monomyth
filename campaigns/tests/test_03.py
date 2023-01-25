@@ -5,32 +5,41 @@ from authenticator import authenticator
 from queries.participants import ParticipantRepository
 
 
-participant_out = ParticipantOut(
-    participant_id=3,
-    user_id=1,
-    character="test",
-    event_id=1,
-    campaign_id=1,
-)
-
-
 client = TestClient(app)
 
 
-class FakeParticipantRepository:
-    def get_one(self, user_id):
-        return participant_out
+class FakeParticipantRepo:
+    def get_one(self, uid=1):
+        return ParticipantOut(
+            participant_id=3,
+            user_id=uid,
+            character="testCH",
+            event_id=1,
+            campaign_id=1,
+        )
 
 
 def fake_authenticator():
-    pass
+    return {"user_id": 1, "email": "test@email.com", "role": "player"}
 
 
-def test_get_participant():
+def test_get_a_participant():
+    participant_expected = {
+        "participant_id": 3,
+        "user_id": 1,
+        "character": "testCH",
+        "event_id": 1,
+        "campaign_id": 1,
+    }
+
     app.dependency_overrides[
         authenticator.get_current_account_data
     ] = fake_authenticator
-    app.dependency_overrides[ParticipantRepository] = FakeParticipantRepository
-    response = client.get("/campaigns/1/events/1/participants/3")
+    app.dependency_overrides[ParticipantRepository] = FakeParticipantRepo
+
+    response = client.get("/campaigns/events/participants/")
+
     assert response.status_code == 200
-    assert response.json() == participant_out
+    assert response.json() == participant_expected
+
+    app.dependency_overrides = {}
