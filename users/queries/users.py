@@ -66,9 +66,6 @@ class UserRepository:
                         WHERE email = %s;
                         """
                     )
-                    record = result.fetchall()
-                    if record is None:
-                        return None
                     return [
                         UserOut(
                             user_id=record[0],

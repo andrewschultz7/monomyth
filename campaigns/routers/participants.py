@@ -25,7 +25,6 @@ class ParticipantForm(BaseModel):
     campaign_id: int
 
 
-
 class AccountToken(Token):
     account: ParticipantOut
 

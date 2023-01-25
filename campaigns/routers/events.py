@@ -10,7 +10,6 @@ from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
 from typing import Union, Optional, List
 from pydantic import BaseModel
-
 from queries.events import (
     EventIn,
     EventOut,
@@ -27,11 +26,14 @@ class EventForm(BaseModel):
     participants: str
     campaign: Optional[str]
 
+
 class AccountToken(Token):
     account: EventOut
 
+
 class HttpError(BaseModel):
     detail: str
+
 
 router = APIRouter()
 

@@ -7,7 +7,6 @@ class Error(BaseModel):
     message: str
 
 
-
 class DuplicateCampaignError(ValueError):
     pass
 
@@ -26,7 +25,6 @@ class CampaignIn(BaseModel):
     gamemaster_id: Optional[int]
 
 
-
 class CampaignOut(BaseModel):
     campaign_id: int
     title: str
@@ -35,7 +33,6 @@ class CampaignOut(BaseModel):
     rulebook: str
     campaign_email: str
     gamemaster_id: Optional[int]
-
 
 
 class UserOut(BaseModel):
@@ -201,7 +198,6 @@ class CampaignRepository:
             gamemaster_id=record[6],
         )
 
-    # Refactor of In to Out Campaign
     # Refactor of In to Out Campaign
     def campaign_in_to_out(self, campaign_id: int, campaign: CampaignIn):
         old_data = campaign.dict()

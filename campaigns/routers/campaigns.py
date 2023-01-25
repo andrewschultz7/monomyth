@@ -10,7 +10,6 @@ from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
 from typing import Union, Optional, List
 from pydantic import BaseModel
-
 from queries.campaigns import (
     CampaignIn,
     CampaignOut,
@@ -42,7 +41,6 @@ not_authorized = HTTPException(
     detail="Invalid authentication credentials",
     headers={"WWW-Authenticate": "Bearer"},
 )
-
 
 
 @router.post("/campaigns", response_model=CampaignOut | HttpError)

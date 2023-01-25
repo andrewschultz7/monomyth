@@ -6,13 +6,16 @@ from queries.pool import pool
 class Error(BaseModel):
     message: str
 
+
 class DuplicateParticipantError(ValueError):
     pass
+
 
 class ParticipantIn(BaseModel):
     character: str
     event_id: int
     campaign_id: int
+
 
 class ParticipantOut(BaseModel):
     participant_id: int
@@ -20,6 +23,7 @@ class ParticipantOut(BaseModel):
     character: str
     event_id: int = 0
     campaign_id: int
+
 
 class ParticipantRepository:
     def get_all_participants(self) -> Union[Error, List[ParticipantOut]]:
@@ -117,7 +121,3 @@ class ParticipantRepository:
             event_id=record[3],
             campaign_id=record[4],
         )
-
-
-# this is where we did hashed_password in event
-# test
