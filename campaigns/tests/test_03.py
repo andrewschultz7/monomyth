@@ -1,11 +1,9 @@
-# get participant by id
-
 from fastapi.testclient import TestClient
 from main import app
 from routers.participants import ParticipantOut
 from authenticator import authenticator
 from queries.participants import ParticipantRepository
-from pydantic import BaseModel
+
 
 participant_out = ParticipantOut(
     participant_id=3,
