@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useAuthContext } from './AppAuth'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from "react-router-dom";
 
-
-const EventList = () => {
-    const [events, setEvents] = useState([]);
+const EventDetail = () => {
+    const [campaign, setCampaign] = useState([]);
     const { token } = useAuthContext();
+    const { campaignId } = useParams();
+    const [events, setEvents] = useState([]);
+    // const [token, setToken] = useState([]);
 
     useEffect(() => {
         async function getEvent() {
@@ -27,10 +29,10 @@ const EventList = () => {
         getEvent();
     }, [token])
 
-    return(
+    return (
         <div className="container-fluid">
-            <h1>Event List</h1>
-            <table className="table table-striped">
+                <h2>Campaign Events</h2>
+                <table className="table table-striped">
                     <thead>
                         <tr>
                             <th></th>
@@ -46,17 +48,16 @@ const EventList = () => {
                         {events?.map((event) => {
                             return(
                                 <tr key={event.event_id}>
-                                    <td><Link to={`/events/${event.event_id}/`}>
+                                    <td><Link to={`/campaigns/${campaignId}/${event.event_id}/participantform`}>
                                         <button className="btn btn-outline-dark fw-bold">
-                                            Register for Event!
+                                            Register for Adventure
                                         </button>
                                     </Link></td>
                                     <td>{event.eventname}</td>
                                     <td>{event.venuename}</td>
                                     <td>{event.address}</td>
                                     <td>{event.date}</td>
-                                    <td>{event.participants}</td>
-                                    <td>{event.campaign}</td>
+                                    <td>{event.campaign_id}</td>
                                 </tr>
                             )
                         })}
@@ -67,4 +68,4 @@ const EventList = () => {
 }
 
 
-export default EventList
+export default EventDetail

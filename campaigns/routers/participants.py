@@ -9,9 +9,7 @@ from fastapi import (
 from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
 from typing import Optional, Union, List
-
 from pydantic import BaseModel
-
 from queries.participants import (
     ParticipantIn,
     ParticipantOut,
@@ -19,11 +17,13 @@ from queries.participants import (
     DuplicateParticipantError,
 )
 
+# from queries.events import EventIn, EventOut
+
 
 class ParticipantForm(BaseModel):
     character: str
-    email: str
-    event: Optional[str]
+    event_id: int
+    campaign_id: int
 
 
 class AccountToken(Token):
@@ -37,16 +37,19 @@ class HttpError(BaseModel):
 router = APIRouter()
 
 
-@router.post("/events/participants", response_model=ParticipantOut | HttpError)
+@router.post(
+    "/campaigns/{campaign_id}/events/{event_id}/participants",
+    response_model=ParticipantOut | HttpError,
+)
 async def create_participant(
-    info: ParticipantIn,
+    info: ParticipantForm,
     request: Request,
     response: Response,
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        info = repo.create(info)
+        info = repo.create(info, user)
     except DuplicateParticipantError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -83,12 +86,12 @@ def delete_participant(
     response_model=Optional[ParticipantOut],
 )
 def get_one_participant(
-    participant_id: int,
+    user_id: int,
     response: Response,
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ) -> ParticipantOut:
-    event = repo.get_one(participant_id)
+    event = repo.get_one(user_id)
     if event is None:
         response.status_code = 404
     return event
@@ -102,6 +105,7 @@ def get_all_participants(
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ):
+    print("Participants YYYYYYYYYYYYYY")
     return repo.get_all_participants()
 
     # form = EventForm(username=info.email, password=info.password)

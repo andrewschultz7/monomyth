@@ -10,7 +10,6 @@ from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
 from typing import Union, Optional, List
 from pydantic import BaseModel
-
 from queries.campaigns import (
     CampaignIn,
     CampaignOut,
@@ -37,11 +36,11 @@ class HttpError(BaseModel):
 
 router = APIRouter()
 
-# not_authorized = HTTPException(
-#     status_code=status.HTTP_401_UNAUTHORIZED,
-#     detail="Invalid authentication credentials",
-#     headers={"WWW-Authenticate": "Bearer"},
-# )
+not_authorized = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Invalid authentication credentials",
+    headers={"WWW-Authenticate": "Bearer"},
+)
 
 
 @router.post("/campaigns", response_model=CampaignOut | HttpError)
@@ -72,6 +71,7 @@ async def update_campaign(
     user: dict = Depends(authenticator.get_current_account_data),
 ) -> Union[HttpError, CampaignOut]:
 
+    print("INFO OOOOOOOOOOOOO")
     return repo.update(campaign_id, campaign)
 
 
@@ -93,6 +93,7 @@ def get_one_campaign(
 ) -> CampaignOut:
     campaign = repo.get_one(campaign_id)
     if campaign is None:
+        print("campaign stopped here")
         response.status_code = 404
     return campaign
 
