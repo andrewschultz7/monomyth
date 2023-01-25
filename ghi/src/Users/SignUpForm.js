@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { getTokenInternal, useToken} from "../AppAuth"
+// import { getTokenInternal, useToken} from "./AppAuth";
+import { useToken } from '../AppAuth.js';
 import { Navigate, useNavigate } from "react-router-dom";
 
 function BootstrapInput(props) {

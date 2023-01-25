@@ -14,7 +14,8 @@ import Logout from './Users/Logout';
 import ParticipantForm from './ParticipantForm';
 import ParticipantList from './ParticipantList';
 import SignUpForm from './Users/SignUpForm';
-import UserList from './UserList';
+// import UserList from './UserList';
+import UserDetail from "./Users/UserDetail";
 
 import './App.css';
 import { AuthProvider, useToken } from './AppAuth';
@@ -28,29 +29,41 @@ function GetToken() {
 function App() {
   return (
     <BrowserRouter>
-    <AuthProvider>
-      <GetToken />
-      <Nav />
-      <div className="container-fluid">
-        <Routes>
-          <Route path="/Home" element={<MainPage />} />
-          <Route path="/Campaigns/:campaignId/" element={<CampaignDetail />} />
-          <Route path="/Campaigns/:campaignId/edit" element={<CampaignEdit />} />
-          <Route path="/CampaignForm" element={<CampaignForm />} />
-          <Route path="/CampaignList" element={<CampaignList />} />
-          <Route path="/Campaigns/:campaignId/:eventId" element={<EventDetail />} />
-          <Route path="/Campaigns/:campaignId/:eventId/edit" element={<EventEdit />} />
-          <Route path="/EventForm" element={<EventForm />} />
-          <Route path="/EventList" element={<EventList />} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/ParticipantForm" element={<ParticipantForm />} />
-          <Route path="/ParticipantList" element={<ParticipantList />} />
-          <Route path="/SignUpForm" element={<SignUpForm />} />
-          <Route path="/UserList" element={<UserList />} />
-        </Routes>
-      </div>
-    </AuthProvider>
+      <AuthProvider>
+        <GetToken />
+        <Nav />
+        <div className="container-fluid">
+          <Routes>
+            <Route path="/Home" element={<MainPage />} />
+            <Route
+              path="/Campaigns/:campaignId/"
+              element={<CampaignDetail />}
+            />
+            <Route
+              path="/Campaigns/:campaignId/edit"
+              element={<CampaignEdit />}
+            />
+            <Route path="/CampaignForm" element={<CampaignForm />} />
+            <Route path="/CampaignList" element={<CampaignList />} />
+            <Route
+              path="/Campaigns/:campaignId/:eventId"
+              element={<EventDetail />}
+            />
+            <Route
+              path="/Campaigns/:campaignId/:eventId/edit"
+              element={<EventEdit />}
+            />
+            <Route path="/EventForm" element={<EventForm />} />
+            <Route path="/EventList" element={<EventList />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/ParticipantForm" element={<ParticipantForm />} />
+            <Route path="/ParticipantList" element={<ParticipantList />} />
+            <Route path="/SignUpForm" element={<SignUpForm />} />
+            <Route path="/UserDetail" element={<UserDetail />} />
+          </Routes>
+        </div>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

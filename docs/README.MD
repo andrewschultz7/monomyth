@@ -2,113 +2,69 @@
 [TOC]
 The app for larping. For game masters, Monomyth streamlines the creation and management of campaigns and events. For game players, it allows for fast and easy character creation and event registration. The project has two backend microservices: **Users** and **Campaigns**.<br />
 
-## BOOKMARK (add Table of Contents)
+## Table of Contents
 
--The Inventory models are Manufacturer, Vehicle Model, and Automobile.<br />
--The Service models are Technician and Appointment.<br />
--The Sales models are Sale, SalesPerson, and SalesCustomer.<br />
+Project services<br />
+How to run this application<br />
+Application diagram<br />
+API documentation<br />
 <br />
 
 **Team**<br />
-* Chengyun - Services<br />
-* Brian - Sales<br />
+* Andrew, Patrick, Nate, Sean and Brian<br />
 
 ## Project Services
 - **React** binds to port "3000:3000"<br />
 Open [http://localhost:3000] to view the React frontend.<br />
-- **Inventory-API** binds to port "8100:8000"<br />
-Open [http://localhost:8100] to access Inventory: Manufacturer, Vehicles Models, and Automobiles.<br />
-- **Services-API** binds to port "8080:8000"<br />
-Open [http://localhost:8080] to access Services.<br />
-- **Sales-API** binds to port "8090:8000"<br />
-Open [http://localhost:8090] to access Sales.<br />
+- **Users-API** binds to port "8000:8000"<br />
+Open [http://localhost:8000] to access the Users backend.<br />
+- **Campaigns-API** binds to port "8001:8000"<br />
+Open [http://localhost:8001] to access the Campaign backend.<br />
+- **pgAdmin** binds to port "8082:80"<br />
+pgAdmin is the project's management tool for the database.<br />
 - The **Database** is **postgres**, which binds to port "15432:5432".<br />
 
 
-## Value Objects
+## React
 
-**SERVICE**<br />
-AutomobileVO: Polling data from Inverntory, using update_or_create function.<br />
-Model fields are: color, year, vin, sold, and import_href.<br />
+**Component Name**<br />
+Description of component.<br />
 
-**SALES**<br />
-AutomobileVO: Polling data from Inverntory, using update_or_create function.<br />
-Model fields are: color, year, vin, sold, model, and import_href.<br />
-<br />
+**Component Name**<br />
+Description of component.<br />
 
-## Service microservice
-Service-API is built on port 8080. It talks with the Inventory-API and the databse.<br />
+**Component Name**<br />
+Description of component.<br />
 
-To clarify, we build a poller to gather the info from the Inventory-API and make the corresponsing AutomobileVO model. <br />
 
-**AutomobileVO**<br />
-AutomobileVO as described will collect five major inputs through the poller:<br />
-- color<br />
-Input type: string (max length: 50 digits)<br />
-- year<br />
-Input type: positive integer<br />
-- vin<br />
-Input type: string (max length: 17 digits); unique<br />
-- sold<br />
-Input type: boolean value(default setting : False)<br />
-- import_href<br />
-Input type: string (max length: 200 digits); unique<br />
+## Users Microservice
 
-Also, we built Technican and Appointment model.<br />
+**User model**<br />
+This model represents a user of the project. It tracks their user id number, email, and password.<br />
 
-**Technician**<br />
-To create a new item (technician) need two major inputs:<br />
-- tech_name<br />
-Input type: string<br />
-- tech_id<br />
-Input type: positive integer<br />
 
-**Appointment**<br />
-To create a new item (Appointment) need five major inputs:<br />
-- vin<br />
-Input type: string (max length: 17 digits)<br />
-- customer_name<br />
-Input type: string (max length: 100 digits)<br />
-- date<br />
-Input type: date iso-format (YYYY-MM-DD)<br />
-- time<br />
-Input type: time iso-format (18:50:00)<br />
-- reason<br />
-Input type: string (max length: 300 digits)<br />
-- technician<br />
-Input type: positive interger<br />
-<br />
-(Optional) Appointment also takes following two optional inputs<br />
-<br />
-- vip<br />
-Input type: boolean value(default setting: False)<br />
-- finished<br />
-Input type: boolean value(default setting: False)<br />
-<br />
+## Campaigns Microservice
 
-## Sales microservice
+**Campaign model**<br />
+This model represents a larp. It tracks the larp's id number, title, genre, description, a url for the rulebook, an email for the gamemaster, and the user id number of the gamemaster.<br />
 
-This microservice also uses a poller to generate an AutomobileVO from a call to the Inventory microservice. The Sales AutomobileVO is nearly identical to that found in the Service microservice, adding a model field.<br />
+**Event model**<br />
+This model represents an event of a larp. Larp campaigns are composed of their events. The model tracks the event's id number, name, venue, address, date, and the associated larp's campaign id number.<br />
 
-**SalesPerson**<br />
-This model tracks a salesperson's name and employee number.<br />
+**Participant model**<br />
+This model represents a user's character at the larp. Participants can sign up for events. The model tracks their participant id number, the user's id number, their character's name, the id number of the campaign, and the event id of the event they are registered to attend (if any).<br />
 
-**SalesCustomer**<br />
-This model tracks a potential customer's name, address, and phone number.<br />
-
-**Sale**<br />
-This model tracks a sale's price, the sold car's VIN, the sales person, and the customer. When a car is sold, it is no longer displayed in the list of Automobiles in Inventory and it cannot be sold again.<br />
-<br />
 
 ## How to Run this Application
 
-1. Fork or clone the project form https://gitlab.com/Jalaketu01/project-beta.git:
+1. Fork or clone the project form https://gitlab.com/monomyth1/monomyth:
     ```
-    git clone https://gitlab.com/Jalaketu01/project-beta.git
+    git clone https://gitlab.com/monomyth1/monomyth
     ```
-2. Build the database in docker:
+2. Build volumes in docker:
     ```
-    docker volume create beta-data
+    docker volume create postgres-data
+    docker volume create pg-admin
     ```
 3. Build services based on the docker-compose.yml:
     ```
@@ -118,35 +74,34 @@ This model tracks a sale's price, the sold car's VIN, the sales person, and the 
     ```
     docker-compose up
     ```
-It takes longer to build the images and estabilsh the React service the first time. After all services are built and connections estabilshed, you should have 7/7 containers running for the project.<br />
 <br />
 
-## How to rebuild the database
-**Make sure you have backed up important information before performing following steps.**<br />
+## How to rebuild the database <br />
 
 1. Stop all running containers.<br />
 2. Remove un-used container(s):
     ```
     docker container prune -f
     ```
-3. Remove the associated database:
+3. Remove the databases:
     ```
-    docker volume rm beta-data
+    docker volume rm postgres-data
+    docker volume rm pg-admin
     ```
-4. Rebuild the database:
+4. Rebuild the databases:
     ```
-    docker volume create beta-data
+    docker volume create postgres-data
+    docker volume create pg-admin
     ```
 5. Bring up services again:
     ```
     docker-compose up
     ```
-After performing above steps, you will need to create a superuser again.<br />
 <br />
 
 ## Application Diagram
 <br />
-![Diagram](project-beta-diagram.png)
+![Diagram](monomyth_diagram.png)
 <br />
 
 ## API Call Documentation
@@ -156,7 +111,7 @@ name | method | url endpoint
     description<br />
 
 
-**INVENTORY API**<br />
+**USERS API**<br />
 
 **List Manufacturers** | GET | http://localhost:8100/api/manufacturers/<br />
 ```

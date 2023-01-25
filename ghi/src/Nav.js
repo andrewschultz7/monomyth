@@ -50,7 +50,7 @@ function Nav() {
                 </button>
                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <li>
-                    <NavLink className="nav-link dropdown-item" to="/UserList" id="dropdown">User Info</NavLink>
+                    <NavLink className="nav-link dropdown-item" to="/UserDetail" id="dropdown">User Info</NavLink>
                   </li>
                   <li>
                     <NavLink className="nav-link dropdown-item" to="/CampaignList" id="dropdown">Campaign List</NavLink>
