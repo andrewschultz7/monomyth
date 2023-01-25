@@ -19,13 +19,34 @@ import ParticipantDetail from './ParticipantDetail';
 import './App.css';
 import { AuthProvider, useToken } from './AppAuth';
 import { useAuthContext } from './AppAuth';
+import { useEffect, useState } from 'react';
+
+
+
 
 function GetToken() {
+    // console.log("get token first")
     useToken();
+    // console.log("APPJS NOW")
     return null
 }
 
 function App() {
+const [ token, setToken] = useState('');
+
+  // useEffect(() => {
+  //   async function fetchToken() {
+  //     console.log("Inside use effect before getToken")
+  //     const token = await getTokenInternal();
+  //     console.log("Inside useeffect after getToken ", token)
+  //     setToken(token);
+
+  //   }
+  //   if (!token) {
+  //     fetchToken();
+  //   }
+  // }, [setToken, token]);
+
   return (
     <BrowserRouter>
     <AuthProvider>
@@ -34,10 +55,10 @@ function App() {
       <div className="container-fluid">
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/campaigns/:campaignId/" element={<CampaignDetail />} />
+          <Route path="/campaigns/:campaignId/" element={<CampaignDetail token={token} />} />
           <Route path="/campaigns/:campaignId/edit" element={<CampaignEdit />} />
           <Route path="/campaignform" element={<CampaignForm />} />
-          <Route path="/campaignlist" element={<CampaignList />} />
+          <Route path="/campaignlist" element={<CampaignList token={token} setToken={setToken} />} />
           <Route path="/campaigns/:campaignId/:eventId" element={<EventDetail />} />
           <Route path="/campaigns/:campaignId/:eventId/edit" element={<EventEdit />} />
           <Route path="/campaigns/:campaignId/eventform" element={<EventForm />} />
@@ -48,7 +69,7 @@ function App() {
           <Route path="/participantlist" element={<ParticipantList />} />
           <Route path="/signupform" element={<SignUpForm />} />
           <Route path="/userdetail" element={<UserDetail />} />
-          <Route path="/participantdetail" elemet={<ParticipantDetail />} />
+          {/* <Route path="/participantdetail" element={<ParticipantDetail />} /> */}
         </Routes>
       </div>
     </AuthProvider>

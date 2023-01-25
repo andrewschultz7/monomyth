@@ -13,7 +13,7 @@ const LoginForm = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		login(username, password);
-        navigate("/CampaignList");
+        navigate("/campaignlist");
 	};
 
 	return (

@@ -86,6 +86,9 @@ def get_one_campaign(
     repo: CampaignRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ) -> CampaignOut:
+    print("\n")
+    print(user)
+    print("\n")
     campaign = repo.get_one(campaign_id)
     if campaign is None:
         print("campaign stopped here")

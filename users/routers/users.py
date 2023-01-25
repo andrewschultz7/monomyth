@@ -78,8 +78,12 @@ async def create_account(
 
 @router.get("/current", response_model=UserOut | None)
 async def get_curr_user(request: Request, repo: UserRepository = Depends()):
-    data = request.payload["user"]["email"]
+    # data = request.payload["user"]["email"]
+    data = request
     user = repo.get(data)
+    print("\n")
+    print("UUUUUUUUUUUUUU", user)
+    print("\n")
     return json.dumps({"id": user.id, "email": user.email, "role": user.role})
 
 

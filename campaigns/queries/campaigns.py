@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional, List, Union
 from datetime import date
-from queries.pool import pool, pool2
+from queries.pool import pool
 from authenticator import authenticator
 from fastapi import Depends
 

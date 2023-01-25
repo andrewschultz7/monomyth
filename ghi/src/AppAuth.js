@@ -14,7 +14,8 @@ export async function getTokenInternal() {
     });
     if (response.ok) {
       const data = await response.json();
-      internalToken = data
+      // console.log("GETTOKENINTERNAL Line 17 ", data)
+      internalToken = data.access_token
       return internalToken;
     }
   } catch (e) {}
@@ -62,11 +63,15 @@ export const useAuthContext = () => useContext(AuthContext);
 export function useToken() {
   const { token, setToken } = useAuthContext();
   const navigate = useNavigate();
+  // console.log("BEFORE use effect FETCHTOKENLine 70 ", token)
 
   useEffect(() => {
     async function fetchToken() {
+      // console.log("Inside use effect before getToken")
       const token = await getTokenInternal();
+      // console.log("Inside useeffect after getToken ", token)
       setToken(token);
+
     }
     if (!token) {
       fetchToken();
@@ -143,6 +148,6 @@ export function useToken() {
     }
     return false;
   }
-
+  // console.log("appauth end", token)
   return [token, login, logout, signup, update];
 }
