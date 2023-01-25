@@ -7,14 +7,15 @@ from queries.participants import ParticipantRepository
 client = TestClient(app)
 data2 = {
     "participant_id": 1,
+    "user_id": 1,
     "character": "monster",
-    "email": "no@no.com",
-    "event": "test",
+    "event_id": 2,
+    "campaign_id": 1,
 }
 
 
 class FakeParticipantRepository:
-    def create(self, participant):
+    def create(self, event_id, campaign_id):
         return data2
 
 
@@ -27,6 +28,6 @@ def test_create_participant():
     app.dependency_overrides[
         authenticator.get_current_account_data
     ] = fake_authenticator
-    data = {"character": "monster", "email": "no@no.com", "event": "test"}
-    response = client.post("/events/participants", json=data)
+    data = {"user_id": 1, "character": "monster", "event_id": 2, "campaign_id": 1}
+    response = client.post("/campaigns/1/events/2/participants", json=data)
     assert response.status_code == 200
