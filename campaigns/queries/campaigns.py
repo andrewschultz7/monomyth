@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional, List, Union
-from queries.pool import pool, pool2
+from queries.pool import pool
 
 
 class Error(BaseModel):
