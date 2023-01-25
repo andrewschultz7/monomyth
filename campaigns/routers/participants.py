@@ -16,6 +16,7 @@ from queries.participants import (
     ParticipantRepository,
     DuplicateParticipantError,
 )
+
 # from queries.events import EventIn, EventOut
 
 
@@ -23,7 +24,6 @@ class ParticipantForm(BaseModel):
     character: str
     event_id: int
     campaign_id: int
-
 
 
 class AccountToken(Token):
