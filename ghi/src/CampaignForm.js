@@ -78,8 +78,8 @@ function CampaignForm(props) {
         <form onSubmit={(e) => handleSubmit(e)}>
           <BootstrapInput
             id="title"
-            placeholder="you@example.com"
-            labelText="Your Campaign Title here"
+            placeholder="Your Campaign Title here"
+            labelText="Title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             type="text"

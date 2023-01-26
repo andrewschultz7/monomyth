@@ -26,7 +26,6 @@ class ParticipantForm(BaseModel):
     campaign_id: int
 
 
-
 class AccountToken(Token):
     account: ParticipantOut
 
@@ -92,7 +91,7 @@ def get_one_participant(
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ) -> ParticipantOut:
-    event = repo.get_one(user['user_id'])
+    event = repo.get_one(user["user_id"])
     if event is None:
         response.status_code = 404
     return event

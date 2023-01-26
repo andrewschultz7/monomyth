@@ -21,7 +21,6 @@ class EventIn(BaseModel):
     campaign_id: Optional[int]
 
 
-
 class EventOut(BaseModel):
     event_id: int
     eventname: str

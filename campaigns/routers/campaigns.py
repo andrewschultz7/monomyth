@@ -63,7 +63,8 @@ async def create_campaign(
 
 
 @router.put(
-    "/campaigns/{campaign_id}", response_model=Optional[CampaignOut],
+    "/campaigns/{campaign_id}",
+    response_model=Optional[CampaignOut],
 )
 async def update_campaign(
     response: Response,
@@ -72,7 +73,7 @@ async def update_campaign(
     repo: CampaignRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ) -> CampaignOut:
-    event2 = repo.update(campaign_id, campaign, user['user_id'])
+    event2 = repo.update(campaign_id, campaign, user["user_id"])
     return event2
 
 

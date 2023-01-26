@@ -25,7 +25,6 @@ class CampaignIn(BaseModel):
     gamemaster_id: Optional[int]
 
 
-
 class CampaignOut(BaseModel):
     campaign_id: int
     title: str
@@ -34,7 +33,6 @@ class CampaignOut(BaseModel):
     rulebook: str
     campaign_email: str
     gamemaster_id: Optional[int]
-
 
 
 class UserOut(BaseModel):
@@ -131,14 +129,15 @@ class CampaignRepository:
                         , gamemaster_id = %s
                         WHERE campaign_id = %s
                         """,
-                        [   campaign_id,
+                        [
+                            campaign_id,
                             campaign.title,
                             campaign.genre,
                             campaign.description,
                             campaign.rulebook,
                             campaign.campaign_email,
                             user_id,
-                            campaign_id
+                            campaign_id,
                         ],
                     )
                     return self.campaign_in_to_out(campaign_id, campaign)
@@ -188,7 +187,6 @@ class CampaignRepository:
             campaign_email=record[5],
             gamemaster_id=record[6],
         )
-
 
     def campaign_in_to_out(self, campaign_id: int, campaign: CampaignIn):
         old_data = campaign.dict()
