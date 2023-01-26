@@ -1,8 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
-import { useToken, useAuthContext } from "./AppAuth";
+import { useAuthContext } from "./AppAuth";
 
 
 function BootstrapInput(props2) {
@@ -29,14 +28,14 @@ const EventEdit = (props) => {
     const { eventId } = useParams();
     const { campaignId } = useParams();
     const { token } = useAuthContext();
-    const { token: tokenState, setToken } = props;
+    const { token: tokenState } = props;
     const [eventname, setEventName] = useState("");
     const [venuename, setVenueName] = useState("");
     const [address, setAddress] = useState("");
     const [date, setDate] = useState("");
     const [participants, setParticipants] = useState("");
     const [event, setEvent] = useState("");
-    const [campaign_id, setCampaign] = useState("");
+    const [setCampaign] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {

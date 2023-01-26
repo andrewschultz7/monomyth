@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useAuthContext, useToken } from "./AppAuth";
+import { useAuthContext } from "./AppAuth";
 import { Link } from "react-router-dom";
 
 const CampaignList = (props) => {

@@ -4,7 +4,6 @@ import { useAuthContext } from "./AppAuth";
 const UserDetail = (props) => {
   const [user, setUsers] = useState();
   const { token } = useAuthContext();
-  const { token: tokenState, setToken } = props;
 
   console.log("user ", token);
 

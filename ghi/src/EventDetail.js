@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useAuthContext } from "./AppAuth";
 import { Link, useParams } from "react-router-dom";
 
 const EventDetail = (props) => {
-  const [campaign, setCampaign] = useState([]);
   const { campaignId } = useParams();
   const { token } = props;
   const [events, setEvents] = useState([]);

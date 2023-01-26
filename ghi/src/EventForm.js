@@ -1,7 +1,6 @@
 import React from 'react';
-import { useState, useEffect, Navigate } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import {useToken} from './AppAuth';
 
 
 function BootstrapInput(props) {
@@ -22,7 +21,7 @@ function EventForm(props) {
     const [address, setAddress] = useState('');
     const [date, setDate] = useState('');
     const [participants, setParticipants] = useState('');
-    const [campaign, setCampaign] = useState('')
+    const [setCampaign] = useState('')
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {

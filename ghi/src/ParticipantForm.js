@@ -1,7 +1,7 @@
 import React from "react";
-import { useState, useEffect, Navigate } from "react";
+import { useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { useToken, useAuthContext } from "./AppAuth";
+import { useAuthContext } from "./AppAuth";
 
 
 function BootstrapInput(props) {
@@ -27,11 +27,9 @@ function BootstrapInput(props) {
 
 function ParticipantForm(props) {
   const [character, setCharacter] = useState("");
-  const [events, setEvents] = useState("");
-  const [participants, setParticipants] = useState("");
+  const [setParticipants] = useState("");
   const { campaignId, eventId } = useParams();
   const { token } = useAuthContext();
-  const { token: tokenState, setToken } = props;
   const location = useLocation();
   const pid  = location.state
   const navigate = useNavigate();

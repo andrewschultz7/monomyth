@@ -1,9 +1,9 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuthContext } from "./AppAuth";
-import { Navigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useToken } from "./AppAuth";
+
 
 function BootstrapInput(props) {
   const { id, placeholder, labelText, value, onChange, type } = props;
