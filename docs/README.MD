@@ -1,5 +1,8 @@
+**Team 9** | Andrew, Patrick, Nate, Sean and Brian <br />
+
 # Monomyth
-The app for larping. For game masters, Monomyth streamlines the creation and management of campaigns and events. For game players, it allows for fast and easy character creation and event registration. The project has two backend microservices: **Users** and **Campaigns**.<br />
+The app for larping. For game masters, Monomyth streamlines the creation and management of campaigns and events. For game players, it allows for fast and easy character creation and event registration. <br />
+
 
 ## Table of Contents
 
@@ -12,8 +15,6 @@ Application diagram<br />
 API documentation<br />
 <br />
 
-**Team 9**<br />
-Andrew, Patrick, Nate, Sean and Brian<br />
 
 ## Project Services
 - **React** binds to port "3000:3000"<br />
@@ -24,7 +25,7 @@ Open [http://localhost:8000] to access the Users backend.<br />
 Open [http://localhost:8001] to access the Campaign backend.<br />
 - **pgAdmin** binds to port "8082:80"<br />
 pgAdmin is the project's management tool for the database.<br />
-- The **Database** is **postgres**, which binds to port "15432:5432".<br />
+- The database is **postgres**, which binds to port "15432:5432".<br />
 
 
 ## Users microservice
@@ -53,49 +54,46 @@ Form | User enters their email and password. On submit the field data is posted 
 **Login**<br />
 Form | User enters their email and password. On submit, a token is created for the current User, logging them in.  <br />
 
-!!! **Logout**<br />
-Deletes token for the current User.<br />
+**Logout**<br />
+Deletes token for the current User. <br />
 
 **UserDetail**<br />
 Displays the email of the currently logged in user. <br />
 
 **CampaignForm**<br />
-Form | User enters title, genre, description, campaign email, and rulebook. On submit, the field data  !!! <br />
+Form | User enters title, genre, description, campaign_email, and rulebook. On submit, the field data is posted to Campaign API and gamemaster_id is set to user_id for the current User. <br />
 
 **CampaignEdit**<br />
-Form | Only accessible if logged in user's user_id equals Campaign.gamemaster_id. User can update title, genre, description, campaign email, and/or rulebook. On submit, the field data is put to Campaign. <br />
+Form | Only accessible if logged in user's user_id equals Campaign.gamemaster_id. User can update title, genre, description, campaign email, and/or rulebook. On submit, the field data is put to Campaign API. <br />
 
-**CampaignList**<br />
+!!! **CampaignList**<br />
 Description of component.<br />
 
-**CampaignDetail**<br />
+!!! **CampaignDetail**<br />
 Description of component.<br />
 
-**EventDetail**<br />
+!!! **EventDetail**<br />
 Description of component.<br />
 
 **EventForm**<br />
-Form | Only accessible if logged in user's user_id equals Campaign.gamemaster_id. <br />
+Form | Only accessible if logged in user's user_id equals Campaign.gamemaster_id. User enters eventname, venuename, address, and date. On submit, the field data is posted to Campaign API and campaign_id is set to the campaign_id of the associated Campaign.<br />
 
 **EventEdit**<br />
-Form | Only accessible if logged in user's user_id equals Campaign.gamemaster_id. <br />
+Form | Only accessible if logged in user's user_id equals Campaign.gamemaster_id. User can update eventname, venuename, address, and/or date. On submit, the field data is put to Campaign API. <br />
 
-**EventList**<br />
+!!! **EventList**<br />
 Description of component.<br />
 
 **ParticipantForm**<br />
-Form | User enters a character name. On submit, that name, event_id, campaign_id, and user_id is POSTed to Participant.<br />
+Form | User enters a character name. On submit, that name, event_id, campaign_id, and user_id is posted to Campaign API.<br />
 
-**ParticipantList**<br />
+!!! **ParticipantList**<br />
 Description of component.<br />
 
 
 ## How to run this application
 
-1. Fork or clone the project form https://gitlab.com/monomyth1/monomyth:
-    ```
-    git clone https://gitlab.com/monomyth1/monomyth
-    ```
+1. Fork or clone the project from https://gitlab.com/monomyth1/monomyth
 2. Build volumes in docker:
     ```
     docker volume create postgres-data
@@ -113,7 +111,7 @@ Description of component.<br />
 
 ## How to rebuild the database <br />
 
-1. Stop and remove all running containers.<br />
+1. Stop and remove all running containers:
     ```
     docker-compose down
     ```
@@ -126,7 +124,7 @@ Description of component.<br />
     docker volume rm postgres-data
     docker volume rm pg-admin
     ```
-3. Rebuild the volumes:
+4. Rebuild the volumes:
     ```
     docker volume create postgres-data
     docker volume create pg-admin
