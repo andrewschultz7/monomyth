@@ -1,8 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
-import { useToken, useAuthContext } from "./AppAuth";
+import {  useAuthContext } from "./AppAuth";
 
 function BootstrapInput(props2) {
   const { id, placeholder, labelText, value, onChange, type } = props2;
@@ -27,7 +26,7 @@ function BootstrapInput(props2) {
 function CampaignEdit(props) {
   const { campaignId } = useParams();
   const { token } = useAuthContext();
-  const { token: tokenState, setToken } = props;
+  const { token: tokenState } = props;
   const [title, setTitle] = useState("");
   const [genre, setGenre] = useState("");
   const [rulebook, setRulebook] = useState("");

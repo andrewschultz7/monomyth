@@ -1,20 +1,15 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { useAuthContext, useToken } from "./AppAuth";
+import React, { useState, useEffect } from "react";
+import { useAuthContext } from "./AppAuth";
 import { Link, useParams, useLocation } from "react-router-dom";
 
 const CampaignDetail = (props) => {
   const [campaign, setCampaign] = useState([]);
   const { token } = useAuthContext();
-  const { token: tokenState, setToken } = props;
   const { campaignId } = useParams();
   const [events, setEvents] = useState([]);
   const [participants, setParticipants] = useState();
   const [users, setUsers] = useState();
   const [deleted, setDeleted] = useState(false);
-  const [pchange, setPchange] = useState();
-  const location = useLocation();
-
-  let e = 0;
 
   useEffect(() => {
     async function getParticipantFetch() {

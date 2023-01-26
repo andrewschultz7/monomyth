@@ -15,11 +15,9 @@ import ParticipantForm from './ParticipantForm';
 import ParticipantList from './ParticipantList';
 import SignUpForm from './Users/SignUpForm';
 import UserDetail from './UserDetail';
-import ParticipantDetail from './ParticipantDetail';
 import './App.css';
 import { AuthProvider, useToken } from './AppAuth';
-import { useAuthContext } from './AppAuth';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 
 
