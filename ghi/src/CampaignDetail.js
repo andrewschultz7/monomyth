@@ -11,8 +11,28 @@ const CampaignDetail = (props) => {
   const [participants, setParticipants] = useState();
   const [users, setUsers] = useState();
   const [deleted, setDeleted] = useState(false);
+  const [pchange, setPchange] = useState();
 
   let e = 0;
+
+  useEffect(() => {
+    console.log("run first participant useEffect");
+    async function getParticipantFetch() {
+      const response = await fetch(
+        `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/events/participants`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          credentials: "include",
+        }
+      );
+      if (response.ok) {
+        const participantdata = await response.json();
+        console.log("participantdata ", participantdata);
+        setParticipants(participantdata);
+      }
+    }
+    getParticipantFetch();
+  }, []);
 
   useEffect(() => {
     console.log("run second useEffect");
@@ -90,7 +110,6 @@ const CampaignDetail = (props) => {
     getParticipantFetch();
   }, [deleted]);
 
-
   const deleteEvent = async (event_id) => {
     let data = event_id;
     const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events/${data}`;
@@ -163,25 +182,39 @@ const CampaignDetail = (props) => {
             <th>Date</th>
           </tr>
         </thead>
-        {(participants && events) ?
+        {(events) ?
         <tbody>
           {events?.map((event) => {
-            {
-              console.log("event fail ", participants);
-            }
             return (
               <tr key={event.event_id}>
                 <td>
-                  {participants.event_id !== event.event_id ? (
-                    <Link
-                      to={`/campaigns/${campaignId}/${event.event_id}/participantform`}
-                    >
-                      <button className="btn btn-outline-dark fw-bold">
-                        Register for Adventure
-                      </button>
-                    </Link>
+                  {" "}
+                  {console.log("event ", event)}
+                  {participants ? (
+                    <>
+                      {participants.event_id !== event.event_id ? (
+                        <Link
+                          to={`/campaigns/${campaignId}/${event.event_id}/participantform`}
+                          state={{ pid: participants.participant_id }}
+                        >
+                          <button className="btn btn-outline-dark fw-bold">
+                            Register for Adventure
+                          </button>
+                        </Link>
+                      ) : (
+                        "REGISTERED"
+                      )}
+                    </>
                   ) : (
-                    "REGISTERED"
+                    // <Link
+                    //   to={`/campaigns/${campaignId}/${event.event_id}/participantform`}
+
+                    // >
+                    //   <button className="btn btn-outline-dark fw-bold">
+                    //     Register for Adventure
+                    //   </button>
+                    // </Link>
+                    "second link"
                   )}
                 </td>
                 <td>{event.eventname}</td>

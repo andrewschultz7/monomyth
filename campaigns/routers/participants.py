@@ -48,9 +48,6 @@ async def create_participant(
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ):
-    print("\n")
-    print("participants post" , info)
-    print("\n")
     try:
         info = repo.create(info, user)
     except DuplicateParticipantError:
@@ -62,17 +59,21 @@ async def create_participant(
 
 
 @router.put(
-    "/events/participants/{participant_id}",
-    response_model=Union[ParticipantOut, HttpError],
+    "/campaigns/{campaign_id}/events/{event_id}/participants/{participant_id}",
+    response_model=Optional[ParticipantOut],
 )
 async def update_participant(
+    response: Response,
     participant_id: int,
     event: ParticipantIn,
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
-) -> Union[HttpError, ParticipantOut]:
-
-    return repo.update(participant_id, event)
+) -> ParticipantOut:
+    print("\n")
+    print(user)
+    event2 = repo.update(participant_id, event, user["user_id"])
+    return event2
+    # return repo.update(participant_id, event)
 
 
 @router.delete("/events/participants/{participant_id}", response_model=bool)
@@ -94,6 +95,9 @@ def get_one_participant(
     user: dict = Depends(authenticator.get_current_account_data),
 ) -> ParticipantOut:
     event = repo.get_one(user['user_id'])
+    print("\n")
+    print(event)
+    print("\n")
     if event is None:
         response.status_code = 404
     return event
