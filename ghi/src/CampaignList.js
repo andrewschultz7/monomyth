@@ -6,6 +6,7 @@ const CampaignList = (props) => {
   const [campaigns, setCampaigns] = useState([]);
   const { token } = useAuthContext();
   const { token: tokenState, setToken } = props;
+  const {deleted, setDeleted} = useState(false);
 
   useEffect(() => {
     setToken(token);
@@ -32,7 +33,27 @@ const CampaignList = (props) => {
       }
     }
     getCampaign();
-  }, [tokenState]);
+  }, [tokenState, deleted]);
+
+
+  const deleteCampaign = async (campaign_id) => {
+    let data = campaign_id;
+    const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaign_id}`;
+    const fetchConfig = {
+      method: "delete",
+      body: JSON.stringify(data),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    };
+    await fetch(url, fetchConfig)
+      .then((response) => response.json())
+      .then(() => {})
+      .catch((e) => console.log(`error: `, e));
+    setDeleted(true);
+  };
 
   return (
     <>
@@ -50,6 +71,18 @@ const CampaignList = (props) => {
                     DETAILS
                   </button>
                 </Link>
+                <Link to={`/campaigns/${campaign.campaign_id}/edit`}>
+                  <button className="btn btn-outline-dark fw-bold">
+                    EDIT
+                    </button>
+                </Link>
+                <button
+                  className="btn btn-outline-dark fw-bold"
+                  value={campaign.campaign_id}
+                  onClick={(e) => deleteCampaign(e.target.value)}
+                >
+                  Delete
+                </button>
               </div>
               <div className="card-footer text-muted">
                 {campaign.campaign_email}

@@ -18,6 +18,7 @@ function CampaignEdit(props) {
     const { campaignId } = useParams();
     const [campaign, setCampaign] = useState('');
     const { token } = useAuthContext();
+    const { token: tokenState, setToken } = props;
     const [title, setTitle] = useState('');
     const [genre, setGenre] = useState('');
     const [rulebook, setRulebook] = useState('');
@@ -31,7 +32,7 @@ function CampaignEdit(props) {
                 const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}`;
                 if (token) {
                     const response = await fetch(url, {
-                        headers: { Authorization: `Bearer ${token.access_token}` },
+                        headers: { Authorization: `Bearer ${token}` },
                         });
                     if (response.ok) {
                     const data = await response.json();
@@ -40,7 +41,7 @@ function CampaignEdit(props) {
                 }
             }
             getCampaign();
-        }, [token])
+        }, [tokenState])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -75,12 +76,13 @@ function CampaignEdit(props) {
         console.log(campaign, "campaign edit")
         const campaignUrl = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}`
         const fetchConfig = {
-            method: 'put',
-            body: JSON.stringify(data),
-            headers: {
-                "Content-Type" : "application/json"
-            },
-            credentials : "include"
+          method: "put",
+          body: JSON.stringify(data),
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
         };
         await fetch(campaignUrl, fetchConfig)
         .then(response => response.json())
@@ -92,8 +94,8 @@ function CampaignEdit(props) {
             setUsers('');
             setDescription('');
         })
-        .catch(e => console.log(`error: `, e));
-        navigate(`/campaigns/${campaignId}/`);
+        .catch((e) => console.log(`error: `, e));
+        navigate(`/campaigns/${campaignId}`);
     };
 
     return (
@@ -104,7 +106,7 @@ function CampaignEdit(props) {
                     <BootstrapInput
                         id="title"
                         placeholder={campaign.title}
-                        labelText="email"
+                        labelText="title"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         type="text" />
