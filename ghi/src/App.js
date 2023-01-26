@@ -14,7 +14,7 @@ import Logout from './Users/Logout';
 import ParticipantForm from './ParticipantForm';
 import ParticipantList from './ParticipantList';
 import SignUpForm from './Users/SignUpForm';
-import UserDetail from './UserDetail';
+import UserDetail from './Users/UserDetail';
 import './App.css';
 import { AuthProvider, useToken } from './AppAuth';
 import { useAuthContext } from './AppAuth';
