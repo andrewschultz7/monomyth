@@ -27,7 +27,6 @@ function BootstrapInput(props) {
 }
 
 function CampaignForm(props) {
-  const { campaignId } = useParams();
   const { token } = useAuthContext();
   const [title, setTitle] = useState("");
   const [genre, setGenre] = useState("");
