@@ -33,7 +33,7 @@ function ParticipantForm(props) {
   const { token } = useAuthContext();
   const { token: tokenState, setToken } = props;
   const location = useLocation();
-  const { pid } = location.state
+  const pid  = location.state
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -44,10 +44,12 @@ function ParticipantForm(props) {
       data.character = character;
       data.event_id = parseInt(eventId);
       data.campaign_id = parseInt(campaignId);
-      console.log("participant data", data);
+      console.log("pidpid", pid);
       if (pid) {
+        let participantId = parseInt(pid.pid)
+        console.log("particpantId ", participantId)
         const response = await fetch(
-          `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events/${eventId}/participants/${pid}`,
+          `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events/${eventId}/participants/${pid.pid}`,
           {
             method: "put",
             body: JSON.stringify(data),

@@ -12,11 +12,9 @@ const CampaignList = (props) => {
   }, [token]);
 
   useEffect(() => {
-    console.log(token);
     async function getCampaign() {
       const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns`;
       if (token) {
-        console.log("token exists ", token);
         const response = await fetch(url, {
           headers: { Authorization: `Bearer ${token}` },
         });

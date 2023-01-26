@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useAuthContext, useToken } from "./AppAuth";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 
 const CampaignDetail = (props) => {
   const [campaign, setCampaign] = useState([]);
@@ -12,11 +12,11 @@ const CampaignDetail = (props) => {
   const [users, setUsers] = useState();
   const [deleted, setDeleted] = useState(false);
   const [pchange, setPchange] = useState();
+  const location = useLocation();
 
   let e = 0;
 
   useEffect(() => {
-    console.log("run first participant useEffect");
     async function getParticipantFetch() {
       const response = await fetch(
         `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/events/participants`,
@@ -35,7 +35,6 @@ const CampaignDetail = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log("run second useEffect");
     async function getUserFetch() {
       const response = await fetch(
         `${process.env.REACT_APP_USERS_API_HOST}/token`,
@@ -46,7 +45,6 @@ const CampaignDetail = (props) => {
       );
       if (response.ok) {
         const userdata = await response.json();
-        console.log("userdata ", userdata);
         setUsers(userdata);
       }
     }
@@ -54,7 +52,6 @@ const CampaignDetail = (props) => {
   }, [deleted]);
 
   useEffect(() => {
-    console.log("run second useEffect");
     async function getCampaignFetch() {
       const response = await fetch(
         `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}`,
@@ -65,7 +62,6 @@ const CampaignDetail = (props) => {
       );
       if (response.ok) {
         const campaigndata = await response.json();
-        console.log("campaigndata ", campaigndata);
         setCampaign(campaigndata);
       }
     }
@@ -73,7 +69,6 @@ const CampaignDetail = (props) => {
   }, [deleted]);
 
   useEffect(() => {
-    console.log("run second useEffect");
     async function getEventFetch() {
       const response = await fetch(
         `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/eventlist`,
@@ -84,7 +79,6 @@ const CampaignDetail = (props) => {
       );
       if (response.ok) {
         const eventdata = await response.json();
-        console.log("eventdata ", eventdata);
         setEvents(eventdata);
       }
     }
@@ -92,7 +86,6 @@ const CampaignDetail = (props) => {
   }, [deleted]);
 
     useEffect(() => {
-    console.log("run participant useEffect");
     async function getParticipantFetch() {
       const response = await fetch(
         `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/events/participants`,
@@ -103,7 +96,7 @@ const CampaignDetail = (props) => {
       );
       if (response.ok) {
         const participantdata = await response.json();
-        console.log("participantdata ", participantdata);
+        console.log("participantdata2 ", participantdata);
         setParticipants(participantdata);
       }
     }
@@ -131,7 +124,6 @@ const CampaignDetail = (props) => {
 
   return (
     <div className="container-fluid">
-      {/* {console.log("users ", users, users.length === 0)} */}
       <h1>Campaign Details</h1>
       <table className="table table-striped">
         <thead>
@@ -153,7 +145,17 @@ const CampaignDetail = (props) => {
               <td>{campaign.description}</td>
               <td>{campaign.rulebook}</td>
               <td>{campaign.campaign_email}</td>
-              {console.log("users ", users?.account.user_id)}
+              <td>
+                {users?.account.user_id === campaign.gamemaster_id ? (
+                  <Link to={`/Campaigns/${campaignId}/EventForm`}>
+                    <button className="btn btn-outline-dark fw-bold">
+                      EDIT CAMPAIGN
+                    </button>
+                  </Link>
+                ) : (
+                  "   "
+                )}
+              </td>
               <td>
                 {users?.account.user_id === campaign.gamemaster_id ? (
                   <Link to={`/Campaigns/${campaignId}/EventForm`}>
@@ -182,78 +184,78 @@ const CampaignDetail = (props) => {
             <th>Date</th>
           </tr>
         </thead>
-        {(events) ?
-        <tbody>
-          {events?.map((event) => {
-            return (
-              <tr key={event.event_id}>
-                <td>
-                  {" "}
-                  {console.log("event ", event)}
-                  {participants ? (
-                    <>
-                      {participants.event_id !== event.event_id ? (
-                        <Link
-                          to={`/campaigns/${campaignId}/${event.event_id}/participantform`}
-                          state={{ pid: participants.participant_id }}
-                        >
-                          <button className="btn btn-outline-dark fw-bold">
-                            Register for Adventure
-                          </button>
-                        </Link>
-                      ) : (
-                        "REGISTERED"
-                      )}
-                    </>
-                  ) : (
-                    // <Link
-                    //   to={`/campaigns/${campaignId}/${event.event_id}/participantform`}
-
-                    // >
-                    //   <button className="btn btn-outline-dark fw-bold">
-                    //     Register for Adventure
-                    //   </button>
-                    // </Link>
-                    "second link"
-                  )}
-                </td>
-                <td>{event.eventname}</td>
-                <td>{event.venuename}</td>
-                <td>{event.address}</td>
-                <td>{event.date}</td>
-                <td>
-                  {" "}
-                  {users?.account.user_id === campaign.gamemaster_id ? (
-                  <Link
-                    to={`/Campaigns/${campaign.campaign_id}/${event.event_id}/edit/`}
-                  >
-                    <button className="btn btn-outline-dark fw-bold">
-                      EDIT
-                    </button>
-                  </Link>
-                  ) : (
-                    "   "
-                  )}
-                </td>
-                <td>
-                  {" "}
-                  {users?.account.user_id === campaign.gamemaster_id ? (
-                  <button
-                    className="btn btn-outline-dark fw-bold"
-                    value={event.event_id}
-                    onClick={(e) => deleteEvent(e.target.value)}
-                  >
-                    DELETE
-                  </button>
-                  ) : (
-                    "   "
-                  )}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-        : "Nothing"}
+        {events ? (
+          <tbody>
+            {events?.map((event) => {
+              return (
+                <tr key={event.event_id}>
+                  <td>
+                    {" "}
+                    {participants ? (
+                      <>
+                        {participants.event_id !== event.event_id ? (
+                          <Link
+                            to={`/campaigns/${campaignId}/${event.event_id}/participantform`}
+                            state={{ pid: participants.participant_id }}
+                          >
+                            <button className="btn btn-outline-dark fw-bold">
+                              Register for Adventure
+                            </button>
+                          </Link>
+                        ) : (
+                          "REGISTERED"
+                        )}
+                      </>
+                    ) : (
+                      <Link
+                        to={`/campaigns/${campaignId}/${event.event_id}/participantform`}
+                      >
+                        <button className="btn btn-outline-dark fw-bold">
+                          Register for Adventure
+                        </button>
+                      </Link>
+                      // "second link"
+                    )}
+                  </td>
+                  <td>{event.eventname}</td>
+                  <td>{event.venuename}</td>
+                  <td>{event.address}</td>
+                  <td>{event.date}</td>
+                  <td>
+                    {" "}
+                    {users?.account.user_id === campaign.gamemaster_id ? (
+                      <Link
+                        to={`/Campaigns/${campaign.campaign_id}/${event.event_id}/edit/`}
+                      >
+                        <button className="btn btn-outline-dark fw-bold">
+                          EDIT
+                        </button>
+                      </Link>
+                    ) : (
+                      "   "
+                    )}
+                  </td>
+                  <td>
+                    {" "}
+                    {users?.account.user_id === campaign.gamemaster_id ? (
+                      <button
+                        className="btn btn-outline-dark fw-bold"
+                        value={event.event_id}
+                        onClick={(e) => deleteEvent(e.target.value)}
+                      >
+                        DELETE
+                      </button>
+                    ) : (
+                      "   "
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        ) : (
+          "Nothing"
+        )}
       </table>
     </div>
   );
