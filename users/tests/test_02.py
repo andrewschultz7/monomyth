@@ -1,3 +1,5 @@
+
+pass
 # from fastapi.testclient import TestClient
 # from main import app
 # from queries.users import UserOutWithPassword, UserIn, UserRepository
@@ -26,9 +28,6 @@
 #             role="test",
 #             hashed_password="password"
 #         )
-
-
-
 # class FakeAuthenticator:
 #     def hash_password(self, password):
 #         return "password"

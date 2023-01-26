@@ -2,6 +2,7 @@ from fastapi.testclient import TestClient
 from main import app
 from authenticator import authenticator
 from queries.participants import ParticipantRepository
+
 client = TestClient(app)
 data2 = {
     "participant_id": 1,
@@ -10,11 +11,17 @@ data2 = {
     "event_id": 2,
     "campaign_id": 1,
 }
+
+
 class FakeParticipantRepository:
     def create(self, event_id, campaign_id):
         return data2
+
+
 def fake_authenticator():
     pass
+
+
 def test_create_participant():
     app.dependency_overrides[ParticipantRepository] = FakeParticipantRepository
     app.dependency_overrides[
