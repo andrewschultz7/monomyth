@@ -28,7 +28,6 @@ class UserList extends React.Component {
                                 <tr key={users.user_id}>
                                     <td>{users.email}</td>
                                     <td>{users.role}</td>
-                                    {/* <td><img src={users.picture_url} className='img-thumbnail' width="300px" height="300px"/></td> */}
                               </tr>
                             )
                         })}
