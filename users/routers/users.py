@@ -7,7 +7,7 @@ from fastapi import (
     Request,
 )
 from jwtdown_fastapi.authentication import Token
-from authenticator import authenticator, MyAuthenticator
+from authenticator import authenticator
 from pydantic import BaseModel
 from queries.users import (
     UserIn,
@@ -46,6 +46,9 @@ async def get_token(
     request: Request,
     account: UserOut = Depends(authenticator.try_get_current_account_data),
 ) -> AccountToken | None:
+    print("\n")
+    print(account)
+    print("\n")
     if account and authenticator.cookie_name in request.cookies:
         return {
             "access_token": request.cookies[authenticator.cookie_name],
@@ -81,8 +84,12 @@ async def create_account(
 
 @router.get("/current", response_model=UserOut | None)
 async def get_curr_user(request: Request, repo: UserRepository = Depends()):
-    data = request.payload["user"]["email"]
+    # data = request.payload["user"]["email"]
+    data = request
     user = repo.get(data)
+    print("\n")
+    print("UUUUUUUUUUUUUU", user)
+    print("\n")
     return json.dumps({"id": user.id, "email": user.email, "role": user.role})
 
 

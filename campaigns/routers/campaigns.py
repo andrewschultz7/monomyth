@@ -25,14 +25,11 @@ class CampaignForm(BaseModel):
     rulebook: str
     campaign_email: str
 
-
 class AccountToken(Token):
     account: CampaignOut
 
-
 class HttpError(BaseModel):
     detail: str
-
 
 router = APIRouter()
 
@@ -41,7 +38,6 @@ not_authorized = HTTPException(
     detail="Invalid authentication credentials",
     headers={"WWW-Authenticate": "Bearer"},
 )
-
 
 @router.post("/campaigns", response_model=CampaignOut | HttpError)
 async def create_campaign(
@@ -52,7 +48,7 @@ async def create_campaign(
     user: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        info = repo.create(info, user["user_id"])
+        info = repo.create(info, user['user_id'])
     except DuplicateCampaignError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -62,17 +58,17 @@ async def create_campaign(
 
 
 @router.put(
-    "/campaigns/{campaign_id}", response_model=Union[CampaignOut, HttpError]
+    "/campaigns/{campaign_id}", response_model=Optional[CampaignOut],
 )
 async def update_campaign(
+    response: Response,
     campaign_id: int,
     campaign: CampaignIn,
     repo: CampaignRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
-) -> Union[HttpError, CampaignOut]:
-
-    print("INFO OOOOOOOOOOOOO")
-    return repo.update(campaign_id, campaign)
+) -> CampaignOut:
+    event2 = repo.update(campaign_id, campaign, user['user_id'])
+    return event2
 
 
 @router.delete("/campaigns/{campaign_id}", response_model=bool)
@@ -105,7 +101,3 @@ def get_all_campaigns(
 ):
 
     return repo.get_all_campaigns()
-
-    # form = CampaignForm(username=info.email, password=info.password)
-    # token = await authenticator.login(response, request, form, repo)
-    # return AccountToken(account=account, **token.dict())
