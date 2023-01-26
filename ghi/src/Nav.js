@@ -50,6 +50,15 @@ function Nav() {
                   Campaign List
                 </NavLink>
               </li>
+              <li className="nav-item">
+                <NavLink
+                  className="nav-link dropdown-item text-white"
+                  to="/userdetail"
+                  id="dropdown"
+                >
+                  User Details
+                </NavLink>
+              </li>
             </ul>
             <li>
               <NavLink

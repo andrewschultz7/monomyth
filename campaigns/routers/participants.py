@@ -48,6 +48,9 @@ async def create_participant(
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ):
+    print("\n")
+    print("participants post" , info)
+    print("\n")
     try:
         info = repo.create(info, user)
     except DuplicateParticipantError:
@@ -82,16 +85,15 @@ def delete_participant(
 
 
 @router.get(
-    "/events/participants/{participant_id}",
+    "/campaigns/events/participants/",
     response_model=Optional[ParticipantOut],
 )
 def get_one_participant(
-    user_id: int,
     response: Response,
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ) -> ParticipantOut:
-    event = repo.get_one(user_id)
+    event = repo.get_one(user['user_id'])
     if event is None:
         response.status_code = 404
     return event

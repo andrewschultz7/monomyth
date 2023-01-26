@@ -2,77 +2,113 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useAuthContext, useToken } from "./AppAuth";
 import { Link, useParams } from "react-router-dom";
 
-
 const CampaignDetail = (props) => {
-    const [campaign, setCampaign] = useState([]);
-    // const { token } = props;
-    const { token } = useAuthContext();
-    const { token: tokenState, setToken } = props;
-    const { campaignId } = useParams();
-    const [events, setEvents] = useState([]);
-    const [participants, setParticipants] = useState();
-    const [users, setUsers] = useState({});
-    const [deleted, setDeleted] = useState(false);
+  const [campaign, setCampaign] = useState([]);
+  const { token } = useAuthContext();
+  const { token: tokenState, setToken } = props;
+  const { campaignId } = useParams();
+  const [events, setEvents] = useState([]);
+  const [participants, setParticipants] = useState();
+  const [users, setUsers] = useState();
+  const [deleted, setDeleted] = useState(false);
 
-    let e = 0;
+  let e = 0;
 
-    useEffect(() => {
-      Promise.all([
-        fetch(
-          `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        ),
-        fetch(
-          `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/eventlist`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        ),
-        fetch(
-          `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/events/participants`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        ),
-        fetch(`${process.env.REACT_APP_USERS_API_HOST}/token`, {
+  useEffect(() => {
+    console.log("run second useEffect");
+    async function getUserFetch() {
+      const response = await fetch(
+        `${process.env.REACT_APP_USERS_API_HOST}/token`,
+        {
           headers: { Authorization: `Bearer ${token}` },
           credentials: "include",
-        }),
-      ])
-        .then(([resCampaigns, resEvents, resParticipants, resUser]) =>
-          Promise.all([
-            resCampaigns.json(),
-            resEvents.json(),
-            resParticipants.json(),
-            resUser.json(),
-          ])
-        )
-        .then(([dataCampaigns, dataEvents, dataParticipants, dataUser]) => {
-          setCampaign(dataCampaigns);
-          setEvents(dataEvents);
-          setParticipants(dataParticipants);
-          setUsers(dataUser);
-          setDeleted(false);
-        //   console.log("AAAAAAAAAAA", users?.account.user_id);
-        });
-    }, [deleted, tokenState]);
+        }
+      );
+      if (response.ok) {
+        const userdata = await response.json();
+        console.log("userdata ", userdata);
+        setUsers(userdata);
+      }
+    }
+    getUserFetch();
+  }, [deleted]);
 
-    const deleteEvent = async (event_id) => {
-      let data = event_id;
-      const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events/${data}`;
-      const fetchConfig = {
-        method: "delete",
-        body: JSON.stringify(data),
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      };
-      await fetch(url, fetchConfig)
-        .then((response) => response.json())
-        .then(() => {})
-        .catch((e) => console.log(`error: `, e));
-      setDeleted(true);
+  useEffect(() => {
+    console.log("run second useEffect");
+    async function getCampaignFetch() {
+      const response = await fetch(
+        `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          credentials: "include",
+        }
+      );
+      if (response.ok) {
+        const campaigndata = await response.json();
+        console.log("campaigndata ", campaigndata);
+        setCampaign(campaigndata);
+      }
+    }
+    getCampaignFetch();
+  }, [deleted]);
+
+  useEffect(() => {
+    console.log("run second useEffect");
+    async function getEventFetch() {
+      const response = await fetch(
+        `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/eventlist`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          credentials: "include",
+        }
+      );
+      if (response.ok) {
+        const eventdata = await response.json();
+        console.log("eventdata ", eventdata);
+        setEvents(eventdata);
+      }
+    }
+    getEventFetch();
+  }, [deleted]);
+
+    useEffect(() => {
+    console.log("run participant useEffect");
+    async function getParticipantFetch() {
+      const response = await fetch(
+        `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/events/participants`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          credentials: "include",
+        }
+      );
+      if (response.ok) {
+        const participantdata = await response.json();
+        console.log("participantdata ", participantdata);
+        setParticipants(participantdata);
+      }
+    }
+    getParticipantFetch();
+  }, [deleted]);
+
+
+  const deleteEvent = async (event_id) => {
+    let data = event_id;
+    const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events/${data}`;
+    const fetchConfig = {
+      method: "delete",
+      body: JSON.stringify(data),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
     };
+    await fetch(url, fetchConfig)
+      .then((response) => response.json())
+      .then(() => {})
+      .catch((e) => console.log(`error: `, e));
+    setDeleted(true);
+  };
 
   return (
     <div className="container-fluid">
@@ -89,7 +125,7 @@ const CampaignDetail = (props) => {
             <th>Campaign Contact Email</th>
           </tr>
         </thead>
-        {campaign ? (
+        {campaign && users ? (
           <tbody>
             <tr key={campaign.campaign_id}>
               <td>{campaign.campaign_id}</td>
@@ -98,17 +134,17 @@ const CampaignDetail = (props) => {
               <td>{campaign.description}</td>
               <td>{campaign.rulebook}</td>
               <td>{campaign.campaign_email}</td>
-              {/* {console.log("users ", users?.account.user_id)} */}
+              {console.log("users ", users?.account.user_id)}
               <td>
-                {/* {users?.account.user_id === campaign.gamemaster_id ? ( */}
+                {users?.account.user_id === campaign.gamemaster_id ? (
                   <Link to={`/Campaigns/${campaignId}/EventForm`}>
                     <button className="btn btn-outline-dark fw-bold">
                       CREATE EVENT
                     </button>
                   </Link>
-                {/* ) : (
+                ) : (
                   "   "
-                )} */}
+                )}
               </td>
             </tr>
           </tbody>
@@ -125,16 +161,18 @@ const CampaignDetail = (props) => {
             <th>Venue Name</th>
             <th>Address</th>
             <th>Date</th>
-            {/* <th>Participants</th> */}
-            {/* <th>Associated Campaign</th> */}
           </tr>
         </thead>
+        {(participants && events) ?
         <tbody>
           {events?.map((event) => {
+            {
+              console.log("event fail ", participants);
+            }
             return (
               <tr key={event.event_id}>
                 <td>
-                  {/* {participants.event_id !== event.event_id ? ( */}
+                  {participants.event_id !== event.event_id ? (
                     <Link
                       to={`/campaigns/${campaignId}/${event.event_id}/participantform`}
                     >
@@ -142,9 +180,9 @@ const CampaignDetail = (props) => {
                         Register for Adventure
                       </button>
                     </Link>
-                  {/* ) : (
+                  ) : (
                     "REGISTERED"
-                  )} */}
+                  )}
                 </td>
                 <td>{event.eventname}</td>
                 <td>{event.venuename}</td>
@@ -153,13 +191,13 @@ const CampaignDetail = (props) => {
                 <td>
                   {" "}
                   {/* {users?.account.user_id === campaign.gamemaster_id ? ( */}
-                    <Link
-                      to={`/Campaigns/${campaign.campaign_id}/${event.event_id}/edit/`}
-                    >
-                      <button className="btn btn-outline-dark fw-bold">
-                        EDIT
-                      </button>
-                    </Link>
+                  <Link
+                    to={`/Campaigns/${campaign.campaign_id}/${event.event_id}/edit/`}
+                  >
+                    <button className="btn btn-outline-dark fw-bold">
+                      EDIT
+                    </button>
+                  </Link>
                   {/* ) : (
                     "   "
                   )} */}
@@ -167,13 +205,13 @@ const CampaignDetail = (props) => {
                 <td>
                   {" "}
                   {/* {users?.account.user_id === campaign.gamemaster_id ? ( */}
-                    <button
-                      className="btn btn-outline-dark fw-bold"
-                      value={event.event_id}
-                      onClick={(e) => deleteEvent(e.target.value)}
-                    >
-                      DELETE
-                    </button>
+                  <button
+                    className="btn btn-outline-dark fw-bold"
+                    value={event.event_id}
+                    onClick={(e) => deleteEvent(e.target.value)}
+                  >
+                    DELETE
+                  </button>
                   {/* ) : (
                     "   "
                   )} */}
@@ -182,6 +220,7 @@ const CampaignDetail = (props) => {
             );
           })}
         </tbody>
+        : "Nothing"}
       </table>
     </div>
   );
