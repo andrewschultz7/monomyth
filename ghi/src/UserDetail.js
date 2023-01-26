@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-// import { useParams } from "react-router-dom";
 import { useAuthContext } from "./AppAuth";
 
 const UserDetail = (props) => {
   const [user, setUsers] = useState();
   const { token } = useAuthContext();
-
   const { token: tokenState, setToken } = props;
 
   console.log("user ", token);
@@ -26,7 +24,8 @@ const UserDetail = (props) => {
       if (response.ok) {
         const userdata = await response.json();
         setUsers(userdata);
-        console.log("after response ", userdata)
+        console.log("after response ", userdata.account.email)
+        console.log("after resonse 2 ", user.account.email)
       }
     }
     getUserFetch();
@@ -43,15 +42,8 @@ const UserDetail = (props) => {
         </thead>
         {user ? (
           <tbody>
-            <tr key={user.email}>
-              <td>{user.email}</td>
-              {/* {users?.map((user) => {
-              return (
-                <tr key={user.email}>
-                  <td>{user.email}</td>
-                </tr>
-              );
-            })} */}
+            <tr key={user.account.email}>
+              <td>{user.account.email}</td>
             </tr>
           </tbody>
         ) : (

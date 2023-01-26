@@ -139,7 +139,6 @@ class CampaignRepository:
                             campaign_id
                         ],
                     )
-                    print("que ries ", campaign)
                     return self.campaign_in_to_out(campaign_id, campaign)
         except Exception:
             return {"message": "Could not updateCampaigns"}
