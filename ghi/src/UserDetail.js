@@ -3,75 +3,60 @@ import React, { useState, useEffect } from "react";
 import { useAuthContext } from "./AppAuth";
 
 const UserDetail = (props) => {
-  const [users, setUser] = useState([]);
+  const [user, setUsers] = useState();
   const { token } = useAuthContext();
+
   const { token: tokenState, setToken } = props;
 
-  console.log("user ", users);
-
-  //   useEffect(() => {
-  //     Promise.all([
-  //       fetch(
-  //         `${process.env.REACT_APP_USERS_API_HOST}/token`,
-  //         { headers: { Authorization: `Bearer ${token}` } }
-  //       )
-  //     ])
-  //       .then(([resUser]) =>
-  //         Promise.all([
-  //           resUser.json(),
-  //         ])
-  //       )
-  //       .then(([dataUser]) => {
-  //         setUser(dataUser);
-  //         console.log("user ", users);
-  //         console.log("token ", token);
-  //       });
-  //   }, []);
+  console.log("user ", token);
 
   useEffect(() => {
-     const fireEvent = async (event) => {
-       let data = event;
-       const url = `${process.env.REACT_APP_USERS_API_HOST}/token`;
-       const fetchConfig = {
-         method: "get",
-         body: JSON.stringify(data),
-         headers: {
-           Authorization: `Bearer ${token}`,
-           "Content-Type": "application/json",
-         },
-         credentials: "include",
-       };
-       await fetch(url, fetchConfig)
-         .then((response) => response.json())
-         .then(() => {})
-         .catch((event) => console.log(`error: `, event));
-       setUser(users);
-       console.log("users after fire ", users)
-     };
-     if (token) {
-        fireEvent();
-     }
-  },[token]);
+    async function getUserFetch() {
+      console.log("fire event", token);
+      const response = await fetch(
+        `${process.env.REACT_APP_USERS_API_HOST}/token`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
+      if (response.ok) {
+        const userdata = await response.json();
+        setUsers(userdata);
+        console.log("after response ", userdata)
+      }
+    }
+    getUserFetch();
+  }, []);
 
   return (
     <div className="container-fluid">
       <h2>User detail</h2>
-      {token}
       <table className="table table-striped">
         <thead>
           <tr>
             <th>Email</th>
           </tr>
         </thead>
-        <tbody>
-          {users?.map((user) => {
-            return (
-              <tr key={user.email}>
-                <td>{user.email}</td>
-              </tr>
-            );
-          })}
-        </tbody>
+        {user ? (
+          <tbody>
+            <tr key={user.email}>
+              <td>{user.email}</td>
+              {/* {users?.map((user) => {
+              return (
+                <tr key={user.email}>
+                  <td>{user.email}</td>
+                </tr>
+              );
+            })} */}
+            </tr>
+          </tbody>
+        ) : (
+          ""
+        )}
       </table>
     </div>
   );

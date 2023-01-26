@@ -69,11 +69,8 @@ async def update_participant(
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ) -> ParticipantOut:
-    print("\n")
-    print(user)
     event2 = repo.update(participant_id, event, user["user_id"])
     return event2
-    # return repo.update(participant_id, event)
 
 
 @router.delete("/events/participants/{participant_id}", response_model=bool)
@@ -95,9 +92,6 @@ def get_one_participant(
     user: dict = Depends(authenticator.get_current_account_data),
 ) -> ParticipantOut:
     event = repo.get_one(user['user_id'])
-    print("\n")
-    print(event)
-    print("\n")
     if event is None:
         response.status_code = 404
     return event
@@ -111,9 +105,4 @@ def get_all_participants(
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ):
-    print("Participants YYYYYYYYYYYYYY")
     return repo.get_all_participants()
-
-    # form = EventForm(username=info.email, password=info.password)
-    # token = await authenticator.login(response, request, form, repo)
-    # return AccountToken(account=account, **token.dict())

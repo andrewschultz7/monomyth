@@ -28,7 +28,6 @@ function BootstrapInput(props2) {
 const EventEdit = (props) => {
     const { eventId } = useParams();
     const { campaignId } = useParams();
-    // const { token } = props;
     const { token } = useAuthContext();
     const { token: tokenState, setToken } = props;
     const [eventname, setEventName] = useState("");

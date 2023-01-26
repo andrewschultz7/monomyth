@@ -149,17 +149,6 @@ const CampaignDetail = (props) => {
                 {users?.account.user_id === campaign.gamemaster_id ? (
                   <Link to={`/Campaigns/${campaignId}/EventForm`}>
                     <button className="btn btn-outline-dark fw-bold">
-                      EDIT CAMPAIGN
-                    </button>
-                  </Link>
-                ) : (
-                  "   "
-                )}
-              </td>
-              <td>
-                {users?.account.user_id === campaign.gamemaster_id ? (
-                  <Link to={`/Campaigns/${campaignId}/EventForm`}>
-                    <button className="btn btn-outline-dark fw-bold">
                       CREATE EVENT
                     </button>
                   </Link>

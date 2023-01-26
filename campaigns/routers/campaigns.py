@@ -63,17 +63,17 @@ async def create_campaign(
 
 
 @router.put(
-    "/campaigns/{campaign_id}", response_model=Union[CampaignOut, HttpError]
+    "/campaigns/{campaign_id}", response_model=Optional[CampaignOut],
 )
 async def update_campaign(
+    response: Response,
     campaign_id: int,
     campaign: CampaignIn,
     repo: CampaignRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
-) -> Union[HttpError, CampaignOut]:
-
-    print("INFO OOOOOOOOOOOOO")
-    return repo.update(campaign_id, campaign)
+) -> CampaignOut:
+    event2 = repo.update(campaign_id, campaign, user['user_id'])
+    return event2
 
 
 @router.delete("/campaigns/{campaign_id}", response_model=bool)
@@ -92,9 +92,6 @@ def get_one_campaign(
     repo: CampaignRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ) -> CampaignOut:
-    print("\n")
-    print(user)
-    print("\n")
     campaign = repo.get_one(campaign_id)
     if campaign is None:
         print("campaign stopped here")
@@ -109,7 +106,3 @@ def get_all_campaigns(
 ):
 
     return repo.get_all_campaigns()
-
-    # form = CampaignForm(username=info.email, password=info.password)
-    # token = await authenticator.login(response, request, form, repo)
-    # return AccountToken(account=account, **token.dict())

@@ -112,7 +112,6 @@ class ParticipantRepository:
     def update(self, participant_id, participant: ParticipantIn, user) -> ParticipantOut:
         with pool.connection() as conn:
             with conn.cursor() as db:
-                # participant.user_id = user["user_id"]
                 result = db.execute(
                     """
                     UPDATE participants
@@ -132,17 +131,9 @@ class ParticipantRepository:
                     ],
                 )
                 return self.participant_in_to_out(participant_id, user, participant)
-                # participant_id = result.fetchone()[0]
-                # old_data = participant.dict()
-                # return ParticipantOut(
-                #     participant_id=participant_id,
-                #     user_id=user["user_id"],
-                #     **old_data
-                # )
 
     def participant_in_to_out(self, participant_id: int, user: int, participant: ParticipantIn):
         old_data = participant.dict()
-        print("olddata ", old_data)
         return ParticipantOut(participant_id=participant_id, user_id=user, **old_data)
 
     def record_to_participant_out(self, record):
