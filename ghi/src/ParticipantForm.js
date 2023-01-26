@@ -27,8 +27,8 @@ function ParticipantForm(props) {
             data.character=character
             data.event_id=eventId
             data.campaign_id=campaignId
-            console.log(data)
-            const participantsUrl = 'http://localhost:8001/events/participants'
+            console.log(data, "participantform")
+            const participantsUrl = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events/${eventId}/participants`
             const fetchConfig = {
                 method: 'post',
                 body: JSON.stringify(data),
@@ -38,12 +38,13 @@ function ParticipantForm(props) {
                 credentials : "include"
             };
             await fetch(participantsUrl, fetchConfig)
-            .then(response => response.json())
-            .then(() => {
-                setCharacter('');
-            })
+                .then(response => response.json())
+                .then(() => {
+                    setCharacter('');
+                })
             .catch(e => console.log(`error: `, e));
-            navigate(`/Campaigns/${campaignId}/`);
+            console.log("before navigate BBBBBBBBBBBBB")
+            navigate(`/campaigns/${campaignId}/`);
         };
 
     return (

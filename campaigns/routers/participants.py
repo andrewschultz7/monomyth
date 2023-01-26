@@ -9,9 +9,7 @@ from fastapi import (
 from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
 from typing import Optional, Union, List
-
 from pydantic import BaseModel
-
 from queries.participants import (
     ParticipantIn,
     ParticipantOut,
@@ -19,10 +17,7 @@ from queries.participants import (
     DuplicateParticipantError,
 )
 
-from queries.events import(
-    EventIn,
-    EventOut
-)
+# from queries.events import EventIn, EventOut
 
 
 class ParticipantForm(BaseModel):
@@ -30,16 +25,22 @@ class ParticipantForm(BaseModel):
     event_id: int
     campaign_id: int
 
+
 class AccountToken(Token):
     account: ParticipantOut
+
 
 class HttpError(BaseModel):
     detail: str
 
+
 router = APIRouter()
 
 
-@router.post("/events/participants", response_model=ParticipantOut | HttpError)
+@router.post(
+    "/campaigns/{campaign_id}/events/{event_id}/participants",
+    response_model=ParticipantOut | HttpError,
+)
 async def create_participant(
     info: ParticipantForm,
     request: Request,
@@ -47,7 +48,6 @@ async def create_participant(
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ):
-    print(user, "TTTTTTTTTTTTTTTTTTTTTTT")
     try:
         info = repo.create(info, user)
     except DuplicateParticipantError:
@@ -58,13 +58,16 @@ async def create_participant(
     return info
 
 
-@router.put("/events/participants/{participant_id}", response_model=Union[ParticipantOut, HttpError])
+@router.put(
+    "/events/participants/{participant_id}",
+    response_model=Union[ParticipantOut, HttpError],
+)
 async def update_participant(
     participant_id: int,
     event: ParticipantIn,
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
-    ) -> Union[HttpError, ParticipantOut]:
+) -> Union[HttpError, ParticipantOut]:
 
     return repo.update(participant_id, event)
 
@@ -78,26 +81,32 @@ def delete_participant(
     return repo.delete(participant_id)
 
 
-@router.get("/events/participants/{participant_id}", response_model=Optional[ParticipantOut])
+@router.get(
+    "/campaigns/events/participants/",
+    response_model=Optional[ParticipantOut],
+)
 def get_one_participant(
-    participant_id: int,
     response: Response,
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ) -> ParticipantOut:
-    event = repo.get_one(participant_id)
+    print(f"Hello Matt{user}")
+    event = repo.get_one(user["user_id"])
     if event is None:
         response.status_code = 404
     return event
 
 
-@router.get("/events/participants", response_model=Union[HttpError, List[ParticipantOut]])
+@router.get(
+    "/events/participants",
+    response_model=Union[HttpError, List[ParticipantOut]],
+)
 def get_all_participants(
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ):
+    print("Participants YYYYYYYYYYYYYY")
     return repo.get_all_participants()
-
 
     # form = EventForm(username=info.email, password=info.password)
     # token = await authenticator.login(response, request, form, repo)

@@ -13,6 +13,7 @@ function BootstrapInput(props) {
     )
 }
 function EventEdit(props) {
+    console.log("PROPS: ", props)
     const { eventId } = useParams();
     const { campaignId } = useParams();
     const { token } = useAuthContext();
@@ -22,15 +23,15 @@ function EventEdit(props) {
     const [date, setDate] = useState('');
     const [participants, setParticipants] = useState('');
     const [event, setEvent] = useState('')
-    const [campaign, setCampaign] = useState('')
+    const [campaign_id, setCampaign] = useState('')
     const navigate = useNavigate();
 
     useEffect(() => {
             async function getEvent() {
-                const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/${eventId}`;
+                const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events/${eventId}`;
                 if (token) {
                     const response = await fetch(url, {
-                        headers: { Authorization: `Bearer ${token}` },
+                        headers: { Authorization: `Bearer ${token.access_token}` },
                         });
                     if (response.ok) {
                     const data = await response.json();
@@ -39,7 +40,7 @@ function EventEdit(props) {
                 }
             }
             getEvent();
-        }, [token])
+        }, [token.access_token])
 
       const handleSubmit = async (e) => {
         e.preventDefault();
@@ -65,8 +66,10 @@ function EventEdit(props) {
             data.participants=event.participants;
         } else {data.participants=participants};
 
+        data.campaign_id=campaignId
+
         console.log(data)
-        const eventUrl = 'http://localhost:8001/events'
+        const eventUrl = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events/${eventId}`
         const fetchConfig = {
             method: 'put',
             body: JSON.stringify(data),
@@ -86,7 +89,7 @@ function EventEdit(props) {
             setCampaign('');
         })
         .catch(e => console.log(`error: `, e));
-        navigate(`/Campaigns/${campaignId}/${eventId}`);
+        navigate(`/campaigns/${campaignId}`);
     };
 
     return (

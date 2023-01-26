@@ -10,7 +10,6 @@ from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
 from typing import Union, Optional, List
 from pydantic import BaseModel
-
 from queries.campaigns import (
     CampaignIn,
     CampaignOut,
@@ -26,11 +25,14 @@ class CampaignForm(BaseModel):
     rulebook: str
     campaign_email: str
 
+
 class AccountToken(Token):
     account: CampaignOut
 
+
 class HttpError(BaseModel):
     detail: str
+
 
 router = APIRouter()
 
@@ -39,6 +41,7 @@ not_authorized = HTTPException(
     detail="Invalid authentication credentials",
     headers={"WWW-Authenticate": "Bearer"},
 )
+
 
 @router.post("/campaigns", response_model=CampaignOut | HttpError)
 async def create_campaign(
@@ -49,7 +52,7 @@ async def create_campaign(
     user: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        info = repo.create(info, user['user_id'])
+        info = repo.create(info, user["user_id"])
     except DuplicateCampaignError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -58,14 +61,17 @@ async def create_campaign(
     return info
 
 
-@router.put("/campaigns/{campaign_id}", response_model=Union[CampaignOut, HttpError])
+@router.put(
+    "/campaigns/{campaign_id}", response_model=Union[CampaignOut, HttpError]
+)
 async def update_campaign(
     campaign_id: int,
     campaign: CampaignIn,
     repo: CampaignRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
-    ) -> Union[HttpError, CampaignOut]:
+) -> Union[HttpError, CampaignOut]:
 
+    print("INFO OOOOOOOOOOOOO")
     return repo.update(campaign_id, campaign)
 
 
@@ -87,6 +93,7 @@ def get_one_campaign(
 ) -> CampaignOut:
     campaign = repo.get_one(campaign_id)
     if campaign is None:
+        print("campaign stopped here")
         response.status_code = 404
     return campaign
 
@@ -98,7 +105,6 @@ def get_all_campaigns(
 ):
 
     return repo.get_all_campaigns()
-
 
     # form = CampaignForm(username=info.email, password=info.password)
     # token = await authenticator.login(response, request, form, repo)

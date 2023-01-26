@@ -14,8 +14,6 @@ import Logout from './Users/Logout';
 import ParticipantForm from './ParticipantForm';
 import ParticipantList from './ParticipantList';
 import SignUpForm from './Users/SignUpForm';
-// import UserList from './UserList';
-import UserDetail from "./Users/UserDetail";
 
 import './App.css';
 import { AuthProvider, useToken } from './AppAuth';
@@ -29,6 +27,29 @@ function GetToken() {
 function App() {
   return (
     <BrowserRouter>
+    <AuthProvider>
+      <GetToken />
+      <Nav />
+      <div className="container-fluid">
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/campaigns/:campaignId/" element={<CampaignDetail />} />
+          <Route path="/campaigns/:campaignId/edit" element={<CampaignEdit />} />
+          <Route path="/campaignform" element={<CampaignForm />} />
+          <Route path="/campaignlist" element={<CampaignList />} />
+          <Route path="/campaigns/:campaignId/:eventId" element={<EventDetail />} />
+          <Route path="/campaigns/:campaignId/:eventId/edit" element={<EventEdit />} />
+          <Route path="/campaigns/:campaignId/eventform" element={<EventForm />} />
+          <Route path="/campaigns/:campaignId/eventlist" element={<EventList />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/logout" element={<Logout />} />
+          <Route path="/campaigns/:campaignId/:eventId/participantform" element={<ParticipantForm />} />
+          <Route path="/participantlist" element={<ParticipantList />} />
+          <Route path="/signupform" element={<SignUpForm />} />
+          <Route path="/userdetail" element={<UserDetail />} />
+        </Routes>
+      </div>
+    </AuthProvider>
       <AuthProvider>
         <GetToken />
         <Nav />

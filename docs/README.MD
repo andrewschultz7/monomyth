@@ -1,17 +1,19 @@
 # Monomyth
-[TOC]
 The app for larping. For game masters, Monomyth streamlines the creation and management of campaigns and events. For game players, it allows for fast and easy character creation and event registration. The project has two backend microservices: **Users** and **Campaigns**.<br />
 
 ## Table of Contents
 
 Project services<br />
-How to run this application<br />
+Users microservice<br />
+Campaigns microservice<br />
+React components<br />
+Deployment<br />
 Application diagram<br />
 API documentation<br />
 <br />
 
-**Team**<br />
-* Andrew, Patrick, Nate, Sean and Brian<br />
+**Team 9**<br />
+Andrew, Patrick, Nate, Sean and Brian<br />
 
 ## Project Services
 - **React** binds to port "3000:3000"<br />
@@ -25,25 +27,13 @@ pgAdmin is the project's management tool for the database.<br />
 - The **Database** is **postgres**, which binds to port "15432:5432".<br />
 
 
-## React
-
-**Component Name**<br />
-Description of component.<br />
-
-**Component Name**<br />
-Description of component.<br />
-
-**Component Name**<br />
-Description of component.<br />
-
-
-## Users Microservice
+## Users microservice
 
 **User model**<br />
 This model represents a user of the project. It tracks their user id number, email, and password.<br />
 
 
-## Campaigns Microservice
+## Campaigns microservice
 
 **Campaign model**<br />
 This model represents a larp. It tracks the larp's id number, title, genre, description, a url for the rulebook, an email for the gamemaster, and the user id number of the gamemaster.<br />
@@ -55,7 +45,52 @@ This model represents an event of a larp. Larp campaigns are composed of their e
 This model represents a user's character at the larp. Participants can sign up for events. The model tracks their participant id number, the user's id number, their character's name, the id number of the campaign, and the event id of the event they are registered to attend (if any).<br />
 
 
-## How to Run this Application
+## React components
+
+**SignUpForm**<br />
+Form | User enters their email and password. On submit the field data is posted to User API and a token is created for the current User, logging them in. <br />
+
+**Login**<br />
+Form | User enters their email and password. On submit, a token is created for the current User, logging them in.  <br />
+
+!!! **Logout**<br />
+Deletes token for the current User.<br />
+
+**UserDetail**<br />
+Displays the email of the currently logged in user. <br />
+
+**CampaignForm**<br />
+Form | User enters title, genre, description, campaign email, and rulebook. On submit, the field data  !!! <br />
+
+**CampaignEdit**<br />
+Form | Only accessible if logged in user's user_id equals Campaign.gamemaster_id. User can update title, genre, description, campaign email, and/or rulebook. On submit, the field data is put to Campaign. <br />
+
+**CampaignList**<br />
+Description of component.<br />
+
+**CampaignDetail**<br />
+Description of component.<br />
+
+**EventDetail**<br />
+Description of component.<br />
+
+**EventForm**<br />
+Form | Only accessible if logged in user's user_id equals Campaign.gamemaster_id. <br />
+
+**EventEdit**<br />
+Form | Only accessible if logged in user's user_id equals Campaign.gamemaster_id. <br />
+
+**EventList**<br />
+Description of component.<br />
+
+**ParticipantForm**<br />
+Form | User enters a character name. On submit, that name, event_id, campaign_id, and user_id is POSTed to Participant.<br />
+
+**ParticipantList**<br />
+Description of component.<br />
+
+
+## How to run this application
 
 1. Fork or clone the project form https://gitlab.com/monomyth1/monomyth:
     ```
@@ -78,17 +113,20 @@ This model represents a user's character at the larp. Participants can sign up f
 
 ## How to rebuild the database <br />
 
-1. Stop all running containers.<br />
-2. Remove un-used container(s):
+1. Stop and remove all running containers.<br />
     ```
-    docker container prune -f
+    docker-compose down
     ```
-3. Remove the databases:
+2. Remove the images:
+    ```
+    docker image prune -a
+    ```
+3. Remove the volumes:
     ```
     docker volume rm postgres-data
     docker volume rm pg-admin
     ```
-4. Rebuild the databases:
+3. Rebuild the volumes:
     ```
     docker volume create postgres-data
     docker volume create pg-admin
