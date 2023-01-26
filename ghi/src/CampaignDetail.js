@@ -223,7 +223,7 @@ const CampaignDetail = (props) => {
                 <td>{event.date}</td>
                 <td>
                   {" "}
-                  {/* {users?.account.user_id === campaign.gamemaster_id ? ( */}
+                  {users?.account.user_id === campaign.gamemaster_id ? (
                   <Link
                     to={`/Campaigns/${campaign.campaign_id}/${event.event_id}/edit/`}
                   >
@@ -231,13 +231,13 @@ const CampaignDetail = (props) => {
                       EDIT
                     </button>
                   </Link>
-                  {/* ) : (
+                  ) : (
                     "   "
-                  )} */}
+                  )}
                 </td>
                 <td>
                   {" "}
-                  {/* {users?.account.user_id === campaign.gamemaster_id ? ( */}
+                  {users?.account.user_id === campaign.gamemaster_id ? (
                   <button
                     className="btn btn-outline-dark fw-bold"
                     value={event.event_id}
@@ -245,9 +245,9 @@ const CampaignDetail = (props) => {
                   >
                     DELETE
                   </button>
-                  {/* ) : (
+                  ) : (
                     "   "
-                  )} */}
+                  )}
                 </td>
               </tr>
             );
