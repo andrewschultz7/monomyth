@@ -1,5 +1,3 @@
-
-pass
 # from fastapi.testclient import TestClient
 # from main import app
 # from queries.users import UserOutWithPassword, UserIn, UserRepository
@@ -18,7 +16,7 @@ pass
 
 
 # class FakeUserRepository:
-#     def create(self, info, hashed_password):
+#     def create(self, hashed_password):
 #         return user_out
 
 #     def get_user(self, user_id=1):

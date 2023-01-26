@@ -1,45 +1,37 @@
 from fastapi.testclient import TestClient
 from main import app
-from routers.participants import ParticipantOut
 from authenticator import authenticator
 from queries.participants import ParticipantRepository
 
-
 client = TestClient(app)
+data2 = {
+    "participant_id": 1,
+    "user_id": 1,
+    "character": "monster",
+    "event_id": 2,
+    "campaign_id": 1,
+}
 
 
-class FakeParticipantRepo:
-    def get_one(self, uid=1):
-        return ParticipantOut(
-            participant_id=3,
-            user_id=uid,
-            character="testCH",
-            event_id=1,
-            campaign_id=1,
-        )
+class FakeParticipantRepository:
+    def create(self, event_id, campaign_id):
+        return data2
 
 
 def fake_authenticator():
-    return {"user_id": 1, "email": "test@email.com", "role": "player"}
+    pass
 
 
-def test_get_a_participant():
-    participant_expected = {
-        "participant_id": 3,
-        "user_id": 1,
-        "character": "testCH",
-        "event_id": 1,
-        "campaign_id": 1,
-    }
-
+def test_create_participant():
+    app.dependency_overrides[ParticipantRepository] = FakeParticipantRepository
     app.dependency_overrides[
         authenticator.get_current_account_data
     ] = fake_authenticator
-    app.dependency_overrides[ParticipantRepository] = FakeParticipantRepo
-
-    response = client.get("/campaigns/events/participants/")
-
+    data = {
+        "user_id": 1,
+        "character": "monster",
+        "event_id": 2,
+        "campaign_id": 1,
+    }
+    response = client.post("/campaigns/1/events/2/participants", json=data)
     assert response.status_code == 200
-    assert response.json() == participant_expected
-
-    app.dependency_overrides = {}
