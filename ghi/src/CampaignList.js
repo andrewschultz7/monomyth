@@ -6,7 +6,7 @@ const CampaignList = (props) => {
   const [campaigns, setCampaigns] = useState([]);
   const { token } = useAuthContext();
   const { token: tokenState, setToken } = props;
-  const {deleted, setDeleted} = useState(false);
+  const [deleted, setDeleted] = useState(false);
 
   useEffect(() => {
     setToken(token);
@@ -81,7 +81,7 @@ const CampaignList = (props) => {
                   value={campaign.campaign_id}
                   onClick={(e) => deleteCampaign(e.target.value)}
                 >
-                  Delete
+                  DELETE
                 </button>
               </div>
               <div className="card-footer text-muted">
