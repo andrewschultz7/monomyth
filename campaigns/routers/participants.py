@@ -22,8 +22,9 @@ from queries.participants import (
 
 class ParticipantForm(BaseModel):
     character: str
-    email: str
-    event: Optional[str]
+    event_id: int
+    campaign_id: int
+
 
 
 class AccountToken(Token):
@@ -37,16 +38,19 @@ class HttpError(BaseModel):
 router = APIRouter()
 
 
-@router.post("/events/participants", response_model=ParticipantOut | HttpError)
+@router.post(
+    "/campaigns/{campaign_id}/events/{event_id}/participants",
+    response_model=ParticipantOut | HttpError,
+)
 async def create_participant(
-    info: ParticipantIn,
+    info: ParticipantForm,
     request: Request,
     response: Response,
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        info = repo.create(info)
+        info = repo.create(info, user)
     except DuplicateParticipantError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -56,17 +60,18 @@ async def create_participant(
 
 
 @router.put(
-    "/events/participants/{participant_id}",
-    response_model=Union[ParticipantOut, HttpError],
+    "/campaigns/{campaign_id}/events/{event_id}/participants/{participant_id}",
+    response_model=Optional[ParticipantOut],
 )
 async def update_participant(
+    response: Response,
     participant_id: int,
     event: ParticipantIn,
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
-) -> Union[HttpError, ParticipantOut]:
-
-    return repo.update(participant_id, event)
+) -> ParticipantOut:
+    event2 = repo.update(participant_id, event, user["user_id"])
+    return event2
 
 
 @router.delete("/events/participants/{participant_id}", response_model=bool)
@@ -79,16 +84,15 @@ def delete_participant(
 
 
 @router.get(
-    "/events/participants/{participant_id}",
+    "/campaigns/events/participants/",
     response_model=Optional[ParticipantOut],
 )
 def get_one_participant(
-    participant_id: int,
     response: Response,
     repo: ParticipantRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ) -> ParticipantOut:
-    event = repo.get_one(participant_id)
+    event = repo.get_one(user['user_id'])
     if event is None:
         response.status_code = 404
     return event
@@ -103,7 +107,3 @@ def get_all_participants(
     user: dict = Depends(authenticator.get_current_account_data),
 ):
     return repo.get_all_participants()
-
-    # form = EventForm(username=info.email, password=info.password)
-    # token = await authenticator.login(response, request, form, repo)
-    # return AccountToken(account=account, **token.dict())

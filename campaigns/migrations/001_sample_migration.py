@@ -9,7 +9,7 @@ steps = [
             description TEXT NOT NULL,
             rulebook VARCHAR(1000) NOT NULL,
             campaign_email VARCHAR(1000) NOT NULL,
-            users TEXT NOT NULL
+            gamemaster_id INT NOT NULL
         );
         """,
         # "Down" SQL statement
@@ -25,8 +25,8 @@ steps = [
             eventname VARCHAR(1000) NOT NULL,
             venuename VARCHAR(1000) NOT NULL,
             address VARCHAR(1000) NOT NULL,
-            participants TEXT NOT NULL,
-            campaign VARCHAR(1000) NOT NULL
+            date DATE NOT NULL,
+            campaign_id INT NOT NULL
         );
         """,
         # "Down" SQL statement
@@ -39,9 +39,10 @@ steps = [
         """
         CREATE TABLE participants (
             participant_id SERIAL PRIMARY KEY NOT NULL,
+            user_id INT NOT NULL,
             character VARCHAR(1000) NOT NULL,
-            email VARCHAR(1000) NOT NULL,
-            event VARCHAR(1000) NOT NULL
+            event_id INT NOT NULL,
+            campaign_id INT NOT NULL
         );
         """,
         # "Down" SQL statement

@@ -13,12 +13,13 @@ class DuplicateEventError(ValueError):
 
 
 class EventIn(BaseModel):
+    # event_id: int
     eventname: str
     venuename: str
     address: str
     date: date
-    participants: str
-    campaign: Optional[str]
+    campaign_id: Optional[int]
+
 
 
 class EventOut(BaseModel):
@@ -27,12 +28,11 @@ class EventOut(BaseModel):
     venuename: str
     address: str
     date: date
-    participants: str
-    campaign: Optional[str]
+    campaign_id: Optional[int]
 
 
 class EventRepository:
-    def get_one_event(self, event_id: int) -> Optional[EventOut]:
+    def get_one(self, event_id: int) -> Optional[EventOut]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -43,8 +43,7 @@ class EventRepository:
                         , venuename
                         , address
                         , date
-                        , participants
-                        , campaign
+                        , campaign_id
                         FROM events
                         WHERE event_id = %s
                         """,
@@ -74,17 +73,17 @@ class EventRepository:
 
     def update(self, event_id: int, event: EventIn) -> Union[EventOut, Error]:
         try:
+            print("FIRST: FIRING EVENT UPDATE QUERIES")
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     db.execute(
                         """
-                        UPDATE event
+                        UPDATE events
                         SET eventname = %s
                         , venuename = %s
                         , address = %s
                         , date = %s
-                        , participants = %s
-                        , campaign = %s
+                        , campaign_id = %s
                         WHERE event_id = %s
                         """,
                         [
@@ -92,18 +91,18 @@ class EventRepository:
                             event.venuename,
                             event.address,
                             event.date,
-                            event.participants,
-                            event.campaign,
+                            event.campaign_id,
                             event_id,
                         ],
                     )
                 # old_data = event.dict()
                 # return EventOut(event_id=event_id, **old_data)
+                print("FIRING EVENT UPDATE QUERIES", event_id, event)
                 return self.event_in_to_out(event_id, event)
         except Exception:
             return {"message": "Could not updateevents"}
 
-    def get_all_events(self) -> Union[Error, List[EventOut]]:
+    def get_all_events(self, campaign_id) -> Union[Error, List[EventOut]]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -114,11 +113,12 @@ class EventRepository:
                         , venuename
                         , address
                         , date
-                        , participants
-                        , campaign
+                        , campaign_id
                         FROM events
+                        WHERE campaign_id = %s
                         ORDER BY event_id;
-                        """
+                        """,
+                        [campaign_id],
                     )
                     result = []
                     for record in db:
@@ -127,15 +127,11 @@ class EventRepository:
                             eventname=record[1],
                             venuename=record[2],
                             address=record[3],
-                            thoughts=record[4],
+                            date=record[4],
+                            campaign_id=record[5],
                         )
                         result.append(event)
                     return result
-                    # ***  BELOW IS A LIST COMP WAY  OF WHATS ABOVE ***
-                    # return [
-                    #     self.record_to_event_out(record)
-                    #     for record in db
-                    # ]
         except Exception:
             return {"message": "Could not get all events"}
 
@@ -149,10 +145,9 @@ class EventRepository:
                         , venuename
                         , address
                         , date
-                        , participants
-                        , campaign)
+                        , campaign_id)
                     VALUES
-                        (%s, %s, %s, %s, %s, %s)
+                        (%s, %s, %s, %s, %s)
                     RETURNING event_id;
                     """,
                     [
@@ -160,8 +155,7 @@ class EventRepository:
                         event.venuename,
                         event.address,
                         event.date,
-                        event.participants,
-                        event.campaign,
+                        event.campaign_id,
                     ],
                 )
                 event_id = result.fetchone()[0]
@@ -179,7 +173,7 @@ class EventRepository:
             venuename=record[2],
             address=record[3],
             date=record[4],
-            participants=record[5],
+            campaign_id=record[5],
         )
 
     # Refactor of In to Out event

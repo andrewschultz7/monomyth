@@ -1,6 +1,8 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Navigate } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import {useToken} from './AppAuth';
+
 
 function BootstrapInput(props) {
     const { id, placeholder, labelText, value, onChange, type } = props;
@@ -14,12 +16,14 @@ function BootstrapInput(props) {
 }
 
 function EventForm(props) {
+    const { campaignId } = useParams();
     const [eventname, setEventName] = useState('');
     const [venuename, setVenueName] = useState('');
     const [address, setAddress] = useState('');
     const [date, setDate] = useState('');
     const [participants, setParticipants] = useState('');
     const [campaign, setCampaign] = useState('')
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,9 +33,9 @@ function EventForm(props) {
         data.address=address
         data.date=date
         data.participants=participants
-        data.campaign=campaign
+        data.campaign_id=campaignId
         console.log(data)
-        const eventUrl = 'http://localhost:8001/events'
+        const eventUrl = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events/`
         const fetchConfig = {
             method: 'post',
             body: JSON.stringify(data),
@@ -51,6 +55,7 @@ function EventForm(props) {
             setCampaign('');
         })
         .catch(e => console.log(`error: `, e));
+        navigate(`/campaigns/${campaignId}/`);
     };
 
 
