@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
 import { useAuthContext } from "./AppAuth";
-import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 

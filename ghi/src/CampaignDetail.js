@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuthContext } from "./AppAuth";
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const CampaignDetail = (props) => {
   const [campaign, setCampaign] = useState([]);
