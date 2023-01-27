@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useToken} from "../AppAuth"
-import { suseNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function BootstrapInput(props) {
   const { id, placeholder, labelText, value, onChange, type } = props;
