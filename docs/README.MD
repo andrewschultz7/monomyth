@@ -1,159 +1,340 @@
-Module3 Project Gamma
+**Team 9** | Andrew, Patrick, Nate, Sean and Brian <br />
 
-Getting started
-You have a project repository, now what? The next section
-lists all of the deliverables that are due at the end of the
-week. Below is some guidance for getting started on the
-tasks for this week.
+# Monomyth
+The app for larping. For game masters, Monomyth streamlines the creation and management of campaigns and events. For game players, it allows for fast and easy character creation and event registration. <br />
 
-Install Extensions
 
-Prettier: https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
-
-Black Formatter: https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter
+## Table of Contents
+[TOC]
 
 
 
-Deliverables
+## Project Services
+- **React** binds to port "3000:3000"<br />
+Open [http://localhost:3000] to view the React frontend.<br />
+- **Users-API** binds to port "8000:8000"<br />
+Open [http://localhost:8000] to access the Users backend.<br />
+- **Campaigns-API** binds to port "8001:8000"<br />
+Open [http://localhost:8001] to access the Campaign backend.<br />
+- **pgAdmin** binds to port "8082:80"<br />
+pgAdmin is the project's management tool for the database.<br />
+- The database is **postgres**, which binds to port "15432:5432".<br />
 
 
- Wire-frame diagrams
+## Users microservice
 
- API documentation
-
- Project is deployed to Render.com/GitLab-pages
-
- GitLab issue board is setup and in use
-
- Journals
+**User model**<br />
+This model represents a user of the project. It tracks their user id number, email, and password.<br />
 
 
-Project layout
-The layout of the project is just like all of the projects
-you did with docker-compose in module #2. You will create
-a directory in the root of the repository for each service
-that you add to your project just like those previous
-projects were setup.
+## Campaigns microservice
 
-Directories
-Several directories have been added to your project. The
-directories docs and journals are places for you and
-your team-mates to, respectively, put any documentation
-about your project that you create and to put your
-project-journal entries. See the README.md file in each
-directory for more info.
-The other directories, ghi and sample_service, are
-sample services, that you can start building off of or use
-as a reference point.
-Inside of ghi is a minimal React app that has an "under
-construction" page. It is setup similarly to all of the
-other React projects that you have worked on.
-Inside of sample_service is a minimal FastAPI application.
-"Where are all the files?" you might ask? Well, the
-main.py file is the whole thing, and go take look inside
-of it... There's not even much in there..., hmm? That is
-FastAPI, we'll learn more about it in the coming days. Can
-you figure out what this little web-application does even
-though you haven't learned about FastAPI yet?
-Also in sample_service is a directory for your migrations.
-If you choose to use PostgreSQL, then you'll want to use
-migrations to control your database. Unlike Django, where
-migrations were automatically created for you, you'll write
-yours by hand using DDL. Don't worry about not knowing what
-DDL means; we have you covered. There's a sample migration
-in there that creates two tables so you can see what they
-look like.
-The sample Dockerfile and Dockerfile.dev run your migrations
-for you automatically.
+**Campaign model**<br />
+This model represents a larp. It tracks the larp's id number, title, genre, detail, a url for the rulebook, an email for the gamemaster, and the user id number of the gamemaster.<br />
 
-Other files
-The following project files have been created as a minimal
-starting point. Please follow the guidance for each one for
-a most successful project.
+**Event model**<br />
+This model represents an event of a larp. Larp campaigns are composed of their events. The model tracks the event's id number, name, venue, address, date, and the associated larp's campaign id number.<br />
+
+**Participant model**<br />
+This model represents a user's character at the larp. Participants can sign up for events. The model tracks their participant id number, the user's id number, their character's name, the id number of the campaign, and the event id of the event they are registered to attend (if any).<br />
 
 
-docker-compose.yaml: there isn't much in here, just a
-really simple UI and FastAPI service. Add services
-(like a database) to this file as you did with previous
-projects in module #2.
+## React components
 
-.gitlab-ci.yml: This is your "ci/cd" file where you will
-configure automated unit tests, code quality checks, and
-the building and deployment of your production system.
-Currently, all it does is deploy an "under construction"
-page to your production UI on GitLab and a sample backend
-to Render.com. We will learn much more about this file.
+**SignUpForm**<br />
+Form | User enters their email and password. On submit the field data is posted to User API and a token is created for the current User, logging them in. <br />
 
-.gitignore: This is a file that prevents unwanted files
-from getting added to your repository, files like
-pyc files, __pycache__, etc. We've set it up so that
-it has a good default configuration for Python projects.
+**Login**<br />
+Form | User enters their email and password. On submit, a token is created for the current User, logging them in.  <br />
 
+**Logout**<br />
+Deletes token for the current User. <br />
 
-How to complete the initial deploy
-There will be further guidance on completing the initial
-deployment, but it just consists of these steps:
+**UserDetail**<br />
+Displays the email of the currently logged in user. <br />
 
-Setup GitLab repo/project
+**CampaignForm**<br />
+Form | User enters title, genre, detail, campaign_email, and rulebook. On submit, the field data is posted to Campaign API and gamemaster_id is set to user_id for the current User. <br />
 
+**CampaignEdit**<br />
+Form | Only accessible if logged in user's user_id equals Campaign.gamemaster_id. User can update title, genre, detail, campaign email, and/or rulebook. On submit, the field data is put to Campaign API. <br />
 
-make sure this project is in a group. If it isn't, stop
-now and move it to a GitLab group
+**CampaignList**<br />
+Gets all Campaigns and displays each one's title, genre, detail, campaign email, and rulebook.<br />
 
+**CampaignDetail**<br />
+Gets title, genre, detail, email, and rulebook for a Campaign. It also displays the associated Events for that Campaign and renders a button to register for that Event. If you are the gamemaster of the Campaign, it renders buttons to create, update, or delete associated Events. It also displays eventname, venuename, address, and date for each Event associated with that Campaign.<br />
 
-remove the fork relationship: In GitLab go to:
-Settings -> General -> Advanced -> Remove fork relationship
+**EventForm**<br />
+Form | Only accessible if logged in user's user_id equals Campaign.gamemaster_id. User enters eventname, venuename, address, and date. On submit, the field data is posted to Campaign API and campaign_id is set to the campaign_id of the associated Campaign.<br />
 
+**EventEdit**<br />
+Form | Only accessible if logged in user's user_id equals Campaign.gamemaster_id. User can update eventname, venuename, address, and/or date. On submit, the field data is put to Campaign API. <br />
 
-add these GitLab CI/CD variables:
-
-PUBLIC_URL : this is your gitlab pages URL
-SAMPLE_SERVICE_API_HOST: enter "blank" for now
+**ParticipantForm**<br />
+Form | User enters a character name. On submit, that name, event_id, campaign_id, and user_id is posted to Campaign API.<br />
+<br />
 
 
+## How to run this application
+
+1. Fork or clone the project from https://gitlab.com/monomyth1/monomyth <br />
+
+2. Build volumes in docker:
+    ```
+    docker volume create postgres-data
+    docker volume create pg-admin
+    ```
+3. Build services based on the docker-compose.yml:
+    ```
+    docker-compose build
+    ```
+4. Bring up all services:
+    ```
+    docker-compose up
+    ```
+<br />
 
 
-Your GitLab pages URL
-You can't find this in GitLab until after you've done a deploy
-but you can figure it out yourself from your GitLab project URL.
-If this is your project URL
-https://gitlab.com/GROUP_NAME/PROJECT_NAME
-then your GitLab pages URL will be
-https://GROUP_NAME.gitlab.io/PROJECT_NAME
+## How to rebuild the database <br />
 
-Create render.com account and application
-
-create account on render.com
-one person create a group and invite all other members
-create a new "Web Service"
-
-authenticate with GitLab and choose your project
-Enter fields:
-
-Name: name of your service
-Root Directory: the directory of your service in your git repo.
-For this example use "sample_service".
-Environment: Docker
-Plan Type: Free
-
-
-click the "Create Web Service" button to create it
-the build will succeed and it will look like the server is running,
-most likely, in 6-10 minutes, it will fail.
-click "Manual Deploy" -> "Deploy latest commit" and the service
-should deploy successfully.
+1. Stop and remove all running containers:
+    ```
+    docker-compose down
+    ```
+2. Remove the images:
+    ```
+    docker image prune -a
+    ```
+3. Remove the volumes:
+    ```
+    docker volume rm postgres-data
+    docker volume rm pg-admin
+    ```
+4. Rebuild the volumes:
+    ```
+    docker volume create postgres-data
+    docker volume create pg-admin
+    ```
+5. Bring up services again:
+    ```
+    docker-compose up
+    ```
+<br />
 
 
+## Application Diagram
+<br />
+![Diagram](monomyth_diagram.png)
+<br />
 
 
-Update GitLab CI/CD variables
-Copy the service URL for your new render.com service and then paste
-that into the value for the SAMPLE_SERVICE_API_HOST CI/CD variable
-in GitLab.
+## API Call Documentation
+<br />
 
-Deploy it
-Merge a change into main to kick off the initial deploy. Once the build pipeline
-finishes you should be able to see an "under construction" page on your GitLab
-pages site.
+**USERS API**<br />
+<br />
 
-Monomyth
+**Get Current User** | GET | /current <br />
+    Gets the information for a single User. The return value of creating and getting a User is its id, email, and password:<br />
+```
+    {
+        "id": 1,
+        "email": "Malia.Ngo@unsong.gov",
+        "password": "placebomancy"
+    }
+```
+<br />
+
+**Create User** | POST | /signup <br />
+    Creating a User requires the User's email and password:<br />
+```
+    {
+        "email": "Aaron@sfsingers.org",
+        "password": "Shem haMephorash"
+    }
+```
+<br />
+
+
+**CAMPAIGNS API**<br />
+<br />
+
+**Get Campaign by ID** | GET | /campaigns/{campaign_id} <br />
+    Gets the information for a single Campaign. The return value of creating, updating, and getting a Campaign is its id, title, genre, detail, rulebook, contact email, and gamemaster_id:<br />
+```
+    {
+        "id": 1,
+        "title": "Unsong",
+        "genre": "Apocalyptic",
+        "detail": "In retrospect, there had been omens and portents. Rivers flowed uphill. A new star was seen in the night sky. A butchered pig was found to have the word OMEN written on its liver in clearly visible letters.",
+        "rulebook": "https://unsongbook.com/",
+        "campaign_email": "Aaron@sfsingers.org"
+        "gamemaster_id": 2
+    }
+```
+<br />
+
+**List Campaigns** | GET | /campaigns <br />
+    Gets the information for all Campaigns:<br />
+```
+    {
+        "campaigns": [
+            {
+                "id": 1,
+                "title": "Unsong",
+                "genre": "Apocalyptic",
+                "detail": "In retrospect, there had been omens and portents. Rivers flowed uphill. A new star was seen in the night sky. A butchered pig was found to have the word OMEN written on its liver in clearly visible letters.",
+                "rulebook": "https://unsongbook.com/",
+                "campaign_email": "Aaron@sfsingers.org",
+                "gamemaster_id": 2
+            },
+            {
+                "id": 2,
+                "title": "Doomsday",
+                "genre": "Scifi",
+                "detail": "Galactic Empires rise and fall. When Old Earth died and humanity took to the stars, their Celestial Ascendency claimed dominance within a scant few centuries - until the Machine Uprising drove humanity to the brink of extinction.",
+                "rulebook": "https://doomsdaylarp.com/rules/",
+                "campaign_email": "Jeramy@doomsdaylarp.com",
+                "gamemaster_id": 18
+            }
+        ]
+    }
+``` 
+<br />
+
+**Create Campaign** | POST | /campaigns <br />
+    Creating a Campaign requires the its title, genre, detail, rulebook, and contact email. Campaign.gamemaster_id defaults to the logged in User's user_id:<br />
+```
+    {
+        "title": "Dead Legends",
+        "genre": "Western",
+        "detail": "In an alternate 1863, the south has freed the slaves, allied with the British, and won the Civil War. With the Union on the backfoot, gold has been found in The Black Hills.",
+        "rulebook": "https://deadlegendslarp.com/rulebook/",
+        "campaign_email": "Erica@deadlegendslarp.com/"
+        "gamemaster_id": 72
+    }
+```
+<br />
+
+**Update Campaign** | PUT | /campaigns/{campaign_id} <br />
+    To update a Campaign, send title, genre, detail, rulebook, and/or contact email:<br />
+```
+    {
+        "genre": "Horror",
+        "rulebook": "https://deadlegendslarp.com/rulebook2/"
+    }
+```
+<br />
+
+**Delete Campaign** | DELETE | /campaigns/{campaign_id} <br />
+    Deletes the Campaign for the provided URL.<br />
+<br />
+
+**Get Event by ID** | GET | /campaigns/{campaign_id}/events/{event_id} <br />
+    Gets the information for a single event. The return value of creating, updating, and getting an Event is its id, eventname, venuename, address, date, and campaign_id:<br />
+```
+    {
+        "id": 68,
+        "eventname": "Puts All Heaven in a Rage",
+        "venuename": "Citadel West, Colorado Springs",
+        "address": "Cheyenne Mountain",
+        "date": (1999, 12, 21),
+        "campaign_id": 1
+    }
+```
+<br />
+
+**List Events** | GET | /campaigns/{campaign_id}/eventlist <br />
+    Gets the information for all Events:<br />
+```
+    {
+        "events": [
+            {
+                "id": 68,
+                "eventname": "Puts All Heaven in a Rage",
+                "venuename": "Citadel West, Colorado Springs",
+                "address": "Cheyenne Mountain",
+                "date": (1999, 12, 21),
+                "campaign_id": 1
+            },
+            {
+                "id": 35,
+                "eventname": "The Voices of Children in His Tents",
+                "venuename": "Citadel West, Colorado Springs",
+                "address": "Cheyenne Mountain",
+                "date": (1982, 02, 14),
+                "campaign_id": 1
+            },
+            {
+                "id": 12,
+                "eventname": "The Holiday Special",
+                "venuename": "Blue Mountain Lake YMCA",
+                "address": "115 Mountain Ave, Hamburg, PA 19526",
+                "date": (2016, 12, 09),
+                "campaign_id": 2
+            }
+        ]
+    }
+``` 
+<br />
+
+**Create Event** | POST | /campaigns/{campaign_id}/events <br />
+    Creating a Event requires the its eventname, venuename, address, date, and campaign_id:<br />
+```
+    {
+        "eventname": "The Full Moon Event",
+        "venuename": "Camp Bashore",
+        "address": "160 Moonshine Rd, Jonestown, PA 17038",
+        "date": (2017, 07, 07),
+        "campaign_id": 3
+    }
+```
+<br />
+
+**Update Event** | PUT | /campaigns/{campaign_id}/events/{event_id} <br />
+    To update an Event, send eventname, venuename, address, and/or date:<br />
+```
+    {
+        "eventname": "Rise of the Warewolf Queen",
+    }
+```
+<br />
+
+**Delete Event** | DELETE | /campaigns/{campaign_id}/events/{event_id} <br />
+    Deletes the Event for the provided URL.<br />
+<br />
+
+**Get Participant by ID** | GET | /campaigns/events/participants/{participant_id} <br />
+    Gets the information for a single Participant. The return value of creating, updating, and getting a Participant is its id, user_id, character, event_id, and campaign_id:<br />
+```
+    {
+        "id": 2,
+        "user_id": 55,
+        "character": "Usidore the Blue",
+        "campaign_id": 42,
+        "event_id": 100
+    }
+```
+<br />
+
+**Create Participant** | POST | /campaigns/{campaign_id}/events/{event_id}/participants <br />
+    Creating a Participant requires the its user_id, character, and campaign_id. Participant.event_id defaults to 0:<br />
+```
+    {
+        "user_id": 56,
+        "character": "Spintax the Green",
+        "campaign_id": 42,
+        "event_id": 0
+    }
+```
+<br />
+
+**Update Participant** | PUT | /campaigns/{campaign_id}/events/{event_id}/participants/{participant_id} <br />
+    To update a Participant, send user_id, character, event_id and/or campaign_id:<br />
+```
+    {
+        "event_id": 100
+    }
+```
+<br />
