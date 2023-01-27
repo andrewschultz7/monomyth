@@ -27,22 +27,6 @@ pgAdmin is the project's management tool for the database.<br />
 **User model**<br />
 This model represents a user of the project. It tracks their user id number, email, and password.<br />
 
-**Show Model Detail** | GET | http://localhost:8100/api/models/:id/<br />
-    Getting the detail of a vehicle model, or the return value from creating or updating a vehicle model, returns the model's information and the manufacturer's information:<br />
-```
-        {
-            "href": "/api/models/1/",
-            "id": 1,
-            "name": "Sebring",
-            "picture_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Chrysler_Sebring_front_20090302.jpg/320px-Chrysler_Sebring_front_20090302.jpg",
-            "manufacturer": {
-                "href": "/api/manufacturers/1/",
-                "id": 1,
-                "name": "Daimler-Chrysler"
-            }
-        }
-```
-<br />
 
 ## Campaigns microservice
 
@@ -55,14 +39,6 @@ This model represents an event of a larp. Larp campaigns are composed of their e
 **Participant model**<br />
 This model represents a user's character at the larp. Participants can sign up for events. The model tracks their participant id number, the user's id number, their character's name, the id number of the campaign, and the event id of the event they are registered to attend (if any).<br />
 
-**Update Automobile** | PUT | http://localhost:8100/api/automobiles/:vin/<br />
-    You can update the color, sold, and/or year of an automobile:<br />
-```
-        {
-            "sold: True
-        }
-```
-<br />
 
 ## React components
 
@@ -100,8 +76,6 @@ Form | Only accessible if logged in user's user_id equals Campaign.gamemaster_id
 Form | User enters a character name. On submit, that name, event_id, campaign_id, and user_id is posted to Campaign API.<br />
 <br />
 
-**Show Technician Detail** | GET | http://localhost:8080/api/technicians/:id/<br />
--Get info of one specific technicians<br />
 
 ## How to run this application
 
@@ -122,39 +96,6 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
     ```
 <br />
 
-**List Appointments** | GET | http://localhost:8080/api/appointments/<br />
--Get info of all appointments<br />
-<br />
-Example:
-```
-{
-	"appointments": [
-		{
-			"customer_name": "Fista",
-			"date": "2022-12-30",
-			"time": "15:20:00",
-			"technician": "Gia",
-			"reason": "30K Tune up",
-			"vip": true,
-			"finished": false,
-			"id": 4,
-			"vin": "2T1KU4EE0EC130768"
-		},
-		{
-			"customer_name": "King",
-			"date": "2022-12-25",
-			"time": "12:00:00",
-			"technician": "Chengyun",
-			"reason": "VIP Tune-Up Services",
-			"vip": true,
-			"finished": false,
-			"id": 3,
-			"vin": "1N6ED29X03C442198"
-		}
-	]
-}
-```
-<br />
 
 ## How to rebuild the database <br />
 
@@ -182,17 +123,12 @@ Example:
     ```
 <br />
 
-**Delete Appointment** | DELETE | http://localhost:8080/api/appointments/:id/<br />
--Delete one specific appointment<br />
 
 ## Application Diagram
 <br />
 ![Diagram](monomyth_diagram.png)
 <br />
 
-**Create Appointment** | POST | http://localhost:8080/api/appointments/<br />
--Create a new appointment<br />
-Example input to create a new appointment:<br />
 
 ## API Call Documentation
 <br />
