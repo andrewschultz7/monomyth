@@ -1,11 +1,10 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthContext, useToken } from "../AppAuth";
+import { useToken } from "../AppAuth";
 
 const LoginForm = () => {
-	const [token, login] = useToken();
-	const { isLoggedIn } = useAuthContext();
+	const [login] = useToken();
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
     const navigate = useNavigate();
@@ -13,7 +12,7 @@ const LoginForm = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		login(username, password);
-        navigate("/CampaignList");
+        navigate("/campaignlist");
 	};
 
 	return (
