@@ -11,10 +11,6 @@ app.include_router(events.router)
 app.include_router(participants.router)
 app.include_router(authenticator.router)
 
-origins = [
-    "http://localhost:3000",
-    "https://monomyth1.gitlab.io/monomyth",
-]
 
 app.add_middleware(
     CORSMiddleware,
