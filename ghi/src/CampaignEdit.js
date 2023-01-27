@@ -23,10 +23,9 @@ function BootstrapInput(props2) {
   );
 }
 
-function CampaignEdit(props) {
+function CampaignEdit() {
   const { campaignId } = useParams();
   const { token } = useAuthContext();
-  const { token: tokenState } = props;
   const [title, setTitle] = useState("");
   const [genre, setGenre] = useState("");
   const [rulebook, setRulebook] = useState("");
@@ -54,38 +53,19 @@ function CampaignEdit(props) {
         .then(([dataCamp]) => {
           setCampaign(dataCamp);
         });
-    }, [tokenState, token, campaignId]);
+    }, [token, campaignId]);
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-//   useEffect(() => {
-//     async function getCampaign() {
-//       const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}`;
-//       if (token) {
-//         const response = await fetch(url, {
-//           headers: { Authorization: `Bearer ${token}` },
-//         });
-//         if (response.ok) {
-//           const data = await response.json();
-//           setCampaign(data);
-//         }
-//       }
-//     }
-//     getCampaign();
-//   }, [tokenState]);
+        let data = {};
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    let data = {};
-
-    data.campaign_id = { campaignId };
-    console.log("TTTTTTTTTTTTTTTTTTitle ", title)
-    if (title === "") {
+        data.campaign_id = { campaignId };
+        if (title === "") {
       data.title = campaign.title;
     } else {
       data.title = title;
     }
-    console.log("UUUUUUUUUUUUUUitle ", data.title);
     if (genre === "") {
       data.genre = campaign.genre;
     } else {
@@ -111,12 +91,11 @@ function CampaignEdit(props) {
     }
 
     if (users === "") {
-      data.users = campaign.users;
+        data.users = campaign.users;
     } else {
-      data.users = users;
+        data.users = users;
     }
 
-    console.log("campaign edit ", campaign);
     const campaignUrl = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}`;
     const fetchConfig = {
       method: "put",

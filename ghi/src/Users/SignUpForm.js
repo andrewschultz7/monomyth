@@ -26,8 +26,6 @@ function BootstrapInput(props) {
 function SignUpForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  // const [role, setRole] = useState('');
-  // const[users, setUsers] = useState('');
   const signup = useToken()[3];
   const navigate = useNavigate();
 
@@ -37,9 +35,6 @@ function SignUpForm() {
     let data = {};
     data.email = username;
     data.password = password;
-    // data.role=role
-    // data.users=users
-    console.log(data);
     const signupUrl = `${process.env.REACT_APP_USERS_API_HOST}/signup`;
     const fetchConfig = {
       method: "post",
@@ -54,24 +49,10 @@ function SignUpForm() {
       .then(() => {
         setUsername("");
         setPassword("");
-        // setRole('');
-        // setUsers('');
       })
       .catch((e) => console.log("error: ", e));
     navigate("/campaignlist");
   };
-
-  // useEffect(() => {
-  //     async function getRole() {
-  //         const url = '${process.env.REACT_APP_API}/monomyth/user/role'
-  //         const response = fetch(url);
-  //         if (response.ok) {
-  //             const data = await (await response).json();
-  //             setRole(data);
-  //         }
-  //     }
-  //     getRole();
-  // }, [setRole])
 
   return (
     <div className="row">
@@ -95,19 +76,6 @@ function SignUpForm() {
             onChange={(e) => setPassword(e.target.value)}
             type="password"
           />
-
-          {/* <div classname="mb-4">
-                            <label htmlFor="role" className="form-label">Choose Your Role</label>
-                            <select className="form-select" id="role"aria-label="Choose Your Role">
-                                <option>Open this select menu</option>
-                                {user.role.map(role => (
-                                    <option key={role} value={role}>
-                                        {role}
-                                    </option>
-                                ))}
-                            </select>
-                        </div> */}
-          {/* <button className="btn btn-outline-secondary btn-lg px-2 gap-1">Submit</button> */}
           <button onClick={handleSubmit} className="btn btn-primary">
             Sign Up
           </button>

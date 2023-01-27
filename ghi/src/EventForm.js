@@ -14,7 +14,7 @@ function BootstrapInput(props) {
     )
 }
 
-function EventForm(props) {
+function EventForm() {
     const { campaignId } = useParams();
     const [eventname, setEventName] = useState('');
     const [venuename, setVenueName] = useState('');

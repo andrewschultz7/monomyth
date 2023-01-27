@@ -91,9 +91,7 @@ const EventEdit = () => {
 
         data.campaign_id = campaignId;
 
-        console.log("After submit", data);
         const eventUrl = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events/${eventId}`;
-        console.log("token after sumbit ", token)
         const fetchConfig = {
         method: "put",
         body: JSON.stringify(data),
