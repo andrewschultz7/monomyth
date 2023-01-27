@@ -10,7 +10,8 @@ Project services<br />
 Users microservice<br />
 Campaigns microservice<br />
 React components<br />
-Deployment<br />
+How to run this application<br />
+How to rebuild the database<br />
 Application diagram<br />
 API documentation<br />
 <br />
@@ -85,6 +86,7 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 ## How to run this application
 
 1. Fork or clone the project from https://gitlab.com/monomyth1/monomyth <br />
+
 2. Build volumes in docker:
     ```
     docker volume create postgres-data
@@ -99,6 +101,7 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
     docker-compose up
     ```
 <br />
+
 
 ## How to rebuild the database <br />
 
@@ -131,32 +134,29 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 ![Diagram](monomyth_diagram.png)
 <br />
 
+
 ## API Call Documentation
-
-**Name** | method | url endpoint<br />
-    detail<br />
-
 
 **USERS API**<br />
 
 **Get User by ID** | GET | url endpoint<br />
     Gets the information for a single User. The return value of creating and getting a User is its id, email, and password:<br />
 ```
-        {
-            "id": 1,
-            "email": "Malia.Ngo@unsong.gov",
-            "password": "Shem haMephorash"
-        }
+    {
+        "id": 1,
+        "email": "Malia.Ngo@unsong.gov",
+        "password": "Shem haMephorash"
+    }
 ```
 <br />
 
 **Create User** | POST | url endpoint<br />
     Creating a User requires the User's email and password:<br />
 ```
-        {
-            "email": "Malia.Ngo@unsong.gov",
-            "password": "Shem haMephorash"
-        }
+    {
+        "email": "Malia.Ngo@unsong.gov",
+        "password": "Shem haMephorash"
+    }
 ```
 <br />
 
@@ -166,14 +166,14 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 **Get Campaign by ID** | GET | url endpoint<br />
     Gets the information for a single Campaign. The return value of creating, updating, and getting a Campaign is its id, title, genre, detail, rulebook and contact email:<br />
 ```
-        {
-            "id": 1,
-            "title": "Unsong",
-            "genre": "Apocalyptic",
-            "detail": "In retrospect, there had been omens and portents. Rivers flowed uphill. A new star was seen in the night sky. A butchered pig was found to have the word OMEN written on its liver in clearly visible letters.",
-            "rulebook": "https://unsongbook.com/",
-            "campaign_email": "Aaron@unsong.gov"
-        }
+    {
+        "id": 1,
+        "title": "Unsong",
+        "genre": "Apocalyptic",
+        "detail": "In retrospect, there had been omens and portents. Rivers flowed uphill. A new star was seen in the night sky. A butchered pig was found to have the word OMEN written on its liver in clearly visible letters.",
+        "rulebook": "https://unsongbook.com/",
+        "campaign_email": "Aaron@unsong.gov"
+    }
 ```
 <br />
 
@@ -206,23 +206,23 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 **Create Campaign** | POST | url endpoint<br />
     Creating a Campaign requires the its title, genre, detail, rulebook, and contact email:<br />
 ```
-        {
-            "title": "Dead Legends",
-            "genre": "Western",
-            "detail": "In an alternate 1965, the south has freed the slaves, allied with the British, and won the Civil War. With the Union on the backfoot, gold has been found in The Dakotas...",
-            "rulebook": "https://deadlegendslarp.com/rulebook/",
-            "campaign_email": "Erica@deadlegendslarp.com/"
-        }
+    {
+        "title": "Dead Legends",
+        "genre": "Western",
+        "detail": "In an alternate 1965, the south has freed the slaves, allied with the British, and won the Civil War. With the Union on the backfoot, gold has been found in The Dakotas...",
+        "rulebook": "https://deadlegendslarp.com/rulebook/",
+        "campaign_email": "Erica@deadlegendslarp.com/"
+    }
 ```
 <br />
 
 **Update Campaign** | PUT | url endpoint<br />
     To update a Campaign, send title, genre, detail, rulebook, and/or contact email:<br />
 ```
-        {
-            "genre": "Horror",
-            "rulebook": "https://deadlegendslarp.com/rulebook2/"
-        }
+    {
+        "genre": "Horror",
+        "rulebook": "https://deadlegendslarp.com/rulebook2/"
+    }
 ```
 <br />
 
@@ -233,14 +233,14 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 **Get Event by ID** | GET | url endpoint<br />
     Gets the information for a single event. The return value of creating, updating, and getting an Event is its id, eventname, venuename, address, date, and campaign_id:<br />
 ```
-        {
-            "id": 35,
-            "eventname": "The Voices of Children in His Tents",
-            "venuename": "Citadel West, Colorado Springs",
-            "address": "Cheyenne Mountain",
-            "date": (1982, 02, 14),
-            "campaign_id": 1
-        }
+    {
+        "id": 68,
+        "eventname": "Puts All Heaven in a Rage",
+        "venuename": "Citadel West, Colorado Springs",
+        "address": "Cheyenne Mountain",
+        "date": (1999, 12, 21),
+        "campaign_id": 1
+    }
 ```
 <br />
 
@@ -281,22 +281,22 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 **Create Event** | POST | url endpoint<br />
     Creating a Event requires the its eventname, venuename, address, date, and campaign_id:<br />
 ```
-        {
-            "eventname": "The Full Moon Event",
-            "venuename": "Camp Bashore",
-            "address": "160 Moonshine Rd, Jonestown, PA 17038",
-            "date": (2017, 07, 07),
-            "campaign_id": 3
-        }
+    {
+        "eventname": "The Full Moon Event",
+        "venuename": "Camp Bashore",
+        "address": "160 Moonshine Rd, Jonestown, PA 17038",
+        "date": (2017, 07, 07),
+        "campaign_id": 3
+    }
 ```
 <br />
 
 **Update Event** | PUT | url endpoint<br />
     To update an Event, send eventname, venuename, address, and/or date:<br />
 ```
-        {
-            "eventname": "Rise of the Warewolf Queen",
-        }
+    {
+        "eventname": "Rise of the Warewolf Queen",
+    }
 ```
 <br />
 
