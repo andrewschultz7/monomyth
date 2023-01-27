@@ -1,15 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { useAuthContext } from "./AppAuth";
-import { Link, useParams } from "react-router-dom";
+import React, { useState, useEffect, useMemo } from "react";
+import { useAuthContext, useToken } from "./AppAuth";
+import { Link, useParams, useLocation } from "react-router-dom";
 
 const CampaignDetail = (props) => {
   const [campaign, setCampaign] = useState([]);
   const { token } = useAuthContext();
+  const { token: tokenState, setToken } = props;
   const { campaignId } = useParams();
   const [events, setEvents] = useState([]);
   const [participants, setParticipants] = useState();
   const [users, setUsers] = useState();
   const [deleted, setDeleted] = useState(false);
+  const [pchange, setPchange] = useState();
+  const location = useLocation();
+
+  let e = 0;
 
   useEffect(() => {
     async function getParticipantFetch() {
@@ -26,14 +31,11 @@ const CampaignDetail = (props) => {
         setParticipants(participantdata);
       }
     }
-    if(token){
-      getParticipantFetch();
-    }
-  }, [token]);
+    getParticipantFetch();
+  }, []);
 
   useEffect(() => {
     async function getUserFetch() {
-      setDeleted(false);
       const response = await fetch(
         `${process.env.REACT_APP_USERS_API_HOST}/token`,
         {
@@ -46,14 +48,11 @@ const CampaignDetail = (props) => {
         setUsers(userdata);
       }
     }
-    if(token){
     getUserFetch();
-    }
-  }, [deleted, token]);
+  }, [deleted]);
 
   useEffect(() => {
     async function getCampaignFetch() {
-      setDeleted(false);
       const response = await fetch(
         `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}`,
         {
@@ -66,14 +65,11 @@ const CampaignDetail = (props) => {
         setCampaign(campaigndata);
       }
     }
-    if(token){
     getCampaignFetch();
-    }
-  }, [deleted, token, campaignId]);
+  }, [deleted]);
 
   useEffect(() => {
     async function getEventFetch() {
-      setDeleted(false);
       const response = await fetch(
         `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/eventlist`,
         {
@@ -86,14 +82,11 @@ const CampaignDetail = (props) => {
         setEvents(eventdata);
       }
     }
-    if(token){
     getEventFetch();
-    }
-  }, [deleted, token, campaignId]);
+  }, [deleted]);
 
-    useEffect(() => {
+  useEffect(() => {
     async function getParticipantFetch() {
-      setDeleted(false);
       const response = await fetch(
         `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/events/participants`,
         {
@@ -107,10 +100,8 @@ const CampaignDetail = (props) => {
         setParticipants(participantdata);
       }
     }
-    if(token){
     getParticipantFetch();
-    }
-  }, [deleted, token]);
+  }, [deleted]);
 
   const deleteEvent = async (event_id) => {
     let data = event_id;

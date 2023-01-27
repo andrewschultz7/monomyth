@@ -5,13 +5,9 @@ import { Link } from "react-router-dom";
 const CampaignList = (props) => {
   const [campaigns, setCampaigns] = useState([]);
   const { token } = useAuthContext();
-  // const { token: tokenState} = props;
   const [deleted, setDeleted] = useState(false);
   const [users, setUsers] = useState();
 
-  // useEffect(() => {
-  //   setToken(token);
-  // }, [token]);
 
   useEffect(() => {
     console.log(token);

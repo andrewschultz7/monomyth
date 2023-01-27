@@ -138,6 +138,7 @@ class CampaignRepository:
                             campaign.rulebook,
                             campaign.campaign_email,
                             campaign.gamemaster_id,
+                            user_id,
                             campaign_id,
                         ],
                     )

@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {  useAuthContext } from "./AppAuth";
+import { useAuthContext } from "./AppAuth";
 
 function BootstrapInput(props2) {
   const { id, placeholder, labelText, value, onChange, type } = props2;
@@ -26,7 +26,7 @@ function BootstrapInput(props2) {
 function CampaignEdit(props) {
   const { campaignId } = useParams();
   const { token } = useAuthContext();
-  const { token: tokenState } = props;
+  const { token: tokenState, setToken } = props;
   const [title, setTitle] = useState("");
   const [genre, setGenre] = useState("");
   const [rulebook, setRulebook] = useState("");
@@ -36,42 +36,24 @@ function CampaignEdit(props) {
   const [users, setUsers] = useState("");
   const navigate = useNavigate();
 
-
-    useEffect(() => {
-      Promise.all([
-        fetch(
-          `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          }
-        ),
-      ])
-        .then(([resCamp]) => Promise.all([resCamp.json()]))
-        .then(([dataCamp]) => {
-          setCampaign(dataCamp);
-        });
-    }, [tokenState, token, campaignId]);
-
-
-//   useEffect(() => {
-//     async function getCampaign() {
-//       const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}`;
-//       if (token) {
-//         const response = await fetch(url, {
-//           headers: { Authorization: `Bearer ${token}` },
-//         });
-//         if (response.ok) {
-//           const data = await response.json();
-//           setCampaign(data);
-//         }
-//       }
-//     }
-//     getCampaign();
-//   }, [tokenState]);
+  useEffect(() => {
+    Promise.all([
+      fetch(
+        `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      ),
+    ])
+      .then(([resCamp]) => Promise.all([resCamp.json()]))
+      .then(([dataCamp]) => {
+        setCampaign(dataCamp);
+      });
+  }, [tokenState]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -79,13 +61,13 @@ function CampaignEdit(props) {
     let data = {};
 
     data.campaign_id = { campaignId };
-    console.log("TTTTTTTTTTTTTTTTTTitle ", title)
+    console.log("Title ", title);
     if (title === "") {
       data.title = campaign.title;
     } else {
       data.title = title;
     }
-    console.log("UUUUUUUUUUUUUUitle ", data.title);
+    console.log("Title SECOND ", data.title);
     if (genre === "") {
       data.genre = campaign.genre;
     } else {
@@ -116,6 +98,7 @@ function CampaignEdit(props) {
       data.users = users;
     }
 
+
     console.log("campaign edit ", campaign);
     const campaignUrl = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}`;
     const fetchConfig = {
@@ -132,10 +115,10 @@ function CampaignEdit(props) {
       .then(() => {
         setTitle("");
         setGenre("");
+        setDescription("");
         setRulebook("");
         setEmail("");
         setUsers("");
-        setDescription("");
       })
       .catch((e) => console.log(`error: `, e));
     navigate(`/campaigns/${campaignId}`);
