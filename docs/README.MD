@@ -130,26 +130,27 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 
 
 ## API Call Documentation
+<br />
 
 **USERS API**<br />
 <br />
 
-**Get User by ID** | GET | url endpoint<br />
+**Get Current User** | GET | /current <br />
     Gets the information for a single User. The return value of creating and getting a User is its id, email, and password:<br />
 ```
     {
         "id": 1,
         "email": "Malia.Ngo@unsong.gov",
-        "password": "Shem haMephorash"
+        "password": "placebomancy"
     }
 ```
 <br />
 
-**Create User** | POST | url endpoint<br />
+**Create User** | POST | /signup <br />
     Creating a User requires the User's email and password:<br />
 ```
     {
-        "email": "Malia.Ngo@unsong.gov",
+        "email": "Aaron@sfsingers.org",
         "password": "Shem haMephorash"
     }
 ```
@@ -160,7 +161,7 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 <br />
 
 **Get Campaign by ID** | GET | /campaigns/{campaign_id} <br />
-    Gets the information for a single Campaign. The return value of creating, updating, and getting a Campaign is its id, title, genre, detail, rulebook and contact email:<br />
+    Gets the information for a single Campaign. The return value of creating, updating, and getting a Campaign is its id, title, genre, detail, rulebook, contact email, and gamemaster_id:<br />
 ```
     {
         "id": 1,
@@ -168,7 +169,8 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
         "genre": "Apocalyptic",
         "detail": "In retrospect, there had been omens and portents. Rivers flowed uphill. A new star was seen in the night sky. A butchered pig was found to have the word OMEN written on its liver in clearly visible letters.",
         "rulebook": "https://unsongbook.com/",
-        "campaign_email": "Aaron@unsong.gov"
+        "campaign_email": "Aaron@sfsingers.org"
+        "gamemaster_id": 2
     }
 ```
 <br />
@@ -184,15 +186,17 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
                 "genre": "Apocalyptic",
                 "detail": "In retrospect, there had been omens and portents. Rivers flowed uphill. A new star was seen in the night sky. A butchered pig was found to have the word OMEN written on its liver in clearly visible letters.",
                 "rulebook": "https://unsongbook.com/",
-                "campaign_email": "Aaron@unsong.gov"
+                "campaign_email": "Aaron@sfsingers.org",
+                "gamemaster_id": 2
             },
             {
                 "id": 2,
                 "title": "Doomsday",
                 "genre": "Scifi",
-                "detail": "Galactic Empires rise and fall. When Old Earth died and humanity took to the stars, their Celestial Ascendency claimed dominance within a scant few centuries. Their rule lasted for nearly 500 years...",
+                "detail": "Galactic Empires rise and fall. When Old Earth died and humanity took to the stars, their Celestial Ascendency claimed dominance within a scant few centuries - until the Machine Uprising drove humanity to the brink of extinction.",
                 "rulebook": "https://doomsdaylarp.com/rules/",
-                "campaign_email": "Jeramy@doomsdaylarp.com"
+                "campaign_email": "Jeramy@doomsdaylarp.com",
+                "gamemaster_id": 18
             }
         ]
     }
@@ -200,14 +204,15 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 <br />
 
 **Create Campaign** | POST | /campaigns <br />
-    Creating a Campaign requires the its title, genre, detail, rulebook, and contact email:<br />
+    Creating a Campaign requires the its title, genre, detail, rulebook, and contact email. Campaign.gamemaster_id defaults to the logged in User's user_id:<br />
 ```
     {
         "title": "Dead Legends",
         "genre": "Western",
-        "detail": "In an alternate 1965, the south has freed the slaves, allied with the British, and won the Civil War. With the Union on the backfoot, gold has been found in The Dakotas...",
+        "detail": "In an alternate 1863, the south has freed the slaves, allied with the British, and won the Civil War. With the Union on the backfoot, gold has been found in The Black Hills.",
         "rulebook": "https://deadlegendslarp.com/rulebook/",
         "campaign_email": "Erica@deadlegendslarp.com/"
+        "gamemaster_id": 72
     }
 ```
 <br />
@@ -300,32 +305,32 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
     Deletes the Event for the provided URL.<br />
 <br />
 
-**Get Participant by ID** | GET | url endpoint<br />
+**Get Participant by ID** | GET | /campaigns/events/participants/{participant_id} <br />
     Gets the information for a single Participant. The return value of creating, updating, and getting a Participant is its id, user_id, character, event_id, and campaign_id:<br />
 ```
     {
         "id": 2,
         "user_id": 55,
         "character": "Usidore the Blue",
-        "event_id": 100,
-        "campaign_id": 42
+        "campaign_id": 42,
+        "event_id": 100
     }
 ```
 <br />
 
-**Create Participant** | POST | url endpoint<br />
+**Create Participant** | POST | /campaigns/{campaign_id}/events/{event_id}/participants <br />
     Creating a Participant requires the its user_id, character, and campaign_id. Participant.event_id defaults to 0:<br />
 ```
     {
         "user_id": 56,
         "character": "Spintax the Green",
-        "event_id": 0,
-        "campaign_id": 42
+        "campaign_id": 42,
+        "event_id": 0
     }
 ```
 <br />
 
-**Update Participant** | PUT | url endpoint<br />
+**Update Participant** | PUT | /campaigns/{campaign_id}/events/{event_id}/participants/{participant_id} <br />
     To update a Participant, send user_id, character, event_id and/or campaign_id:<br />
 ```
     {
@@ -334,6 +339,6 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 ```
 <br />
 
-**Delete Participant** | DELETE | url endpoint<br />
+**Delete Participant** | DELETE | /campaigns/{campaign_id}/events/{event_id}/participants/{participant_id} <br />
     Deletes the Participant for the provided URL.<br />
 <br />
