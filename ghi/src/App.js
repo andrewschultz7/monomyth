@@ -31,7 +31,7 @@ function App() {
 const [ token, setToken] = useState('');
 // const domain = /https:\/\/[^/]+/;
 // const basename = "/Monomyth/";
-  const basename = "process.env.PUBLIC_URL.replace(domain, '')";
+  const basename = process.env.PUBLIC_URL.replace(domain, '');
 
   return (
     <BrowserRouter basename={basename}>
