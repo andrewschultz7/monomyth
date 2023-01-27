@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuthContext } from "./AppAuth";
 import { Link, useParams } from "react-router-dom";
 
-const CampaignDetail = (props) => {
+const CampaignDetail = () => {
   const [campaign, setCampaign] = useState([]);
   const { token } = useAuthContext();
   const { campaignId } = useParams();
@@ -22,7 +22,6 @@ const CampaignDetail = (props) => {
       );
       if (response.ok) {
         const participantdata = await response.json();
-        console.log("participantdata ", participantdata);
         setParticipants(participantdata);
       }
     }
@@ -103,7 +102,6 @@ const CampaignDetail = (props) => {
       );
       if (response.ok) {
         const participantdata = await response.json();
-        console.log("participantdata2 ", participantdata);
         setParticipants(participantdata);
       }
     }

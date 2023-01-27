@@ -81,7 +81,7 @@ def delete_participant(
 
 
 @router.get(
-    "/campaigns/events/participants/",
+    "/campaigns/events/participants",
     response_model=Optional[ParticipantOut],
 )
 def get_one_participant(

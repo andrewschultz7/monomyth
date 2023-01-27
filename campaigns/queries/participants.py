@@ -21,7 +21,7 @@ class ParticipantOut(BaseModel):
     participant_id: int
     user_id: int
     character: str
-    event_id: int
+    event_id: int = 0
     campaign_id: int
 
 
@@ -30,7 +30,7 @@ class ParticipantRepository:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    db.execute(
+                    result = db.execute(
                         """
                         SELECT participant_id
                         , user_id
@@ -55,6 +55,37 @@ class ParticipantRepository:
         except Exception:
             return {"message": "Could not get all Participants"}
 
+    def create(self, participant: ParticipantIn, user) -> ParticipantOut:
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                # participant.user_id = user["user_id"]
+                result = db.execute(
+                    """
+                    INSERT INTO participants
+                        (user_id
+                        , character
+                        , event_id
+                        , campaign_id
+                       )
+                    VALUES
+                        (%s, %s, %s, %s)
+                    RETURNING participant_id;
+                    """,
+                    [
+                        user["user_id"],
+                        participant.character,
+                        participant.event_id,
+                        participant.campaign_id,
+                    ],
+                )
+                participant_id = result.fetchone()[0]
+                old_data = participant.dict()
+                return ParticipantOut(
+                    participant_id=participant_id,
+                    user_id=user["user_id"],
+                    **old_data
+                )
+
     def get_one(self, user_id: int) -> Optional[ParticipantOut]:
         try:
             with pool.connection() as conn:
@@ -78,37 +109,6 @@ class ParticipantRepository:
         except Exception:
             return {"message": "Could not get all Participants"}
 
-    def create(self, participant: ParticipantIn, user) -> ParticipantOut:
-        with pool.connection() as conn:
-            with conn.cursor() as db:
-                # participant.user_id = user["user_id"]
-                result = db.execute(
-                    """
-                    INSERT INTO participants
-                        (user_id
-                        , character
-                        , event_id
-                        , campaign_id
-                    )
-                    VALUES
-                        (%s, %s, %s, %s)
-                    RETURNING participant_id;
-                    """,
-                    [
-                        user["user_id"],
-                        participant.character,
-                        participant.event_id,
-                        participant.campaign_id,
-                    ],
-                )
-                participant_id = result.fetchone()[0]
-                old_data = participant.dict()
-                return ParticipantOut(
-                    participant_id=participant_id,
-                    user_id=user["user_id"],
-                    **old_data
-                )
-
     def update(
         self, participant_id, participant: ParticipantIn, user
     ) -> ParticipantOut:
@@ -116,13 +116,14 @@ class ParticipantRepository:
             with conn.cursor() as db:
                 db.execute(
                     """
-                    UPDATE participants
-                    SET  user_id = %s
-                        , character = %s
-                        , event_id = %s
-                        , campaign_id = %s
+                        UPDATE participants
+                        SET  user_id = %s
+                            , character = %s
+                            , event_id = %s
+                            , campaign_id = %s
+
                     WHERE participant_id=%s
-                    """,
+                        """,
                     [
                         user,
                         participant.character,

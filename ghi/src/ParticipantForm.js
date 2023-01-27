@@ -25,9 +25,9 @@ function BootstrapInput(props) {
   );
 }
 
-function ParticipantForm(props) {
+function ParticipantForm() {
   const [character, setCharacter] = useState("");
-  const [setParticipants] = useState("");
+  const [participants, setParticipants] = useState("");
   const { campaignId, eventId } = useParams();
   const { token } = useAuthContext();
   const location = useLocation();
@@ -42,10 +42,7 @@ function ParticipantForm(props) {
       data.character = character;
       data.event_id = parseInt(eventId);
       data.campaign_id = parseInt(campaignId);
-      console.log("pidpid", pid);
       if (pid) {
-        let participantId = parseInt(pid.pid)
-        console.log("particpantId ", participantId)
         const response = await fetch(
           `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events/${eventId}/participants/${pid.pid}`,
           {
@@ -60,7 +57,6 @@ function ParticipantForm(props) {
         );
         if (response.ok) {
         const participantdata = await response.json();
-        console.log("participantdata ", participantdata);
         setParticipants(participantdata);
       }
     }
@@ -79,12 +75,11 @@ function ParticipantForm(props) {
       )
       if (response.ok) {
         const participantdata = await response.json();
-        console.log("participantdata ", participantdata);
         setParticipants(participantdata);
       }
     }};
     postParticipantFetch();
-    navigate(`/campaigns/${campaignId}/`);
+    navigate(`/campaigns/${campaignId}`);
   };
 
   return (

@@ -14,7 +14,6 @@ export async function getTokenInternal() {
     });
     if (response.ok) {
       const data = await response.json();
-      // console.log("GETTOKENINTERNAL Line 17 ", data)
       internalToken = data.access_token
       return internalToken;
     }
@@ -62,14 +61,11 @@ export const useAuthContext = () => useContext(AuthContext);
 
 export function useToken() {
   const { token, setToken } = useAuthContext();
-  const navigate = useNavigate();
-  // console.log("BEFORE use effect FETCHTOKENLine 70 ", token)
+  const navigate = useNavigate()
 
   useEffect(() => {
     async function fetchToken() {
-      // console.log("Inside use effect before getToken")
       const token = await getTokenInternal();
-      // console.log("Inside useeffect after getToken ", token)
       setToken(token);
 
     }
@@ -112,11 +108,8 @@ export function useToken() {
     const response = await fetch(url, {
       method: "post",
       body: JSON.stringify({
-        // username,
         email,
         password,
-        // first_name: firstName,
-        // last_name: lastName,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -148,6 +141,5 @@ export function useToken() {
     }
     return false;
   }
-  // console.log("appauth end", token)
   return [token, login, logout, signup, update];
 }

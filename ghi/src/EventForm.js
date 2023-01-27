@@ -14,7 +14,7 @@ function BootstrapInput(props) {
     )
 }
 
-function EventForm(props) {
+function EventForm() {
     const { campaignId } = useParams();
     const [eventname, setEventName] = useState('');
     const [venuename, setVenueName] = useState('');
@@ -33,8 +33,7 @@ function EventForm(props) {
         data.date=date
         data.participants=participants
         data.campaign_id=campaignId
-        console.log(data)
-        const eventUrl = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events/`
+        const eventUrl = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events`
         const fetchConfig = {
             method: 'post',
             body: JSON.stringify(data),
@@ -54,7 +53,7 @@ function EventForm(props) {
             setCampaign('');
         })
         .catch(e => console.log(`error: `, e));
-        navigate(`/campaigns/${campaignId}/`);
+        navigate(`/campaigns/${campaignId}`);
     };
 
 

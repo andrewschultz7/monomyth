@@ -29,8 +29,9 @@ function GetToken() {
 
 function App() {
 const [ token, setToken] = useState('');
-// const domain = /https:\/\/[^/]+/;
-const basename = "/monomyth/"
+const domain = /https:\/\/[^/]+/;
+// const basename = "/Monomyth/";
+const basename = process.env.PUBLIC_URL.replace(domain, '');
 
   return (
     <BrowserRouter basename={basename}>
@@ -41,7 +42,7 @@ const basename = "/monomyth/"
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route
-              path="/campaigns/:campaignId/"
+              path="/campaigns/:campaignId"
               element={<CampaignDetail token={token} />}
             />
             <Route
@@ -78,7 +79,6 @@ const basename = "/monomyth/"
             <Route path="/participantlist" element={<ParticipantList />} />
             <Route path="/signupform" element={<SignUpForm />} />
             <Route path="/userdetail" element={<UserDetail token={token} />} />
-            {/* <Route path="/participantdetail" element={<ParticipantDetail />} /> */}
           </Routes>
         </div>
       </AuthProvider>

@@ -11,7 +11,6 @@ const ParticipantList = () => {
         async function getParticipant() {
             const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/events/participants`;
             if (token) {
-                console.log("hello little token")
                 const response = await fetch(url, {
                     headers: { Authorization: `Bearer ${token.access_token}` },
                     });

@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useAuthContext } from "./AppAuth";
 
-const UserDetail = (props) => {
+const UserDetail = () => {
   const [user, setUsers] = useState();
   const { token } = useAuthContext();
 
-  console.log("user ", token);
-
   useEffect(() => {
     async function getUserFetch() {
-      console.log("fire event", token);
       const response = await fetch(
         `${process.env.REACT_APP_USERS_API_HOST}/token`,
         {

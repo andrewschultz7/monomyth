@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuthContext } from "./AppAuth";
 import { Link } from "react-router-dom";
 
-const CampaignList = (props) => {
+const CampaignList = () => {
   const [campaigns, setCampaigns] = useState([]);
   const { token } = useAuthContext();
   const [deleted, setDeleted] = useState(false);

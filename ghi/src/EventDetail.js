@@ -10,7 +10,6 @@ const EventDetail = (props) => {
     async function getEvent() {
       const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/events`;
       if (token) {
-        console.log("token exists");
         const response = await fetch(url, {
           headers: { Authorization: `Bearer ${token}` },
         });
