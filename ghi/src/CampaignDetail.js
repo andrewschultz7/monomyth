@@ -69,7 +69,7 @@ const CampaignDetail = (props) => {
     if(token){
     getCampaignFetch();
     }
-  }, [deleted, token]);
+  }, [deleted, token, campaignId]);
 
   useEffect(() => {
     async function getEventFetch() {

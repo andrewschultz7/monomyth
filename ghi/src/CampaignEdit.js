@@ -54,7 +54,7 @@ function CampaignEdit(props) {
         .then(([dataCamp]) => {
           setCampaign(dataCamp);
         });
-    }, [tokenState]);
+    }, [tokenState, token]);
 
 
 //   useEffect(() => {

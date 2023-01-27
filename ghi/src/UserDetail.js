@@ -23,12 +23,12 @@ const UserDetail = (props) => {
       if (response.ok) {
         const userdata = await response.json();
         setUsers(userdata);
-        console.log("after response ", userdata.account.email)
-        console.log("after resonse 2 ", user.account.email)
       }
     }
+    if(token){
     getUserFetch();
-  }, []);
+    }
+  }, [token]);
 
   return (
     <div className="container-fluid">

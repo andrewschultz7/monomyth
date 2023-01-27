@@ -5,13 +5,13 @@ import { Link } from "react-router-dom";
 const CampaignList = (props) => {
   const [campaigns, setCampaigns] = useState([]);
   const { token } = useAuthContext();
-  const { token: tokenState, setToken } = props;
+  // const { token: tokenState} = props;
   const [deleted, setDeleted] = useState(false);
   const [users, setUsers] = useState();
 
-  useEffect(() => {
-    setToken(token);
-  }, [token]);
+  // useEffect(() => {
+  //   setToken(token);
+  // }, [token]);
 
   useEffect(() => {
     console.log(token);
@@ -33,8 +33,10 @@ const CampaignList = (props) => {
       } else {
       }
     }
+    if(token){
     getCampaign();
-  }, [tokenState, deleted]);
+    }
+  }, [ deleted, token]);
 
   useEffect(() => {
     async function getUserFetch() {
@@ -51,8 +53,10 @@ const CampaignList = (props) => {
         setUsers(userdata);
       }
     }
+    if(token){
     getUserFetch();
-  }, [deleted]);
+    }
+  }, [deleted, token]);
 
   const deleteCampaign = async (campaign_id) => {
     setDeleted(false);

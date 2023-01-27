@@ -22,8 +22,10 @@ const EventDetail = (props) => {
         console.log("Hello Event List");
       }
     }
+    if(token){
     getEvent();
-  }, []);
+    }
+  }, [token]);
 
   return (
     <div className="container-fluid">

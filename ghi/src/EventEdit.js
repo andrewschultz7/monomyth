@@ -24,11 +24,10 @@ function BootstrapInput(props2) {
   );
 }
 
-const EventEdit = (props) => {
+const EventEdit = () => {
     const { eventId } = useParams();
     const { campaignId } = useParams();
     const { token } = useAuthContext();
-    const { token: tokenState } = props;
     const [eventname, setEventName] = useState("");
     const [venuename, setVenueName] = useState("");
     const [address, setAddress] = useState("");
@@ -53,7 +52,7 @@ const EventEdit = (props) => {
         .then(([dataEvent]) => {
             setEvent(dataEvent);
         });
-    }, [tokenState]);
+    }, [token]);
 
 
     const handleSubmit = async (e) => {
