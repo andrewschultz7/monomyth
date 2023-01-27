@@ -39,7 +39,7 @@ router = APIRouter()
 
 
 @router.post(
-    "/campaigns/{campaign_id}/events/", response_model=EventOut | HttpError
+    "/campaigns/{campaign_id}/events", response_model=EventOut | HttpError
 )
 async def create_event(
     info: EventIn,
