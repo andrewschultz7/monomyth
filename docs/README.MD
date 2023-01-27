@@ -8,7 +8,6 @@ The app for larping. For game masters, Monomyth streamlines the creation and man
 [TOC]
 
 
-## Value Objects
 
 ## Project Services
 - **React** binds to port "3000:3000"<br />

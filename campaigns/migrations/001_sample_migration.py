@@ -2,52 +2,37 @@ steps = [
     [
         # "Up" SQL statement
         """
-        CREATE TABLE campaigns (
-            campaign_id SERIAL PRIMARY KEY NOT NULL,
-            title VARCHAR(1000) NOT NULL,
-            genre VARCHAR(1000) NOT NULL,
-            description TEXT NOT NULL,
-            rulebook VARCHAR(1000) NOT NULL,
-            campaign_email VARCHAR(1000) NOT NULL,
-            gamemaster_id INT NOT NULL
+        CREATE TABLE dummy (
+            id SERIAL PRIMARY KEY NOT NULL,
+            required_limited_text VARCHAR(1000) NOT NULL,
+            required_unlimited_text TEXT NOT NULL,
+            required_date_time TIMESTAMP NOT NULL,
+            automatically_set_date_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            required_integer INTEGER NOT NULL,
+            required_money MONEY NOT NULL
         );
         """,
         # "Down" SQL statement
         """
-        DROP TABLE campaigns;
-        """,
+        DROP TABLE dummy;
+        """
     ],
     [
         # "Up" SQL statement
         """
-        CREATE TABLE events (
-            event_id SERIAL PRIMARY KEY NOT NULL,
-            eventname VARCHAR(1000) NOT NULL,
-            venuename VARCHAR(1000) NOT NULL,
-            address VARCHAR(1000) NOT NULL,
-            date DATE NOT NULL,
-            campaign_id INT NOT NULL
+        CREATE TABLE big_dummy (
+            id SERIAL PRIMARY KEY NOT NULL,
+            required_limited_text VARCHAR(1000) NOT NULL,
+            required_unlimited_text TEXT NOT NULL,
+            required_date_time TIMESTAMP NOT NULL,
+            automatically_set_date_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            required_integer INTEGER NOT NULL,
+            required_money MONEY NOT NULL
         );
         """,
         # "Down" SQL statement
         """
-        DROP TABLE events;
-        """,
-    ],
-    [
-        # "Up" SQL statement
+        DROP TABLE big_dummy;
         """
-        CREATE TABLE participants (
-            participant_id SERIAL PRIMARY KEY NOT NULL,
-            user_id INT NOT NULL,
-            character VARCHAR(1000) NOT NULL,
-            event_id INT NOT NULL,
-            campaign_id INT NOT NULL
-        );
-        """,
-        # "Down" SQL statement
-        """
-        DROP TABLE participants;
-        """,
-    ],
+    ]
 ]
