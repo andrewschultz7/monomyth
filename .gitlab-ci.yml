@@ -106,8 +106,8 @@ build-front-end-job:
     # You need to substitute in your real values for
     # GROUP_NAME, PROJECT_NAME, & WEBSERVICE_NAME below.
     PUBLIC_URL: https://monomyth.gitlab.io/monomyth
-    REACT_APP_CAMPAIGNS_API_HOST: http://monomyth-deploy1.sept-pt-9.mod3projects.com
-    REACT_APP_USERS_API_HOST: http://monomyth-deploy2.sept-pt-9.mod3projects.com
+    REACT_APP_CAMPAIGNS_API_HOST: https://monomyth-deploy1.sept-pt-9.mod3projects.com
+    REACT_APP_USERS_API_HOST: https://monomyth-deploy2.sept-pt-9.mod3projects.com
   script:
     - cd ghi
     - npm install
