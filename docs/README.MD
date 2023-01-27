@@ -214,3 +214,16 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
         }
 ```
 <br />
+
+**Update Campaign** | PUT | url endpoint<br />
+    To update a Campaign, send title, genre, description, rulebook, and/or contact email:<br />
+```
+        {
+            "genre": "Horror",
+            "rulebook": "https://deadlegendslarp.com/rulebook2/"
+        }
+```
+
+**Delete Campaign** | DELETE | url endpoint<br />
+    Deletes the Campaign for the provided URL.<br />
+<br />
