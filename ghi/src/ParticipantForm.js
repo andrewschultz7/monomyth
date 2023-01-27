@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useAuthContext } from "./AppAuth";
 
-
 function BootstrapInput(props) {
   const { id, placeholder, labelText, value, onChange, type } = props;
 
@@ -31,14 +30,14 @@ function ParticipantForm() {
   const { campaignId, eventId } = useParams();
   const { token } = useAuthContext();
   const location = useLocation();
-  const pid  = location.state
+  const pid = location.state;
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     async function postParticipantFetch() {
       let data = {};
-
+      console.log(participants);
       data.character = character;
       data.event_id = parseInt(eventId);
       data.campaign_id = parseInt(campaignId);
@@ -56,28 +55,28 @@ function ParticipantForm() {
           }
         );
         if (response.ok) {
-        const participantdata = await response.json();
-        setParticipants(participantdata);
+          const participantdata = await response.json();
+          setParticipants(participantdata);
+        }
+      } else {
+        const response = await fetch(
+          `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events/${eventId}/participants`,
+          {
+            method: "post",
+            body: JSON.stringify(data),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            credentials: "include",
+          }
+        );
+        if (response.ok) {
+          const participantdata = await response.json();
+          setParticipants(participantdata);
+        }
       }
     }
-       else {
-      const response = await fetch(
-        `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events/${eventId}/participants`,
-        {
-          method: "post",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          credentials: "include",
-        }
-      )
-      if (response.ok) {
-        const participantdata = await response.json();
-        setParticipants(participantdata);
-      }
-    }};
     postParticipantFetch();
     navigate(`/campaigns/${campaignId}`);
   };
