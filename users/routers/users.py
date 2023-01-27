@@ -9,7 +9,6 @@ from fastapi import (
 from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
 from pydantic import BaseModel
-
 from queries.users import (
     UserIn,
     UserOut,
@@ -17,6 +16,8 @@ from queries.users import (
     DuplicateUserError,
 )
 import json
+
+from authenticator import MyAuthenticator
 
 
 class AccountForm(BaseModel):
@@ -47,6 +48,9 @@ async def get_token(
     request: Request,
     account: UserOut = Depends(authenticator.try_get_current_account_data),
 ) -> AccountToken | None:
+    print("\n")
+    print(account)
+    print("\n")
     if account and authenticator.cookie_name in request.cookies:
         return {
             "access_token": request.cookies[authenticator.cookie_name],
@@ -55,12 +59,17 @@ async def get_token(
         }
 
 
+def get_authenticator():
+    return authenticator
+
+
 @router.post("/signup", response_model=AccountToken | HttpError)
 async def create_account(
     info: UserIn,
     request: Request,
     response: Response,
     repo: UserRepository = Depends(),
+    authenticator: MyAuthenticator = Depends(get_authenticator),
 ):
     hashed_password = authenticator.hash_password(info.password)
     try:

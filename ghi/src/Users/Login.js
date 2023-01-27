@@ -1,11 +1,10 @@
 import React from "react";
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useAuthContext, useToken } from "../AppAuth";
+import { useNavigate } from "react-router-dom";
+import { useToken } from "../AppAuth";
 
 const LoginForm = () => {
-	const [token, login] = useToken();
-	const { isLoggedIn } = useAuthContext();
+	const [login] = useToken();
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
     const navigate = useNavigate();
