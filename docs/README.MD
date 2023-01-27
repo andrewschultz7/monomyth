@@ -81,6 +81,7 @@ Form | Only accessible if logged in user's user_id equals Campaign.gamemaster_id
 
 **ParticipantForm**<br />
 Form | User enters a character name. On submit, that name, event_id, campaign_id, and user_id is posted to Campaign API.<br />
+<br />
 
 
 ## How to run this application
@@ -129,6 +130,7 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
     ```
 <br />
 
+
 ## Application Diagram
 <br />
 ![Diagram](monomyth_diagram.png)
@@ -138,6 +140,7 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 ## API Call Documentation
 
 **USERS API**<br />
+<br />
 
 **Get User by ID** | GET | url endpoint<br />
     Gets the information for a single User. The return value of creating and getting a User is its id, email, and password:<br />
@@ -162,6 +165,7 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 
 
 **CAMPAIGNS API**<br />
+<br />
 
 **Get Campaign by ID** | GET | url endpoint<br />
     Gets the information for a single Campaign. The return value of creating, updating, and getting a Campaign is its id, title, genre, detail, rulebook and contact email:<br />
@@ -302,4 +306,42 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 
 **Delete Event** | DELETE | url endpoint<br />
     Deletes the Event for the provided URL.<br />
+<br />
+
+**Get Participant by ID** | GET | url endpoint<br />
+    Gets the information for a single Participant. The return value of creating, updating, and getting a Participant is its id, user_id, character, event_id, and campaign_id:<br />
+```
+    {
+        "id": 2,
+        "user_id": 55,
+        "character": "Usidore the Blue",
+        "event_id": 100,
+        "campaign_id": 42
+    }
+```
+<br />
+
+**Create Participant** | POST | url endpoint<br />
+    Creating a Participant requires the its user_id, character, and campaign_id. Participant.event_id defaults to 0:<br />
+```
+    {
+        "user_id": 56,
+        "character": "Spintax the Green",
+        "event_id": 0,
+        "campaign_id": 42
+    }
+```
+<br />
+
+**Update Participant** | PUT | url endpoint<br />
+    To update a Participant, send user_id, character, event_id and/or campaign_id:<br />
+```
+    {
+        "event_id": 100
+    }
+```
+<br />
+
+**Delete Participant** | DELETE | url endpoint<br />
+    Deletes the Participant for the provided URL.<br />
 <br />
