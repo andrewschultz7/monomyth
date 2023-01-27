@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useToken } from "../AppAuth";
 
 const LoginForm = () => {
-	const [login] = useToken();
+	const login = useToken()[1];
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
     const navigate = useNavigate();
