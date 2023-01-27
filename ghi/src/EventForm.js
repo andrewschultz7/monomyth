@@ -21,11 +21,12 @@ function EventForm() {
     const [address, setAddress] = useState('');
     const [date, setDate] = useState('');
     const [participants, setParticipants] = useState('');
-    const [setCampaign] = useState('')
+    // const [campaign, setCampaign] = useState('')
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        // console.log(campaign)
         let data= {}
         data.eventname=eventname
         data.venuename=venuename
@@ -34,7 +35,7 @@ function EventForm() {
         data.participants=participants
         data.campaign_id=campaignId
         console.log(data)
-        const eventUrl = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events/`
+        const eventUrl = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events`
         const fetchConfig = {
             method: 'post',
             body: JSON.stringify(data),
@@ -43,18 +44,17 @@ function EventForm() {
             },
             credentials : "include"
         };
-        await fetch(eventUrl, fetchConfig)
-        .then(response => response.json())
-        .then(() => {
+        const response = await fetch(eventUrl, fetchConfig)
+        if (response.ok) {
+            await response.json()
             setEventName('');
             setVenueName('');
             setAddress('');
             setDate('');
             setParticipants('');
-            setCampaign('');
-        })
-        .catch(e => console.log(`error: `, e));
-        navigate(`/campaigns/${campaignId}/`);
+            // setCampaign('');
+            navigate(`/campaigns/${campaignId}`);
+        }
     };
 
 

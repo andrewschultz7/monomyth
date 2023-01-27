@@ -65,11 +65,11 @@ const CampaignList = () => {
       },
       credentials: "include",
     };
-    await fetch(url, fetchConfig)
-      .then((response) => response.json())
-      .then(() => {})
-      .catch((e) => console.log(`error: `, e));
-    setDeleted(true);
+    const response =  await fetch(url, fetchConfig)
+     if (response.ok) {
+      response.json()
+      setDeleted(true);
+     }
   };
 
   return (

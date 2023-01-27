@@ -11,25 +11,25 @@ const CampaignDetail = () => {
   const [users, setUsers] = useState();
   const [deleted, setDeleted] = useState(false);
 
-  useEffect(() => {
-    async function getParticipantFetch() {
-      const response = await fetch(
-        `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/events/participants`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-          credentials: "include",
-        }
-      );
-      if (response.ok) {
-        const participantdata = await response.json();
-        console.log("participantdata ", participantdata);
-        setParticipants(participantdata);
-      }
-    }
-    if(token){
-      getParticipantFetch();
-    }
-  }, [token]);
+//   useEffect(() => {
+//     async function getParticipantFetch() {
+//       const response = await fetch(
+//         `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/events/participants`,
+//         {
+//           headers: { Authorization: `Bearer ${token}` },
+//           credentials: "include",
+//         }
+//       );
+//       if (response.ok) {
+//         const participantdata = await response.json();
+
+//         setParticipants(participantdata);
+//       }
+//     }
+//     if(token){
+//       getParticipantFetch();
+//     }
+//   }, [token]);
 
   useEffect(() => {
     async function getUserFetch() {
@@ -103,7 +103,6 @@ const CampaignDetail = () => {
       );
       if (response.ok) {
         const participantdata = await response.json();
-        console.log("participantdata2 ", participantdata);
         setParticipants(participantdata);
       }
     }

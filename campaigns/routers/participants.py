@@ -80,8 +80,7 @@ def delete_participant(
     return repo.delete(participant_id)
 
 
-@router.get(
-    "/campaigns/events/participants",
+@router.get("/campaigns/events/participants",
     response_model=Optional[ParticipantOut],
 )
 def get_one_participant(
@@ -95,8 +94,7 @@ def get_one_participant(
     return event
 
 
-@router.get(
-    "/events/participants",
+@router.get("/events/participants",
     response_model=Union[HttpError, List[ParticipantOut]],
 )
 def get_all_participants(
