@@ -10,7 +10,6 @@ app.include_router(users.router)
 
 origins = [
     "http://localhost:3000",
-    "https://monomyth1.gitlab.io/monomyth",
 ]
 
 app.add_middleware(
@@ -20,17 +19,3 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-# @app.get("/api/launch-details")
-# def launch_details():
-#     return {
-#         "launch_details": {
-#             "year": 2022,
-#             "month": 12,
-#             "day": "9",
-#             "hour": 19,
-#             "min": 0,
-#             "tz:": "PST"
-#         }
-#     }

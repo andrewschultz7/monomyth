@@ -9,7 +9,6 @@ const CampaignList = () => {
   const [users, setUsers] = useState();
 
   useEffect(() => {
-    console.log(token);
     async function getCampaign() {
       const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns`;
       if (token) {

@@ -44,7 +44,6 @@ function CampaignForm(props) {
     data.rulebook = rulebook;
     data.campaign_email = campaign_email;
     data.users = users;
-    console.log("campaign new submit", data);
     const campaignUrl = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns`;
     const fetchConfig = {
       method: "post",

@@ -117,7 +117,6 @@ const EventEdit = () => {
 
   return (
     <div className="row">
-      {console.log("event ", event)}
       <div className="offset-3 col-6">
         <h1>Edit An Event</h1>
         <form action="/">

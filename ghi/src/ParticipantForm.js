@@ -27,7 +27,7 @@ function BootstrapInput(props) {
 
 function ParticipantForm() {
   const [character, setCharacter] = useState("");
-  const [setParticipants] = useState("");
+  const [participants, setParticipants] = useState("");
   const { campaignId, eventId } = useParams();
   const { token } = useAuthContext();
   const location = useLocation();
@@ -43,7 +43,6 @@ function ParticipantForm() {
       data.event_id = parseInt(eventId);
       data.campaign_id = parseInt(campaignId);
       if (pid) {
-        let participantId = parseInt(pid.pid)
         const response = await fetch(
           `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events/${eventId}/participants/${pid.pid}`,
           {
@@ -80,7 +79,7 @@ function ParticipantForm() {
       }
     }};
     postParticipantFetch();
-    navigate(`/campaigns/${campaignId}/`);
+    navigate(`/campaigns/${campaignId}`);
   };
 
   return (

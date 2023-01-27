@@ -22,7 +22,6 @@ const CampaignDetail = () => {
       );
       if (response.ok) {
         const participantdata = await response.json();
-        console.log("participantdata ", participantdata);
         setParticipants(participantdata);
       }
     }
@@ -103,7 +102,6 @@ const CampaignDetail = () => {
       );
       if (response.ok) {
         const participantdata = await response.json();
-        console.log("participantdata2 ", participantdata);
         setParticipants(participantdata);
       }
     }
