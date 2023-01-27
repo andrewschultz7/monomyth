@@ -8,6 +8,11 @@ app = FastAPI()
 app.include_router(authenticator.router)
 app.include_router(users.router)
 
+origins = [
+    "http://localhost:3000",
+    "https://monomyth1.gitlab.io/monomyth",
+]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[os.environ.get("CORS_HOST", "http://localhost:3000")],
