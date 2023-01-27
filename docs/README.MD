@@ -37,7 +37,7 @@ This model represents a user of the project. It tracks their user id number, ema
 ## Campaigns microservice
 
 **Campaign model**<br />
-This model represents a larp. It tracks the larp's id number, title, genre, description, a url for the rulebook, an email for the gamemaster, and the user id number of the gamemaster.<br />
+This model represents a larp. It tracks the larp's id number, title, genre, detail, a url for the rulebook, an email for the gamemaster, and the user id number of the gamemaster.<br />
 
 **Event model**<br />
 This model represents an event of a larp. Larp campaigns are composed of their events. The model tracks the event's id number, name, venue, address, date, and the associated larp's campaign id number.<br />
@@ -134,13 +134,13 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 ## API Call Documentation
 
 **Name** | method | url endpoint<br />
-    description<br />
+    detail<br />
 
 
 **USERS API**<br />
 
 **Get User by ID** | GET | url endpoint<br />
-    Gets the information for a single user. The return value of creating and getting a User is its id, email, and password:<br />
+    Gets the information for a single User. The return value of creating and getting a User is its id, email, and password:<br />
 ```
         {
             "id": 1,
@@ -164,17 +164,18 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 **CAMPAIGNS API**<br />
 
 **Get Campaign by ID** | GET | url endpoint<br />
-    Gets the information for a single campaign. The return value of creating, updating, and getting a Campaign is its id, title, genre, description, rulebook and contact email:<br />
+    Gets the information for a single Campaign. The return value of creating, updating, and getting a Campaign is its id, title, genre, detail, rulebook and contact email:<br />
 ```
         {
             "id": 1,
             "title": "Unsong",
             "genre": "Apocalyptic",
-            "description": "In retrospect, there had been omens and portents. Rivers flowed uphill. A new star was seen in the night sky. A butchered pig was found to have the word OMEN written on its liver in clearly visible letters.",
+            "detail": "In retrospect, there had been omens and portents. Rivers flowed uphill. A new star was seen in the night sky. A butchered pig was found to have the word OMEN written on its liver in clearly visible letters.",
             "rulebook": "https://unsongbook.com/",
             "campaign_email": "Aaron@unsong.gov"
         }
 ```
+<br />
 
 **List Campaigns** | GET | url endpoint<br />
     Gets the information for all Campaigns:<br />
@@ -185,7 +186,7 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
                 "id": 1,
                 "title": "Unsong",
                 "genre": "Apocalyptic",
-                "description": "In retrospect, there had been omens and portents. Rivers flowed uphill. A new star was seen in the night sky. A butchered pig was found to have the word OMEN written on its liver in clearly visible letters.",
+                "detail": "In retrospect, there had been omens and portents. Rivers flowed uphill. A new star was seen in the night sky. A butchered pig was found to have the word OMEN written on its liver in clearly visible letters.",
                 "rulebook": "https://unsongbook.com/",
                 "campaign_email": "Aaron@unsong.gov"
             },
@@ -193,7 +194,7 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
                 "id": 2,
                 "title": "Doomsday",
                 "genre": "Scifi",
-                "description": "Galactic Empires rise and fall. When Old Earth died and humanity took to the stars, their Celestial Ascendency claimed dominance within a scant few centuries. Their rule lasted for nearly 500 years...",
+                "detail": "Galactic Empires rise and fall. When Old Earth died and humanity took to the stars, their Celestial Ascendency claimed dominance within a scant few centuries. Their rule lasted for nearly 500 years...",
                 "rulebook": "https://doomsdaylarp.com/rules/",
                 "campaign_email": "Jeramy@doomsdaylarp.com"
             }
@@ -203,12 +204,12 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 <br />
 
 **Create Campaign** | POST | url endpoint<br />
-    Creating a Campaign requires the its title, genre, description, rulebook, and contact email:<br />
+    Creating a Campaign requires the its title, genre, detail, rulebook, and contact email:<br />
 ```
         {
             "title": "Dead Legends",
             "genre": "Western",
-            "description": "In an alternate 1965, the south has freed the slaves, allied with the British, and won the Civil War. With the Union on the backfoot, gold has been found in The Dakotas...",
+            "detail": "In an alternate 1965, the south has freed the slaves, allied with the British, and won the Civil War. With the Union on the backfoot, gold has been found in The Dakotas...",
             "rulebook": "https://deadlegendslarp.com/rulebook/",
             "campaign_email": "Erica@deadlegendslarp.com/"
         }
@@ -216,14 +217,89 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 <br />
 
 **Update Campaign** | PUT | url endpoint<br />
-    To update a Campaign, send title, genre, description, rulebook, and/or contact email:<br />
+    To update a Campaign, send title, genre, detail, rulebook, and/or contact email:<br />
 ```
         {
             "genre": "Horror",
             "rulebook": "https://deadlegendslarp.com/rulebook2/"
         }
 ```
+<br />
 
 **Delete Campaign** | DELETE | url endpoint<br />
     Deletes the Campaign for the provided URL.<br />
+<br />
+
+**Get Event by ID** | GET | url endpoint<br />
+    Gets the information for a single event. The return value of creating, updating, and getting an Event is its id, eventname, venuename, address, date, and campaign_id:<br />
+```
+        {
+            "id": 35,
+            "eventname": "The Voices of Children in His Tents",
+            "venuename": "Citadel West, Colorado Springs",
+            "address": "Cheyenne Mountain",
+            "date": (1982, 02, 14),
+            "campaign_id": 1
+        }
+```
+<br />
+
+**List Events** | GET | url endpoint<br />
+    Gets the information for all Events:<br />
+```
+    {
+        "events": [
+            {
+                "id": 68,
+                "eventname": "Puts All Heaven in a Rage",
+                "venuename": "Citadel West, Colorado Springs",
+                "address": "Cheyenne Mountain",
+                "date": (1999, 12, 21),
+                "campaign_id": 1
+            },
+            {
+                "id": 35,
+                "eventname": "The Voices of Children in His Tents",
+                "venuename": "Citadel West, Colorado Springs",
+                "address": "Cheyenne Mountain",
+                "date": (1982, 02, 14),
+                "campaign_id": 1
+            },
+            {
+                "id": 12,
+                "eventname": "The Holiday Special",
+                "venuename": "Blue Mountain Lake YMCA",
+                "address": "115 Mountain Ave, Hamburg, PA 19526",
+                "date": (2016, 12, 09),
+                "campaign_id": 2
+            }
+        ]
+    }
+``` 
+<br />
+
+**Create Event** | POST | url endpoint<br />
+    Creating a Event requires the its eventname, venuename, address, date, and campaign_id:<br />
+```
+        {
+            "eventname": "The Full Moon Event",
+            "venuename": "Camp Bashore",
+            "address": "160 Moonshine Rd, Jonestown, PA 17038",
+            "date": (2017, 07, 07),
+            "campaign_id": 3
+        }
+```
+<br />
+
+**Update Event** | PUT | url endpoint<br />
+    To update an Event, send eventname, venuename, address, and/or date:<br />
+```
+        {
+            "eventname": "Rise of the Warewolf Queen",
+        }
+```
+<br />
+
+**Delete Event** | DELETE | url endpoint<br />
+    Deletes the Event for the provided URL.<br />
 <br />
