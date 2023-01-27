@@ -18,6 +18,8 @@ from queries.users import (
 )
 import json
 
+from authenticator import MyAuthenticator
+
 
 class AccountForm(BaseModel):
     username: str
@@ -57,6 +59,9 @@ async def get_token(
             "account": account,
         }
 
+def get_authenticator():
+    return authenticator
+
 
 @router.post("/signup", response_model=AccountToken | HttpError)
 async def create_account(
@@ -64,6 +69,7 @@ async def create_account(
     request: Request,
     response: Response,
     repo: UserRepository = Depends(),
+    authenticator: MyAuthenticator = Depends(get_authenticator)
 ):
     hashed_password = authenticator.hash_password(info.password)
     try:
@@ -76,6 +82,7 @@ async def create_account(
     form = AccountForm(username=info.email, password=info.password)
     token = await authenticator.login(response, request, form, repo)
     return AccountToken(account=account, **token.dict())
+
 
 
 @router.get("/current", response_model=UserOut | None)

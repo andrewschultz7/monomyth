@@ -26,8 +26,10 @@ const CampaignDetail = (props) => {
         setParticipants(participantdata);
       }
     }
-    getParticipantFetch();
-  }, []);
+    if(token){
+      getParticipantFetch();
+    }
+  }, [token]);
 
   useEffect(() => {
     async function getUserFetch() {
@@ -44,8 +46,10 @@ const CampaignDetail = (props) => {
         setUsers(userdata);
       }
     }
+    if(token){
     getUserFetch();
-  }, [deleted]);
+    }
+  }, [deleted, token]);
 
   useEffect(() => {
     async function getCampaignFetch() {
@@ -62,8 +66,10 @@ const CampaignDetail = (props) => {
         setCampaign(campaigndata);
       }
     }
+    if(token){
     getCampaignFetch();
-  }, [deleted]);
+    }
+  }, [deleted, token]);
 
   useEffect(() => {
     async function getEventFetch() {
@@ -80,8 +86,10 @@ const CampaignDetail = (props) => {
         setEvents(eventdata);
       }
     }
+    if(token){
     getEventFetch();
-  }, [deleted]);
+    }
+  }, [deleted, token]);
 
     useEffect(() => {
     async function getParticipantFetch() {
@@ -99,8 +107,10 @@ const CampaignDetail = (props) => {
         setParticipants(participantdata);
       }
     }
+    if(token){
     getParticipantFetch();
-  }, [deleted]);
+    }
+  }, [deleted, token]);
 
   const deleteEvent = async (event_id) => {
     let data = event_id;
