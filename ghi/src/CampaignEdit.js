@@ -23,10 +23,9 @@ function BootstrapInput(props2) {
   );
 }
 
-function CampaignEdit(props) {
+function CampaignEdit() {
   const { campaignId } = useParams();
   const { token } = useAuthContext();
-  const { token: tokenState, setToken } = props;
   const [title, setTitle] = useState("");
   const [genre, setGenre] = useState("");
   const [rulebook, setRulebook] = useState("");
@@ -53,7 +52,7 @@ function CampaignEdit(props) {
       .then(([dataCamp]) => {
         setCampaign(dataCamp);
       });
-  }, [tokenState]);
+  }, [token, campaignId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -61,13 +60,11 @@ function CampaignEdit(props) {
     let data = {};
 
     data.campaign_id = { campaignId };
-    console.log("Title ", title);
     if (title === "") {
       data.title = campaign.title;
     } else {
       data.title = title;
     }
-    console.log("Title SECOND ", data.title);
     if (genre === "") {
       data.genre = campaign.genre;
     } else {
@@ -98,8 +95,6 @@ function CampaignEdit(props) {
       data.users = users;
     }
 
-
-    console.log("campaign edit ", campaign);
     const campaignUrl = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}`;
     const fetchConfig = {
       method: "put",
@@ -115,10 +110,10 @@ function CampaignEdit(props) {
       .then(() => {
         setTitle("");
         setGenre("");
-        setDescription("");
         setRulebook("");
         setEmail("");
         setUsers("");
+        setDescription("");
       })
       .catch((e) => console.log(`error: `, e));
     navigate(`/campaigns/${campaignId}`);

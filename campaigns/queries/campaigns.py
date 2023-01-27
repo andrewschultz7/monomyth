@@ -137,7 +137,6 @@ class CampaignRepository:
                             campaign.description,
                             campaign.rulebook,
                             campaign.campaign_email,
-                            campaign.gamemaster_id,
                             user_id,
                             campaign_id,
                         ],
@@ -192,4 +191,5 @@ class CampaignRepository:
 
     def campaign_in_to_out(self, campaign_id: int, campaign: CampaignIn):
         old_data = campaign.dict()
+        print(" OLD DATA IN TO OUT: ", old_data)
         return CampaignOut(campaign_id=campaign_id, **old_data)

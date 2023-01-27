@@ -72,6 +72,7 @@ async def update_campaign(
     repo: CampaignRepository = Depends(),
     user: dict = Depends(authenticator.get_current_account_data),
 ) -> CampaignOut:
+    print("UPDATE_ROUTER: " , campaign)
     campedit = repo.update(campaign_id, campaign, user["user_id"])
     return campedit
 
