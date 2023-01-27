@@ -5,16 +5,8 @@ The app for larping. For game masters, Monomyth streamlines the creation and man
 
 
 ## Table of Contents
+[TOC]
 
-Project services<br />
-Users microservice<br />
-Campaigns microservice<br />
-React components<br />
-How to run this application<br />
-How to rebuild the database<br />
-Application diagram<br />
-API documentation<br />
-<br />
 
 
 ## Project Services
@@ -167,7 +159,7 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 **CAMPAIGNS API**<br />
 <br />
 
-**Get Campaign by ID** | GET | url endpoint<br />
+**Get Campaign by ID** | GET | /campaigns/{campaign_id} <br />
     Gets the information for a single Campaign. The return value of creating, updating, and getting a Campaign is its id, title, genre, detail, rulebook and contact email:<br />
 ```
     {
@@ -181,7 +173,7 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 ```
 <br />
 
-**List Campaigns** | GET | url endpoint<br />
+**List Campaigns** | GET | /campaigns <br />
     Gets the information for all Campaigns:<br />
 ```
     {
@@ -207,7 +199,7 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 ``` 
 <br />
 
-**Create Campaign** | POST | url endpoint<br />
+**Create Campaign** | POST | /campaigns <br />
     Creating a Campaign requires the its title, genre, detail, rulebook, and contact email:<br />
 ```
     {
@@ -220,7 +212,7 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 ```
 <br />
 
-**Update Campaign** | PUT | url endpoint<br />
+**Update Campaign** | PUT | /campaigns/{campaign_id} <br />
     To update a Campaign, send title, genre, detail, rulebook, and/or contact email:<br />
 ```
     {
@@ -230,11 +222,11 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 ```
 <br />
 
-**Delete Campaign** | DELETE | url endpoint<br />
+**Delete Campaign** | DELETE | /campaigns/{campaign_id} <br />
     Deletes the Campaign for the provided URL.<br />
 <br />
 
-**Get Event by ID** | GET | url endpoint<br />
+**Get Event by ID** | GET | /campaigns/{campaign_id}/events/{event_id} <br />
     Gets the information for a single event. The return value of creating, updating, and getting an Event is its id, eventname, venuename, address, date, and campaign_id:<br />
 ```
     {
@@ -248,7 +240,7 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 ```
 <br />
 
-**List Events** | GET | url endpoint<br />
+**List Events** | GET | /campaigns/{campaign_id}/eventlist <br />
     Gets the information for all Events:<br />
 ```
     {
@@ -282,7 +274,7 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 ``` 
 <br />
 
-**Create Event** | POST | url endpoint<br />
+**Create Event** | POST | /campaigns/{campaign_id}/events <br />
     Creating a Event requires the its eventname, venuename, address, date, and campaign_id:<br />
 ```
     {
@@ -295,7 +287,7 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 ```
 <br />
 
-**Update Event** | PUT | url endpoint<br />
+**Update Event** | PUT | /campaigns/{campaign_id}/events/{event_id} <br />
     To update an Event, send eventname, venuename, address, and/or date:<br />
 ```
     {
@@ -304,7 +296,7 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 ```
 <br />
 
-**Delete Event** | DELETE | url endpoint<br />
+**Delete Event** | DELETE | /campaigns/{campaign_id}/events/{event_id} <br />
     Deletes the Event for the provided URL.<br />
 <br />
 
