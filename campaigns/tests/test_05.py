@@ -3,6 +3,7 @@ from main import app
 from authenticator import authenticator
 from queries.participants import ParticipantRepository
 
+
 client = TestClient(app)
 data2 = {
     "participant_id": 1,
@@ -19,7 +20,7 @@ class FakeParticipantRepository:
 
 
 def fake_authenticator():
-    return {"user_id": 1, "email": "test@email.com", "role": "player"}
+    pass
 
 
 def test_create_participant():

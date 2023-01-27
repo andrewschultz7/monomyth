@@ -10,7 +10,6 @@ from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
 from typing import Union, Optional, List
 from pydantic import BaseModel
-
 from queries.campaigns import (
     CampaignIn,
     CampaignOut,

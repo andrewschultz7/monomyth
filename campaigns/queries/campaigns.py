@@ -95,6 +95,7 @@ class CampaignRepository:
                 campaign_id = result.fetchone()[0]
                 old_data = campaign.dict()
                 return CampaignOut(campaign_id=campaign_id, **old_data)
+                # return campaign_in_to_out(campaign_id, campaign)
 
     def delete(self, campaign_id: int) -> bool:
         try:
@@ -136,7 +137,7 @@ class CampaignRepository:
                             campaign.description,
                             campaign.rulebook,
                             campaign.campaign_email,
-                            user_id,
+                            campaign.gamemaster_id,
                             campaign_id,
                         ],
                     )
@@ -177,6 +178,10 @@ class CampaignRepository:
         except Exception:
             return {"message": "Could not get all Campaigns"}
 
+    # this is where we did hashed_password in Users
+
+    # Refactor for Campaign Out
+    # Refactor for Campaign Out
     def record_to_campaign_out(self, record):
         return CampaignOut(
             campaign_id=record[0],

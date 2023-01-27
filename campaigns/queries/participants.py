@@ -109,39 +109,9 @@ class ParticipantRepository:
                     **old_data
                 )
 
-    def update(
-        self, participant_id, participant: ParticipantIn, user
-    ) -> ParticipantOut:
-        with pool.connection() as conn:
-            with conn.cursor() as db:
-                db.execute(
-                    """
-                    UPDATE participants
-                    SET  user_id = %s
-                        , character = %s
-                        , event_id = %s
-                        , campaign_id = %s
-                    WHERE participant_id=%s
-                    """,
-                    [
-                        user,
-                        participant.character,
-                        participant.event_id,
-                        participant.campaign_id,
-                        participant_id,
-                    ],
-                )
-                return self.participant_in_to_out(
-                    participant_id, user, participant
-                )
-
-    def participant_in_to_out(
-        self, participant_id: int, user: int, participant: ParticipantIn
-    ):
+    def participant_in_to_out(self, user_id: int, participant: ParticipantIn):
         old_data = participant.dict()
-        return ParticipantOut(
-            participant_id=participant_id, user_id=user, **old_data
-        )
+        return ParticipantOut(user_id == user_id, **old_data)
 
     def record_to_participant_out(self, record):
         return ParticipantOut(

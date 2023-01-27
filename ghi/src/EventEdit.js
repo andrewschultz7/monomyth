@@ -52,7 +52,7 @@ const EventEdit = () => {
         .then(([dataEvent]) => {
             setEvent(dataEvent);
         });
-    }, [token, campaignId]);
+    }, [token, campaignId, eventId]);
 
 
     const handleSubmit = async (e) => {
