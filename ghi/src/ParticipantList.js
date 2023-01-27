@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useAuthContext } from './AppAuth'
-import { Link } from 'react-router-dom'
+
 
 
 const ParticipantList = () => {
