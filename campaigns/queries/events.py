@@ -13,7 +13,6 @@ class DuplicateEventError(ValueError):
 
 
 class EventIn(BaseModel):
-    # event_id: int
     eventname: str
     venuename: str
     address: str
@@ -94,9 +93,6 @@ class EventRepository:
                             event_id,
                         ],
                     )
-                # old_data = event.dict()
-                # return EventOut(event_id=event_id, **old_data)
-                print("FIRING EVENT UPDATE QUERIES", event_id, event)
                 return self.event_in_to_out(event_id, event)
         except Exception:
             return {"message": "Could not updateevents"}
@@ -160,11 +156,7 @@ class EventRepository:
                 event_id = result.fetchone()[0]
                 old_data = event.dict()
                 return EventOut(event_id=event_id, **old_data)
-                # return event_in_to_out(event_id, event)
 
-    # this is where we did hashed_password in campaign
-
-    # Refactor for event Out
     def record_to_event_out(self, record):
         return EventOut(
             event_id=record[0],
@@ -175,7 +167,6 @@ class EventRepository:
             campaign_id=record[5],
         )
 
-    # Refactor of In to Out event
     def event_in_to_out(self, event_id: int, event: EventIn):
         old_data = event.dict()
         return EventOut(event_id=event_id, **old_data)

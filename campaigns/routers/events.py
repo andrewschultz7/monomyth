@@ -111,7 +111,3 @@ def get_all_events(
 ):
 
     return repo.get_all_events(campaign_id)
-
-    # form = EventForm(username=info.email, password=info.password)
-    # token = await authenticator.login(response, request, form, repo)
-    # return AccountToken(account=account, **token.dict())
