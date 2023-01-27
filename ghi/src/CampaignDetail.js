@@ -31,6 +31,7 @@ const CampaignDetail = (props) => {
 
   useEffect(() => {
     async function getUserFetch() {
+      setDeleted(false);
       const response = await fetch(
         `${process.env.REACT_APP_USERS_API_HOST}/token`,
         {
@@ -48,6 +49,7 @@ const CampaignDetail = (props) => {
 
   useEffect(() => {
     async function getCampaignFetch() {
+      setDeleted(false);
       const response = await fetch(
         `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}`,
         {
@@ -65,6 +67,7 @@ const CampaignDetail = (props) => {
 
   useEffect(() => {
     async function getEventFetch() {
+      setDeleted(false);
       const response = await fetch(
         `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/eventlist`,
         {
@@ -82,6 +85,7 @@ const CampaignDetail = (props) => {
 
     useEffect(() => {
     async function getParticipantFetch() {
+      setDeleted(false);
       const response = await fetch(
         `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/events/participants`,
         {

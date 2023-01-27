@@ -38,6 +38,7 @@ const CampaignList = (props) => {
 
   useEffect(() => {
     async function getUserFetch() {
+      setDeleted(false);
       const response = await fetch(
         `${process.env.REACT_APP_USERS_API_HOST}/token`,
         {
@@ -54,6 +55,7 @@ const CampaignList = (props) => {
   }, [deleted]);
 
   const deleteCampaign = async (campaign_id) => {
+    setDeleted(false);
     let data = campaign_id;
     const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaign_id}`;
     const fetchConfig = {
