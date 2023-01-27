@@ -61,34 +61,25 @@ Deletes token for the current User. <br />
 Displays the email of the currently logged in user. <br />
 
 **CampaignForm**<br />
-Form | User enters title, genre, description, campaign_email, and rulebook. On submit, the field data is posted to Campaign API and gamemaster_id is set to user_id for the current User. <br />
+Form | User enters title, genre, detail, campaign_email, and rulebook. On submit, the field data is posted to Campaign API and gamemaster_id is set to user_id for the current User. <br />
 
 **CampaignEdit**<br />
-Form | Only accessible if logged in user's user_id equals Campaign.gamemaster_id. User can update title, genre, description, campaign email, and/or rulebook. On submit, the field data is put to Campaign API. <br />
+Form | Only accessible if logged in user's user_id equals Campaign.gamemaster_id. User can update title, genre, detail, campaign email, and/or rulebook. On submit, the field data is put to Campaign API. <br />
 
 **CampaignList**<br />
-Gets all Campaigns and displays each one's title, genre, description, campaign email, and rulebook.<br />
+Gets all Campaigns and displays each one's title, genre, detail, campaign email, and rulebook.<br />
 
-!!! **CampaignDetail**<br />
-Description of component.<br />
+**CampaignDetail**<br />
+Gets title, genre, detail, email, and rulebook for a Campaign. It also displays the associated Events for that Campaign and renders a button to register for that Event. If you are the gamemaster of the Campaign, it renders buttons to create, update, or delete associated Events. It also displays eventname, venuename, address, and date for each Event associated with that Campaign.<br />
 
 **EventForm**<br />
-Form | Only accessible if logged in user's user_id equals Campaign.gamemaster_id. User enters eventname, venuename, address, participants, and date. On submit, the field data is posted to Campaign API and campaign_id is set to the campaign_id of the associated Campaign.<br />
+Form | Only accessible if logged in user's user_id equals Campaign.gamemaster_id. User enters eventname, venuename, address, and date. On submit, the field data is posted to Campaign API and campaign_id is set to the campaign_id of the associated Campaign.<br />
 
 **EventEdit**<br />
-Form | Only accessible if logged in user's user_id equals Campaign.gamemaster_id. User can update eventname, venuename, address, participants, and/or date. On submit, the field data is put to Campaign API. <br />
-
-**EventList**<br />
-Gets all Events and displays each one's eventname, venuename, address, participants, date, and campaign_id.<br />
-
-!!! **EventDetail**<br />
-Description of component.<br />
+Form | Only accessible if logged in user's user_id equals Campaign.gamemaster_id. User can update eventname, venuename, address, and/or date. On submit, the field data is put to Campaign API. <br />
 
 **ParticipantForm**<br />
 Form | User enters a character name. On submit, that name, event_id, campaign_id, and user_id is posted to Campaign API.<br />
-
-**ParticipantList**<br />
-Gets all Participants for an Event and displays each one's participant_id and character.<br />
 
 
 ## How to run this application
@@ -142,47 +133,84 @@ Gets all Participants for an Event and displays each one's participant_id and ch
 
 ## API Call Documentation
 
-**SYNTAX**<br />
-name | method | url endpoint
+**Name** | method | url endpoint<br />
     description<br />
 
 
 **USERS API**<br />
 
-**List Manufacturers** | GET | http://localhost:8100/api/manufacturers/<br />
-```
-{
-	"manufacturers": [
-		{
-			"href": "/api/manufacturers/1/",
-			"id": 1,
-			"name": "BMW"
-		},
-		{
-			"href": "/api/manufacturers/2/",
-			"id": 2,
-			"name": "Acura"
-		}
-	]
-}
-```
-<br />
-
-**Create Manufacturer** | POST | http://localhost:8100/api/manufacturers/<br />
-    Creating and updating a manufacturer requires only the manufacturer's name:<br />
+**Get User by ID** | GET | url endpoint<br />
+    Gets the information for a single user. The return value of creating and getting a User is its id, email, and password:<br />
 ```
         {
-            "name": "Chrysler"
+            "id": 1,
+            "email": "Malia.Ngo@unsong.gov",
+            "password": "Shem haMephorash"
         }
 ```
 <br />
 
-The return value of creating, getting, and updating a single manufacturer is its name, href, and id:<br />
+**Create User** | POST | url endpoint<br />
+    Creating a User requires the User's email and password:<br />
 ```
         {
-            "href": "/api/manufacturers/1/",
+            "email": "Malia.Ngo@unsong.gov",
+            "password": "Shem haMephorash"
+        }
+```
+<br />
+
+
+**CAMPAIGNS API**<br />
+
+**Get Campaign by ID** | GET | url endpoint<br />
+    Gets the information for a single campaign. The return value of creating, updating, and getting a Campaign is its id, title, genre, description, rulebook and contact email:<br />
+```
+        {
             "id": 1,
-            "name": "Chrysler"
+            "title": "Unsong",
+            "genre": "Apocalyptic",
+            "description": "In retrospect, there had been omens and portents. Rivers flowed uphill. A new star was seen in the night sky. A butchered pig was found to have the word OMEN written on its liver in clearly visible letters.",
+            "rulebook": "https://unsongbook.com/",
+            "campaign_email": "Aaron@unsong.gov"
+        }
+```
+
+**List Campaigns** | GET | url endpoint<br />
+    Gets the information for all Campaigns:<br />
+```
+    {
+        "campaigns": [
+            {
+                "id": 1,
+                "title": "Unsong",
+                "genre": "Apocalyptic",
+                "description": "In retrospect, there had been omens and portents. Rivers flowed uphill. A new star was seen in the night sky. A butchered pig was found to have the word OMEN written on its liver in clearly visible letters.",
+                "rulebook": "https://unsongbook.com/",
+                "campaign_email": "Aaron@unsong.gov"
+            },
+            {
+                "id": 2,
+                "title": "Doomsday",
+                "genre": "Scifi",
+                "description": "Galactic Empires rise and fall. When Old Earth died and humanity took to the stars, their Celestial Ascendency claimed dominance within a scant few centuries. Their rule lasted for nearly 500 years...",
+                "rulebook": "https://doomsdaylarp.com/rules/",
+                "campaign_email": "Jeramy@doomsdaylarp.com"
+            }
+        ]
+    }
+``` 
+<br />
+
+**Create Campaign** | POST | url endpoint<br />
+    Creating a Campaign requires the its title, genre, description, rulebook, and contact email:<br />
+```
+        {
+            "title": "Dead Legends",
+            "genre": "Western",
+            "description": "In an alternate 1965, the south has freed the slaves, allied with the British, and won the Civil War. With the Union on the backfoot, gold has been found in The Dakotas...",
+            "rulebook": "https://deadlegendslarp.com/rulebook/",
+            "campaign_email": "Erica@deadlegendslarp.com/"
         }
 ```
 <br />
