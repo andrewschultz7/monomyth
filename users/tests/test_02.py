@@ -3,7 +3,6 @@ from main import app
 from queries.users import UserOutWithPassword, UserIn, UserRepository
 from routers.users import AccountToken
 from jwtdown_fastapi.authentication import Token
-from authenticator import authenticator
 from routers.users import get_authenticator
 
 
@@ -32,8 +31,9 @@ class FakeAuthenticator:
     async def login(self, response, request, form, repo):
         return token
 
-info=UserIn(email="no@No.com", password="password")
-hashed_password="hashed_password"
+
+info = UserIn(email="no@No.com", password="password")
+hashed_password = "hashed_password"
 
 
 def test_create_user():
