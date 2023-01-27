@@ -52,7 +52,7 @@ const EventEdit = () => {
         .then(([dataEvent]) => {
             setEvent(dataEvent);
         });
-    }, [token]);
+    }, [token, campaignId]);
 
 
     const handleSubmit = async (e) => {

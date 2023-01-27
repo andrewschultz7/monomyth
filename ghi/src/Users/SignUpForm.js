@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { getTokenInternal, useToken} from "../AppAuth"
-import { Navigate, useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { useToken} from "../AppAuth"
+import { suseNavigate } from "react-router-dom";
 
 function BootstrapInput(props) {
   const { id, placeholder, labelText, value, onChange, type } = props;
@@ -23,12 +23,12 @@ function BootstrapInput(props) {
   );
 }
 
-function SignUpForm(props) {
+function SignUpForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   // const [role, setRole] = useState('');
   // const[users, setUsers] = useState('');
-  const [token, login, logout, signup] = useToken();
+  const signup = useToken()[3];
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
