@@ -11,3 +11,39 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.navbar-toggler {
+  position: relative
+}
+
+#dropdown {
+  color:black;
+}
+
+#dropdownMenuButton {
+  margin-right: 10px;
+  width: 100px;
+  transition-duration: 0.5s;
+}
+
+.container {
+  margin-left: -10%;
+}
+
+#slogan {
+  text-align: center;
+}
+
+.fade-in {
+  transition: opacity 1s ease;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.resize {
+  width: 100px;
+  height: 100px;
+}

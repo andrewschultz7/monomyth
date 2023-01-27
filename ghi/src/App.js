@@ -1,37 +1,88 @@
-import { useEffect, useState } from 'react';
-import Construct from './Construct.js'
-import ErrorNotification from './ErrorNotification';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Nav from './Nav';
+import MainPage from './MainPage'
+import CampaignDetail from './CampaignDetail';
+import CampaignEdit from './CampaignEdit';
+import CampaignForm from './CampaignForm';
+import CampaignList from './CampaignList';
+import EventDetail from './EventDetail';
+import EventEdit from './EventEdit';
+import EventForm from './EventForm';
+import EventList from './EventList';
+import LoginForm from './Users/Login';
+import Logout from './Users/Logout';
+import ParticipantForm from './ParticipantForm';
+import ParticipantList from './ParticipantList';
+import SignUpForm from './Users/SignUpForm';
+import UserDetail from './UserDetail';
 import './App.css';
+import { AuthProvider, useToken } from './AppAuth';
+import { useState } from 'react';
+
+
+
+
+function GetToken() {
+    useToken();
+    return null
+}
 
 function App() {
-  const [launch_info, setLaunchInfo] = useState([]);
-  const [error, setError] = useState(null);  
-
-  useEffect(() => {
-    async function getData() {
-      let url = `${process.env.REACT_APP_SAMPLE_SERVICE_API_HOST}/api/launch-details`;
-      console.log('fastapi url: ', url);
-      let response = await fetch(url);
-      console.log("------- hello? -------");
-      let data = await response.json();
-
-      if (response.ok) {
-        console.log("got launch data!");
-        setLaunchInfo(data.launch_details);
-      } else {
-        console.log("drat! something happened");
-        setError(data.message);
-      }
-    }
-    getData();
-  }, [])
-
+const [ token, setToken] = useState('');
+const domain = /https:\/\/[^/]+/;
+const basename = process.env.PUBLIC_URL.replace(domain, '');
 
   return (
-    <div>
-      <ErrorNotification error={error} />
-      <Construct info={launch_info} />
-    </div>
+    <BrowserRouter basename={basename}>
+      <AuthProvider>
+        <GetToken />
+        <Nav />
+        <div className="container-fluid">
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            <Route
+              path="/campaigns/:campaignId/"
+              element={<CampaignDetail token={token} />}
+            />
+            <Route
+              path="/campaigns/:campaignId/edit"
+              element={<CampaignEdit />}
+            />
+            <Route path="/campaignform" element={<CampaignForm />} />
+            <Route
+              path="/campaignlist"
+              element={<CampaignList token={token} setToken={setToken} />}
+            />
+            <Route
+              path="/campaigns/:campaignId/:eventId"
+              element={<EventDetail />}
+            />
+            <Route
+              path="/campaigns/:campaignId/:eventId/edit"
+              element={<EventEdit />}
+            />
+            <Route
+              path="/campaigns/:campaignId/eventform"
+              element={<EventForm />}
+            />
+            <Route
+              path="/campaigns/:campaignId/eventlist"
+              element={<EventList />}
+            />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route
+              path="/campaigns/:campaignId/:eventId/participantform"
+              element={<ParticipantForm />}
+            />
+            <Route path="/participantlist" element={<ParticipantList />} />
+            <Route path="/signupform" element={<SignUpForm />} />
+            <Route path="/userdetail" element={<UserDetail token={token} />} />
+            {/* <Route path="/participantdetail" element={<ParticipantDetail />} /> */}
+          </Routes>
+        </div>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 

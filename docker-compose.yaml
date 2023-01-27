@@ -38,7 +38,9 @@ services:
       - ./campaigns:/app
     environment:
       DATABASE_URL: postgresql://campaigns:password@postgres/campaigns
+      DATABASE_URL2: postgresql://users:password@postgres/users
       WAIT_HOSTS: postgres:5432
+      SIGNING_KEY: ${SIGNING_KEY}
 
   users:
     build:
@@ -49,8 +51,9 @@ services:
     volumes:
       - ./users:/app
     environment:
-      DATABASE_URL: postgresql://users:password@postgres/users
+      DATABASE_URL2: postgresql://users:password@postgres/users
       WAIT_HOSTS: postgres:5432
+      SIGNING_KEY: ${SIGNING_KEY}
 
   ghi:
     image: node:lts-bullseye

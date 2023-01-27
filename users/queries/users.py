@@ -1,85 +1,104 @@
 from pydantic import BaseModel
-from typing import Optional, List, Union
-from datetime import date
+from typing import List, Union
 from queries.pool import pool
 
-## BaseModel is for our ENDPOINTS
+
+class Error(BaseModel):
+    message: str
 
 
-# class Error(BaseModel):
-#     message: str
+class DuplicateUserError(ValueError):
+    pass
 
 
-# class VacationIn(BaseModel):
-#     name: str
-#     from_date: date
-#     to_date: date
-#     thoughts: Optional[str]
+class UserIn(BaseModel):
+    email: str
+    password: str
+    # role: Optional[str]
 
 
-# class VacationOut(BaseModel):
-#     id: int
-#     name: str
-#     from_date: date
-#     to_date: date
-#     thoughts: Optional[str]
+class UserOut(BaseModel):
+    user_id: int
+    email: str
+    role: str
 
 
-# class VacationRepository:
-#     def get_all(self) -> Union[Error, List[VacationOut]]:
-#         try:
-#             with pool.connection() as conn:
-#                 with conn.cursor() as db:
-#                     result = db.execute(
-#                         """
-#                         SELECT id,name,from_date,to_date,thoughts
-#                         FROM vacations
-#                         ORDER BY from_date;
-#                         """
-#                     )
-#                     # result = []
-#                     # for record in db:
-#                     #     vacation = VacationOut(
-#                     #         id= record[0],
-#                     #         name=record[1],
-#                     #         from_date=record[2],
-#                     #         to_date=record[3],
-#                     #         thoughts=record[4],
-#                     #     )
-#                     #     result.append(vacation)
-#                     # return result
-#                     # ***  BELOW IS A LIST COMP WAY  OF WHATS ABOVE ***
-#                     return [
-#                         VacationOut(
-#                             id= record[0],
-#                             name=record[1],
-#                             from_date=record[2],
-#                             to_date=record[3],
-#                             thoughts=record[4]
-#                         )
-#                         for record in db
-#                     ]
-#         except Exception:
-#             return {"message": "Could not get all vacations"}
+class UserOutWithPassword(UserOut):
+    hashed_password: str
 
-#     def create(self, vacation: VacationIn) -> VacationOut:
-#         with pool.connection() as conn:
-#             with conn.cursor() as db:
-#                 result = db.execute(
-#                     """
-#                     INSERT INTO vacations
-#                         (name, from_date, to_date, thoughts)
-#                     VALUES
-#                         (%s, %s, %s, %s)
-#                     RETURNING id;
-#                     """,
-#                     [
-#                         vacation.name,
-#                         vacation.from_date,
-#                         vacation.to_date,
-#                         vacation.thoughts
-#                     ]
-#                 )
-#                 id = result.fetchone()[0]
-#                 old_data = vacation.dict()
-#                 return Vacationout (id=id, **old_data)
+
+class UserRepository:
+    def create(
+        self, user: UserIn, hashed_password: str
+    ) -> UserOutWithPassword:
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                result = db.execute(
+                    """
+                    INSERT INTO users
+                        (email, password, role)
+                    VALUES
+                        (%s, %s, 'player')
+                    RETURNING user_id;
+                    """,
+                    [
+                        user.email,
+                        hashed_password,
+                    ],
+                )
+                user_id = result.fetchone()[0]
+                old_data = user.dict()
+                old_data["role"] = "player"
+                return UserOutWithPassword(
+                    user_id=user_id,
+                    hashed_password=hashed_password,
+                    **old_data
+                )
+
+    def get_all(self) -> Union[Error, List[UserOutWithPassword]]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        SELECT user_id,email,password,role
+                        FROM users
+                        WHERE email = %s;
+                        """
+                    )
+                    return [
+                        UserOut(
+                            user_id=record[0],
+                            email=record[1],
+                            password=record[2],
+                            role=record[3],
+                        )
+                        for record in db
+                    ]
+        except Exception:
+            return {"message": "Could not get all users"}
+
+    def get(self, email: str) -> Union[Error, UserOutWithPassword]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT user_id,email,password,role
+                        FROM users
+                        WHERE email = %s;
+                        """,
+                        [email],
+                    )
+                    record = result.fetchone()
+                    if record is None:
+                        return None
+                    return UserOutWithPassword(
+                        user_id=record[0],
+                        email=record[1],
+                        hashed_password=record[2],
+                        role=record[3],
+                    )
+
+        except Exception:
+            return {"message": "Could not get all users"}
