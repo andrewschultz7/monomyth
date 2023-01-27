@@ -178,10 +178,6 @@ class CampaignRepository:
         except Exception:
             return {"message": "Could not get all Campaigns"}
 
-    # this is where we did hashed_password in Users
-
-    # Refactor for Campaign Out
-    # Refactor for Campaign Out
     def record_to_campaign_out(self, record):
         return CampaignOut(
             campaign_id=record[0],
