@@ -16,7 +16,8 @@ const CampaignList = () => {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
-          }
+          },
+          credentials: "include",
         });
         try {
           if (response.ok) {
@@ -43,7 +44,8 @@ const CampaignList = () => {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
-          }
+          },
+          credentials: "include",
         }
       );
       if (response.ok) {
@@ -66,7 +68,8 @@ const CampaignList = () => {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-      }
+      },
+      credentials: "include",
     };
     const response =  await fetch(url, fetchConfig)
      if (response.ok) {
