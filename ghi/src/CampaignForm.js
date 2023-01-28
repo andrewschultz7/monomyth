@@ -25,7 +25,7 @@ function BootstrapInput(props) {
   );
 }
 
-function CampaignForm(props) {
+function CampaignForm() {
   const { token } = useAuthContext();
   const [title, setTitle] = useState("");
   const [genre, setGenre] = useState("");
@@ -54,18 +54,17 @@ function CampaignForm(props) {
       },
       credentials: "include",
     };
-    await fetch(campaignUrl, fetchConfig)
-      .then((response) => response.json())
-      .then(() => {
+    const response = await fetch(campaignUrl, fetchConfig)
+    if (response.ok) {
+        await response.json()
         setTitle("");
         setGenre("");
         setRulebook("");
         setEmail("");
         setUsers("");
         setDescription("");
-      })
-      .catch((e) => console.log(`error: `, e));
-    navigate(`/campaignlist`);
+        navigate(`/campaignlist`);
+      }
   };
 
   return (

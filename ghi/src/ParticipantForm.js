@@ -36,6 +36,7 @@ function ParticipantForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     async function postParticipantFetch() {
+      console.log(participants)
       let data = {};
       console.log(participants);
       data.character = character;
