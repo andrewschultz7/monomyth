@@ -41,16 +41,17 @@ const EventEdit = () => {
       Promise.all([
         fetch(
           `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/events/${eventId}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        )
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            }
+          }
+        ),
       ])
-        .then(([resEvent]) =>
-          Promise.all([
-            resEvent.json()
-          ])
-        )
+        .then(([resEvent]) => Promise.all([resEvent.json()]))
         .then(([dataEvent]) => {
-            setEvent(dataEvent);
+          setEvent(dataEvent);
         });
     }, [token, campaignId, eventId]);
 

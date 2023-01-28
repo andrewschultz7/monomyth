@@ -11,10 +11,9 @@ const UserDetail = () => {
         `${process.env.REACT_APP_USERS_API_HOST}/token`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
-          },
-          credentials: "include",
+            Authorization: `Bearer ${token}`,
+          }
         }
       );
       if (response.ok) {

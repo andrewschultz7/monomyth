@@ -51,8 +51,7 @@ function CampaignForm() {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-      },
-      credentials: "include",
+      }
     };
     const response = await fetch(campaignUrl, fetchConfig)
     if (response.ok) {
