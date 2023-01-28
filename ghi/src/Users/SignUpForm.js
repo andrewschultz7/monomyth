@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useToken} from "../AppAuth"
+import { useAuthContext, useToken} from "../AppAuth"
 import { useNavigate } from "react-router-dom";
 
 function BootstrapInput(props) {
@@ -28,6 +28,7 @@ function SignUpForm() {
   const [password, setPassword] = useState("");
   const signup = useToken()[3];
   const navigate = useNavigate();
+  const { token } = useAuthContext();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,6 +42,7 @@ function SignUpForm() {
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token.access_token}`,
       },
       credentials: "include",
     };

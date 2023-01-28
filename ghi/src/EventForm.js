@@ -42,7 +42,8 @@ function EventForm() {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
-          }
+          },
+          credentials: "include",
         };
         const response = await fetch(eventUrl, fetchConfig)
         if (response.ok) {

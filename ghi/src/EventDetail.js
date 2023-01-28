@@ -14,7 +14,8 @@ const EventDetail = (props) => {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
-          }
+          },
+          credentials: "include",
         });
         if (response.ok) {
           const data = await response.json();

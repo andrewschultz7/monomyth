@@ -20,7 +20,8 @@ const CampaignDetail = () => {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
-          }
+          },
+          credentials: "include",
         }
       );
       if (response.ok) {
@@ -42,7 +43,8 @@ const CampaignDetail = () => {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
-          }
+          },
+          credentials: "include",
         }
       );
       if (response.ok) {
@@ -64,7 +66,8 @@ const CampaignDetail = () => {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
-          }
+          },
+          credentials: "include",
         }
       );
       if (response.ok) {
@@ -86,7 +89,8 @@ const CampaignDetail = () => {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
-          }
+          },
+          credentials: "include",
         }
       );
       if (response.ok) {
@@ -108,7 +112,8 @@ const CampaignDetail = () => {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-      }
+      },
+      credentials: "include",
     };
     await fetch(url, fetchConfig)
       .then((response) => response.json())
