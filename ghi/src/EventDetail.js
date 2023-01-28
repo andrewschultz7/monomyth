@@ -11,7 +11,10 @@ const EventDetail = (props) => {
       const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/events`;
       if (token) {
         const response = await fetch(url, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          }
         });
         if (response.ok) {
           const data = await response.json();

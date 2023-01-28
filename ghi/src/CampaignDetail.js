@@ -17,8 +17,10 @@ const CampaignDetail = () => {
       const response = await fetch(
         `${process.env.REACT_APP_USERS_API_HOST}/token`,
         {
-          headers: { Authorization: `Bearer ${token}` },
-          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          }
         }
       );
       if (response.ok) {
@@ -37,8 +39,10 @@ const CampaignDetail = () => {
       const response = await fetch(
         `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}`,
         {
-          headers: { Authorization: `Bearer ${token}` },
-          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          }
         }
       );
       if (response.ok) {
@@ -57,8 +61,10 @@ const CampaignDetail = () => {
       const response = await fetch(
         `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}/eventlist`,
         {
-          headers: { Authorization: `Bearer ${token}` },
-          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          }
         }
       );
       if (response.ok) {
@@ -77,8 +83,10 @@ const CampaignDetail = () => {
       const response = await fetch(
         `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/events/participants`,
         {
-          headers: { Authorization: `Bearer ${token}` },
-          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          }
         }
       );
       if (response.ok) {
@@ -98,10 +106,9 @@ const CampaignDetail = () => {
       method: "delete",
       body: JSON.stringify(data),
       headers: {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
-      },
-      credentials: "include",
+        Authorization: `Bearer ${token}`,
+      }
     };
     await fetch(url, fetchConfig)
       .then((response) => response.json())

@@ -13,7 +13,10 @@ const CampaignList = () => {
       const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns`;
       if (token) {
         const response = await fetch(url, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          }
         });
         try {
           if (response.ok) {
@@ -37,8 +40,10 @@ const CampaignList = () => {
       const response = await fetch(
         `${process.env.REACT_APP_USERS_API_HOST}/token`,
         {
-          headers: { Authorization: `Bearer ${token}` },
-          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          }
         }
       );
       if (response.ok) {
@@ -59,10 +64,9 @@ const CampaignList = () => {
       method: "delete",
       body: JSON.stringify(data),
       headers: {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
-      },
-      credentials: "include",
+        Authorization: `Bearer ${token}`,
+      }
     };
     const response =  await fetch(url, fetchConfig)
      if (response.ok) {

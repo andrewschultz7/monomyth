@@ -12,8 +12,11 @@ const ParticipantList = () => {
             const url = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/events/participants`;
             if (token) {
                 const response = await fetch(url, {
-                    headers: { Authorization: `Bearer ${token.access_token}` },
-                    });
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token.access_token}`,
+                  }
+                });
                 if (response.ok) {
                 const data = await response.json();
                 setParticipants(data);
