@@ -9,7 +9,8 @@ steps = [
             description TEXT NOT NULL,
             rulebook VARCHAR(1000) NOT NULL,
             campaign_email VARCHAR(1000) NOT NULL,
-            gamemaster_id INT NOT NULL
+            gamemaster_id INT NOT NULL,
+            picture_url VARCHAR(200) NOT NULL
         );
         """,
         # "Down" SQL statement

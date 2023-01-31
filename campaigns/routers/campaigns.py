@@ -24,6 +24,7 @@ class CampaignForm(BaseModel):
     description: str
     rulebook: str
     campaign_email: str
+    picture_url: str
 
 
 class AccountToken(Token):

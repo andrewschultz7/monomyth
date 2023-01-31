@@ -32,6 +32,7 @@ function CampaignEdit() {
   const [campaign_email, setEmail] = useState("");
   const [description, setDescription] = useState("");
   const [campaign, setCampaign] = useState("");
+  const [picture_url, setPictureURL] = useState("");
   const [users, setUsers] = useState("");
   const navigate = useNavigate();
 
@@ -96,6 +97,12 @@ function CampaignEdit() {
         data.users = users;
     }
 
+     if (picture_url === "") {
+       data.picture_url = campaign.picture_url;
+     } else {
+       data.picture_url = picture_url;
+     }
+
     const campaignUrl = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns/${campaignId}`;
     const fetchConfig = {
       method: "put",
@@ -115,6 +122,7 @@ function CampaignEdit() {
         setEmail("");
         setUsers("");
         setDescription("");
+        setPictureURL("");
       })
       .catch((e) => console.log(`error: `, e));
     navigate(`/campaigns/${campaignId}`);
@@ -163,6 +171,14 @@ function CampaignEdit() {
             labelText="detail"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            type="text"
+          />
+          <BootstrapInput
+            id="picture_url"
+            placeholder={campaign.picture_url}
+            labelText="picture_url"
+            value={picture_url}
+            onChange={(e) => setPictureURL(e.target.value)}
             type="text"
           />
           <button onClick={handleSubmit} className="btn btn-primary">

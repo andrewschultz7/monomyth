@@ -84,39 +84,53 @@ const CampaignList = () => {
       <div>
         {campaigns.map((campaign) => {
           return (
-            <div key={campaign.campaign_id} className="card">
-              <div className="card-header">{campaign.genre}</div>
-              <div className="card-body">
-                <h5 className="card-title">{campaign.title}</h5>
-                <p className="card-text">{campaign.description}</p>
-                <Link to={`/campaigns/${campaign.campaign_id}`}>
-                  <button className="btn btn-outline-dark fw-bold">
-                    DETAILS
-                  </button>
-                </Link>
-                {users?.account.user_id === campaign.gamemaster_id ? (
-                  <Link to={`/campaigns/${campaign.campaign_id}/edit`}>
-                    <button className="btn btn-outline-dark fw-bold">
-                      EDIT
-                    </button>
-                  </Link>
-                ) : (
-                  "   "
-                )}
-                {users?.account.user_id === campaign.gamemaster_id ? (
-                  <button
-                    className="btn btn-outline-dark fw-bold"
-                    value={campaign.campaign_id}
-                    onClick={(e) => deleteCampaign(e.target.value)}
-                  >
-                    DELETE
-                  </button>
-                ) : (
-                  "   "
-                )}
-              </div>
-              <div className="card-footer text-muted">
-                {campaign.campaign_email}
+            <div
+              className="card-img-bottom"
+              style={{
+                backgroundImage: `url(${campaign.picture_url})`,
+                backgroundSize: "auto",
+                opacity: 0.4,
+                // height: "auto",
+                color: "#f5f5f5",
+              }}
+            >
+              <div
+                key={campaign.campaign_id}
+                className="mask"
+              >
+                <div className="mask">{campaign.genre}</div>
+                <div className="mask">
+                  <div>
+                    <h5 className="mask">{campaign.title}</h5>
+                    <p className="card-text">{campaign.description}</p>
+                    <div className="card-text">{campaign.campaign_email}</div>
+                    <Link to={`/campaigns/${campaign.campaign_id}`}>
+                      <button className="btn btn-outline-light fw-bold bg-dark">
+                        DETAILS
+                      </button>
+                    </Link>
+                    {users?.account.user_id === campaign.gamemaster_id ? (
+                      <Link to={`/campaigns/${campaign.campaign_id}/edit`}>
+                        <button className="card-text btn btn-outline-light fw-bold bg-dark">
+                          EDIT
+                        </button>
+                      </Link>
+                    ) : (
+                      "   "
+                    )}
+                    {users?.account.user_id === campaign.gamemaster_id ? (
+                      <button
+                        className="card-text btn btn-outline-light fw-bold bg-dark"
+                        value={campaign.campaign_id}
+                        onClick={(e) => deleteCampaign(e.target.value)}
+                      >
+                        DELETE
+                      </button>
+                    ) : (
+                      "   "
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           );
