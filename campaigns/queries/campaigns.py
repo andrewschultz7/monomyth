@@ -94,7 +94,7 @@ class CampaignRepository:
                         campaign.rulebook,
                         campaign.campaign_email,
                         user_id,
-                        campaign.picture_url
+                        campaign.picture_url,
                     ],
                 )
                 campaign_id = result.fetchone()[0]
@@ -180,7 +180,7 @@ class CampaignRepository:
                             rulebook=record[4],
                             campaign_email=record[5],
                             gamemaster_id=record[6],
-                            picture_url=record[7]
+                            picture_url=record[7],
                         )
                         result.append(campaign)
                     return result
@@ -196,7 +196,7 @@ class CampaignRepository:
             rulebook=record[4],
             campaign_email=record[5],
             gamemaster_id=record[6],
-            picture_url=record[7]
+            picture_url=record[7],
         )
 
     def campaign_in_to_out(self, campaign_id: int, campaign: CampaignIn):
