@@ -97,7 +97,7 @@ const CampaignList = () => {
                   // color: "#111111",
                 }}
               >
-                <div key={campaign.campaign_id} className="text-white opacity-100">
+                <div key={campaign.campaign_id} className="text-white opacity-100 px-2">
                   <div
                     className="mask"
                     style={{
