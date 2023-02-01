@@ -123,129 +123,154 @@ const CampaignDetail = () => {
   };
 
   return (
-    <div className="container-fluid">
-      <h1>Campaign Details</h1>
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th>Campaign ID</th>
-            <th>Title</th>
-            <th>Genre</th>
-            <th>Description</th>
-            <th>Rulebook</th>
-            <th>Campaign Contact Email</th>
-          </tr>
-        </thead>
-        {campaign && users ? (
-          <tbody>
-            <tr key={campaign.campaign_id}>
-              <td>{campaign.campaign_id}</td>
-              <td>{campaign.title}</td>
-              <td>{campaign.genre}</td>
-              <td>{campaign.description}</td>
-              <td>{campaign.rulebook}</td>
-              <td>{campaign.campaign_email}</td>
-              <td>
-                {users?.account.user_id === campaign.gamemaster_id ? (
-                  <Link to={`/Campaigns/${campaignId}/EventForm`}>
-                    <button className="btn btn-outline-dark fw-bold">
-                      CREATE EVENT
-                    </button>
-                  </Link>
-                ) : (
-                  "   "
-                )}
-              </td>
-            </tr>
-          </tbody>
-        ) : (
-          "THERE IS NOTHING HERE"
-        )}
-      </table>
-      <h2>Campaign Events</h2>
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Event Name</th>
-            <th>Venue Name</th>
-            <th>Address</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        {events ? (
-          <tbody>
-            {events?.map((event) => {
-              return (
-                <tr key={event.event_id}>
+    <div
+      className="bg_image"
+      style={{
+        backgroundImage: `url(${campaign.picture_url})`,
+        backgroundSize: "cover",
+        height: "850px",
+        backgroundColor: "#11111110",
+        // opacity: 0.4,
+        // color: "#111111",
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: "#FFFFFF90",
+        }}
+      >
+        <div className="container-fluid">
+          <h1>Campaign Details</h1>
+          <table className="table table-striped">
+            <thead>
+              <tr>
+                <th>Campaign ID</th>
+                <th>Title</th>
+                <th>Genre</th>
+                <th>Description</th>
+                <th>Rulebook</th>
+                <th>Campaign Contact Email</th>
+              </tr>
+            </thead>
+            {campaign && users ? (
+              <tbody>
+                <tr key={campaign.campaign_id}>
+                  <td>{campaign.campaign_id}</td>
+                  <td>{campaign.title}</td>
+                  <td>{campaign.genre}</td>
+                  <td>{campaign.description}</td>
+                  <td>{campaign.rulebook}</td>
+                  <td>{campaign.campaign_email}</td>
                   <td>
-                    {" "}
-                    {participants ? (
-                      <>
-                        {participants.event_id !== event.event_id ? (
-                          <Link
-                            to={`/campaigns/${campaignId}/${event.event_id}/participantform`}
-                            state={{ pid: participants.participant_id }}
-                          >
-                            <button className="btn btn-outline-dark fw-bold">
-                              Register for Adventure
-                            </button>
-                          </Link>
-                        ) : (
-                          "REGISTERED"
-                        )}
-                      </>
-                    ) : (
-                      <Link
-                        to={`/campaigns/${campaignId}/${event.event_id}/participantform`}
-                      >
+                    {users?.account.user_id === campaign.gamemaster_id ? (
+                      <Link to={`/Campaigns/${campaignId}/EventForm`}>
                         <button className="btn btn-outline-dark fw-bold">
-                          Register for Adventure
+                          CREATE EVENT
                         </button>
                       </Link>
-                      // "second link"
-                    )}
-                  </td>
-                  <td>{event.eventname}</td>
-                  <td>{event.venuename}</td>
-                  <td>{event.address}</td>
-                  <td>{event.date}</td>
-                  <td>
-                    {" "}
-                    {users?.account.user_id === campaign.gamemaster_id ? (
-                      <Link
-                        to={`/Campaigns/${campaign.campaign_id}/${event.event_id}/edit/`}
-                      >
-                        <button className="btn btn-outline-dark fw-bold">
-                          EDIT
-                        </button>
-                      </Link>
-                    ) : (
-                      "   "
-                    )}
-                  </td>
-                  <td>
-                    {" "}
-                    {users?.account.user_id === campaign.gamemaster_id ? (
-                      <button
-                        className="btn btn-outline-dark fw-bold"
-                        value={event.event_id}
-                        onClick={(e) => deleteEvent(e.target.value)}
-                      >
-                        DELETE
-                      </button>
                     ) : (
                       "   "
                     )}
                   </td>
                 </tr>
-              );
-            })}
-          </tbody>
-        ) : (
-          "Nothing"
-        )}
-      </table>
+              </tbody>
+            ) : (
+              "THERE IS NOTHING HERE"
+            )}
+          </table>
+          </div>
+          <div
+            style={{
+              backgroundColor: "#00000040",
+            }}
+          >
+            <h2>Campaign Events</h2>
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Event Name</th>
+                  <th>Venue Name</th>
+                  <th>Address</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              {events ? (
+                <tbody>
+                  {events?.map((event) => {
+                    return (
+                      <tr key={event.event_id}>
+                        <td>
+                          {" "}
+                          {participants ? (
+                            <>
+                              {participants.event_id !== event.event_id ? (
+                                <Link
+                                  to={`/campaigns/${campaignId}/${event.event_id}/participantform`}
+                                  state={{ pid: participants.participant_id }}
+                                >
+                                  <button className="btn btn-outline-dark fw-bold">
+                                    Register for Adventure
+                                  </button>
+                                </Link>
+                              ) : (
+                                "REGISTERED"
+                              )}
+                            </>
+                          ) : (
+                            <Link
+                              to={`/campaigns/${campaignId}/${event.event_id}/participantform`}
+                            >
+                              <button className="btn btn-outline-dark fw-bold">
+                                Register for Adventure
+                              </button>
+                            </Link>
+                            // "second link"
+                          )}
+                        </td>
+                        <td>{event.eventname}</td>
+                        <td>{event.venuename}</td>
+                        <td>{event.address}</td>
+                        <td>{event.date}</td>
+                        <td>
+                          {" "}
+                          {users?.account.user_id === campaign.gamemaster_id ? (
+                            <Link
+                              to={`/Campaigns/${campaign.campaign_id}/${event.event_id}/edit/`}
+                            >
+                              <button className="btn btn-outline-dark fw-bold">
+                                EDIT
+                              </button>
+                            </Link>
+                          ) : (
+                            "   "
+                          )}
+                        </td>
+                        <td>
+                          {" "}
+                          {users?.account.user_id === campaign.gamemaster_id ? (
+                            <button
+                              className="btn btn-outline-dark fw-bold"
+                              value={event.event_id}
+                              onClick={(e) => deleteEvent(e.target.value)}
+                            >
+                              DELETE
+                            </button>
+                          ) : (
+                            "   "
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              ) : (
+                "Nothing"
+              )}
+            </table>
+
+        </div>
+      </div>
     </div>
   );
 };
