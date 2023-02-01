@@ -32,6 +32,7 @@ function CampaignForm() {
   const [rulebook, setRulebook] = useState("");
   const [campaign_email, setEmail] = useState("");
   const [description, setDescription] = useState("");
+  const [picture_url, setPictureURL] = useState("");
   const [users, setUsers] = useState("");
   const navigate = useNavigate();
 
@@ -44,6 +45,7 @@ function CampaignForm() {
     data.rulebook = rulebook;
     data.campaign_email = campaign_email;
     data.users = users;
+    data.picture_url = picture_url;
     const campaignUrl = `${process.env.REACT_APP_CAMPAIGNS_API_HOST}/campaigns`;
     const fetchConfig = {
       method: "post",
@@ -63,6 +65,7 @@ function CampaignForm() {
         setEmail("");
         setUsers("");
         setDescription("");
+        setPictureURL("");
         navigate(`/campaignlist`);
       }
   };
@@ -110,6 +113,14 @@ function CampaignForm() {
             labelText="detail"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            type="text"
+          />
+          <BootstrapInput
+            id="picture_url"
+            placeholder="Enter Picture URL"
+            labelText="picture_url"
+            value={picture_url}
+            onChange={(e) => setPictureURL(e.target.value)}
             type="text"
           />
           <button onClick={handleSubmit} className="btn btn-primary">

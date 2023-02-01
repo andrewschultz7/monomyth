@@ -24,7 +24,7 @@ function Nav() {
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
                 <NavLink
-                  className="nav-link dropdown-item text-white"
+                  className="nav-item nav-link text-white"
                   aria-current="page"
                   to="/"
                   id="dropdown"
@@ -34,7 +34,7 @@ function Nav() {
               </li>
               <li>
                 <Link
-                  className="nav-link dropdown-item text-white"
+                  className="nav-item nav-link text-white"
                   to="/campaignform"
                   id="dropdown"
                 >

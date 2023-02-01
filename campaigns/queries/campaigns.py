@@ -23,6 +23,7 @@ class CampaignIn(BaseModel):
     rulebook: str
     campaign_email: str
     gamemaster_id: Optional[int]
+    picture_url: str
 
 
 class CampaignOut(BaseModel):
@@ -33,6 +34,7 @@ class CampaignOut(BaseModel):
     rulebook: str
     campaign_email: str
     gamemaster_id: Optional[int]
+    picture_url: str
 
 
 class UserOut(BaseModel):
@@ -55,6 +57,7 @@ class CampaignRepository:
                         , rulebook
                         , campaign_email
                         , gamemaster_id
+                        , picture_url
                         FROM campaigns
                         WHERE campaign_id = %s
                         """,
@@ -78,9 +81,10 @@ class CampaignRepository:
                         , description
                         , rulebook
                         , campaign_email
-                        , gamemaster_id)
+                        , gamemaster_id
+                        , picture_url)
                     VALUES
-                        (%s, %s, %s, %s, %s, %s)
+                        (%s, %s, %s, %s, %s, %s, %s)
                     RETURNING campaign_id;
                     """,
                     [
@@ -90,6 +94,7 @@ class CampaignRepository:
                         campaign.rulebook,
                         campaign.campaign_email,
                         user_id,
+                        campaign.picture_url,
                     ],
                 )
                 campaign_id = result.fetchone()[0]
@@ -128,6 +133,7 @@ class CampaignRepository:
                         , rulebook = %s
                         , campaign_email = %s
                         , gamemaster_id = %s
+                        , picture_url = %s
                         WHERE campaign_id = %s
                         """,
                         [
@@ -138,6 +144,7 @@ class CampaignRepository:
                             campaign.rulebook,
                             campaign.campaign_email,
                             user_id,
+                            campaign.picture_url,
                             campaign_id,
                         ],
                     )
@@ -158,6 +165,7 @@ class CampaignRepository:
                         , rulebook
                         , campaign_email
                         , gamemaster_id
+                        , picture_url
                         FROM campaigns
                         ORDER BY campaign_id;
                         """
@@ -172,6 +180,7 @@ class CampaignRepository:
                             rulebook=record[4],
                             campaign_email=record[5],
                             gamemaster_id=record[6],
+                            picture_url=record[7],
                         )
                         result.append(campaign)
                     return result
@@ -187,6 +196,7 @@ class CampaignRepository:
             rulebook=record[4],
             campaign_email=record[5],
             gamemaster_id=record[6],
+            picture_url=record[7],
         )
 
     def campaign_in_to_out(self, campaign_id: int, campaign: CampaignIn):

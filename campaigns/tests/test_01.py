@@ -12,6 +12,7 @@ campaign_out = CampaignOut(
     rulebook="put rulebook here",
     campaign_email="test@test.com",
     users="test",
+    picture_url="ntohing"
 )
 
 client = TestClient(app)
