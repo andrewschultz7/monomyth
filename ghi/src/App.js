@@ -1,37 +1,34 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Nav from './Nav';
-import MainPage from './MainPage'
-import CampaignDetail from './CampaignDetail';
-import CampaignEdit from './CampaignEdit';
-import CampaignForm from './CampaignForm';
-import CampaignList from './CampaignList';
-import EventDetail from './EventDetail';
-import EventEdit from './EventEdit';
-import EventForm from './EventForm';
-import EventList from './EventList';
-import LoginForm from './Users/Login';
-import Logout from './Users/Logout';
-import ParticipantForm from './ParticipantForm';
-import ParticipantList from './ParticipantList';
-import SignUpForm from './Users/SignUpForm';
-import UserDetail from './UserDetail';
-import './App.css';
-import { AuthProvider, useToken } from './AppAuth';
-import { useState } from 'react';
-
-
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Nav from "./Nav";
+import MainPage from "./MainPage";
+import CampaignDetail from "./CampaignDetail";
+import CampaignEdit from "./CampaignEdit";
+import CampaignForm from "./CampaignForm";
+import CampaignList from "./CampaignList";
+import EventDetail from "./EventDetail";
+import EventEdit from "./EventEdit";
+import EventForm from "./EventForm";
+import EventList from "./EventList";
+import LoginForm from "./Users/Login";
+import Logout from "./Users/Logout";
+import ParticipantForm from "./ParticipantForm";
+import ParticipantList from "./ParticipantList";
+import SignUpForm from "./Users/SignUpForm";
+import UserDetail from "./UserDetail";
+import "./App.css";
+import { AuthProvider, useToken } from "./AppAuth";
+import { useState } from "react";
 
 function GetToken() {
-    useToken();
-    return null
+  useToken();
+  return null;
 }
 
 function App() {
-const [ token, setToken] = useState('');
-const domain = /https:\/\/[^/]+/;
-// const basename = "/Monomyth/";
-const basename = process.env.PUBLIC_URL.replace(domain, '');
+  const [token, setToken] = useState("");
+  const domain = /https:\/\/[^/]+/;
+  // const basename = "/Monomyth/";
+  const basename = process.env.PUBLIC_URL.replace(domain, "");
 
   return (
     <BrowserRouter basename={basename}>
