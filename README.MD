@@ -126,7 +126,7 @@ Form | User enters a character name. On submit, that name, event_id, campaign_id
 
 ## Application Diagram
 <br />
-![Diagram](monomyth_diagram.png)
+![Diagram](docs/monomyth_diagram.png)
 <br />
 
 
